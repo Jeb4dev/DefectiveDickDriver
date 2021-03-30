@@ -40,7 +40,7 @@ class TheCar:
     def steering(self, x):
         if x == 0:
             self._steering *= .95
-            if self._steering < 1:
+            if abs(self._steering) < .1:
                 self._steering = 0
         if x == 1:
             self._steering += 1
@@ -110,8 +110,10 @@ class TheCar:
     def d(self):
         self.steering = 1
 
-    def brake(self):
-        self._speed *= .995
+    def brake(self, coasting):
+        self._speed *= .99
+        if not coasting:
+            self._speed -= (1-self.speed) * time.dt
         if self._speed < .01:
             self._speed = 0
 
