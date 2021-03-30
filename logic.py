@@ -102,7 +102,7 @@ def update():
             car.d()
     if held_keys['space']:
         for car in cars:
-            car.brake()
+            car.brake(False)
     if not (held_keys['a'] or held_keys['d']):
         car.steering = 0
     player_car.move(ignore_list)
@@ -112,12 +112,13 @@ def update():
     if not (held_keys['s'] or held_keys['w']):
         print(player_car.speed)
         if player_car.speed > 0.001:
-            player_car.brake()
+            player_car.brake(True)
         else:
             player_car.speed = None
 
     if player.camera_pivot.rotation_x < -10:
         player.camera_pivot.rotation_x = -10
+    print(player_car.steering, player_car.speed)
 
 def input(key):
     pass
