@@ -1,0 +1,1 @@
+{"keybindings": [{"forward": "w", "left": "a", "backwards": "s", "right": "d", "car": "f", "quit": "q", "escape": "esc"}], "mouse_settings": [{"sensitivity": 1}], "scoreboard": [{"You": 0,"Me": 20}], "player_name": [{"name": "You"}]}
