@@ -1,8 +1,11 @@
 from ursina import *
-from ursina.prefabs.button_group import ButtonGroup
+from read_key_bindings import getValue, updateValue, saveValues
 
-main_menu = Entity(scale=Vec2(10,10))
-options_menu = Entity(scale=Vec2(10,10))
+main_menu = Entity(scale=Vec2(10, 10))
+options_menu = Entity(scale=Vec2(10, 10))
+mouse_keyboard_menu = Entity(scale=Vec2(10, 10))
+scoreboard_menu = Entity(scale=Vec2(10, 10))
+
 
 class LoadingWheel(Entity):
     def __init__(self, **kwargs):
@@ -37,33 +40,28 @@ class LoadingWheel(Entity):
         for key, value in kwargs.items():
             setattr(self, key ,value)
 
-
     def update(self):
         self.point.rotation_y += 5
         self.point2.rotation_y += 3
 
 
 def showMainMenu():
-    global main_menu, options_menu
-    options_menu.enabled = False
+    options_menu.enabled, mouse_keyboard_menu.enabled, scoreboard_menu.enabled = False, False, False
     main_menu.enabled = True
-
-    screen = "menu"
-    #gender_selection = ButtonGroup(('Play', 'Settings', 'Quit'))
-    #on_off_switch = ButtonGroup(('off', 'on'), min_selection=1, y=-.1, default='on', selected_color=color.red)
-
-    #Text.default_resolution = 1080 * Text.size
-
-    test = Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game")
+    Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game")
     print("MainMenu")
 
 
-    b_play = Button(parent=main_menu, text='Play!', color=color.black10, scale=(0.3,0.08), position=(0, 0.1))
-    b_options = Button(parent=main_menu, text='Options', color=color.black10, scale=(0.3,0.08), position=(0, 0))
-    b_quit = Button(parent=main_menu, text='Quit!', color=color.black10, scale=(0.3,0.08), position=(0, -0.1))
+    b_play = Button(parent=main_menu, text='Play!', color=color.black10, scale=(0.5, 0.08), position=(0, 0.1))
+    b_scoreboard = Button(parent=main_menu, text='Scoreboard', color=color.black10, scale=(0.5, 0.08), position=(0, 0))
+    b_options = Button(parent=main_menu, text='Options', color=color.black10, scale=(0.5, 0.08), position=(0, -0.1))
+    b_quit = Button(parent=main_menu, text='Quit!', color=color.black10, scale=(0.5, 0.08), position=(0, -0.2))
 
     b_play.on_click = LoadingWheel(enabled=False)  # assign a function to the button.
     b_play.tooltip = Tooltip('play')
+
+    b_scoreboard.on_click = showScoreboardMenu
+    b_scoreboard.tooltip = Tooltip('Show Scoreboard')
 
     b_options.on_click = showOptionsMenu
     b_options.tooltip = Tooltip('options')
@@ -90,20 +88,18 @@ def showMainMenu():
 
 
 def showOptionsMenu():
-    global main_menu, options_menu
-    main_menu.enabled = False
+    global main_menu, options_menu, mouse_keyboard_menu
+    main_menu.enabled, mouse_keyboard_menu.enabled, scoreboard_menu.enabled = False, False, False
     options_menu.enabled = True
-    screen = "options"
-    test = Text(parent=options_menu, origin=(0, -10), text="Options")
-    print("OptionsMenu")
+    Text(parent=options_menu, origin=(0, -7), scale=1.8, text="Options")
 
 
-    b_o_mouse_keys = Button(parent=options_menu, text='Mouse & Keys', color=color.black10, scale=(0.3, 0.08), position=(0, 0.1))
-    b_o_graphics = Button(parent=options_menu, text='Graphics', color=color.black10, scale=(0.3, 0.08), position=(0, -0.1))
-    b_o_other = Button(parent=options_menu, text='Other', color=color.black10, scale=(0.3, 0.08), position=(0, 0))
-    b_o_back = Button(parent=options_menu, text='Back', color=color.black10, scale=(0.3, 0.08), position=(0, -0.2))
+    b_o_mouse_keys = Button(parent=options_menu, text='Mouse & Keys', color=color.black10, scale=(0.5, 0.08), position=(0, 0.1))
+    b_o_graphics = Button(parent=options_menu, text='Graphics', color=color.black10, scale=(0.5, 0.08), position=(0, 0))
+    b_o_other = Button(parent=options_menu, text='Other', color=color.black10, scale=(0.5, 0.08), position=(0, -0.1))
+    b_o_back = Button(parent=options_menu, text='Back', color=color.black10, scale=(0.5, 0.08), position=(0, -0.2))
 
-    b_o_mouse_keys.on_click = application.quit  # assign a function to the button.
+    b_o_mouse_keys.on_click = showMouseKeyboardMenu  # assign a function to the button.
     b_o_mouse_keys.tooltip = Tooltip('Mouse sensitivity & keybindings')
 
     b_o_graphics.on_click = application.quit  # assign a function to the button.
@@ -116,6 +112,89 @@ def showOptionsMenu():
     b_o_back.tooltip = Tooltip('Back to Main menu')
 
     window.color = color._32
+
+# Keys
+allkeys = ["forward", "left", "backwards", "right", "quit", "car", "escape"]
+
+
+def showScoreboardMenu():
+    main_menu.enabled, options_menu.enabled, mouse_keyboard_menu.enabled = False, False, False
+    scoreboard_menu.enabled = True
+    Text(parent=scoreboard_menu, origin=(0, -7), scale=1.8, text="Scoreboard")
+    scoreboard = getValue("scoreboard", "*")
+    s = 0
+    for i in range(len(scoreboard)):
+        for j in scoreboard[i]:
+            s += 1  # just here chilling, don't touch
+            Text(parent=scoreboard_menu, position=(-.1, .17-s*.05), text=j)  # font="courier"
+            Text(parent=scoreboard_menu, position=(0, .17-s*.05), text=f"{scoreboard[i][j]}".center(8))
+    Text(parent=scoreboard_menu, position=(-.1, .2), text=f"Name")
+    Text(parent=scoreboard_menu, position=(0, .2), text=f"Score")
+
+
+    b_sb_back = Button(parent=scoreboard_menu, text='Back', color=color.black10, scale=(0.3, 0.08), position=(0, -0.3))
+
+    b_sb_back.on_click = showMainMenu
+    b_sb_back.tooltip = Tooltip('Back to Main menu')
+
+    window.color = color._32
+
+
+def showMouseKeyboardMenu():
+    global main_menu, options_menu, mouse_keyboard_menu
+    main_menu.enabled, options_menu.enabled, scoreboard_menu.enabled = False, False, False
+    mouse_keyboard_menu.enabled = True
+    screen = "mouse_keyboard"
+    Text(parent=mouse_keyboard_menu, origin=(0, -7), scale=1.8, text="Mouse & Keyboard Settings")
+
+    # Mouse Sensitivity
+    sensitivity = getValue("mouse_settings", "sensitivity")
+    slider = ThinSlider(parent=mouse_keyboard_menu, text="Mouse Sensitivity", min=0, max=10, default=sensitivity, x=-.5,
+                        y=.2, step=0.1, dynamic=True)
+    slider.scale *= .5
+
+    def on_slider_changed(slider=slider):
+        global sensitivity
+        sensitivity = slider.value
+        updateValue("mouse_settings", "sensitivity", sensitivity)
+
+    slider.on_value_changed = on_slider_changed
+    slider.tooltip = Tooltip('Mouse sensitivity')
+
+    b_km_save = Button(parent=mouse_keyboard_menu, text='Save', color=color.black10, scale=(0.3, 0.08), position=(0, -0.2))
+    b_km_back = Button(parent=mouse_keyboard_menu, text='Back', color=color.black10, scale=(0.3, 0.08), position=(0, -0.3))
+
+    b_km_save.on_click = saveValues
+    b_km_save.tooltip = Tooltip('Save settings')
+
+    b_km_back.on_click = showOptionsMenu
+    b_km_back.tooltip = Tooltip('Back to Main menu')
+
+    for key in range(len(allkeys)):
+        Button(parent=mouse_keyboard_menu, color=color.black10, scale=(0.15, 0.04), position=(.4, .2-.05*key), on_click=(Func(get_input_and_send, key)))
+        Text(parent=mouse_keyboard_menu, text=allkeys[key], scale=(1, 1), position=(.325, .2125-.05*key))
+        Text(parent=mouse_keyboard_menu, text=getValue("keybindings", allkeys[key]), scale=(1, 1), position=(.5, .2125 - .05 * key))
+
+
+    window.color = color._32
+
+
+def get_input_and_send(num):
+    for key, value in held_keys.items():
+        print(key, value)
+        if value == 1 and key != "left mouse":
+            invoke(updateValue, "keybindings", allkeys[num], key)
+            print("key has been updated: "+key)
+
+
+
+quit_key = getValue("keybindings", "quit")
+print("quit_key",quit_key)
+
+
+def input(key):
+    if key == quit_key:
+        invoke(application.quit)
 
 
 if __name__ == '__main__':
