@@ -17,7 +17,6 @@ app = Ursina()
 window.fullscreen_size = (1920, 1080, 32)
 window.fullscreen = True
 window.vsync = True
-level = load_blender_scene('flat', reload=True)
 
 score = 0
 scene.fog_color = color.rgb(35, 20, 20)
@@ -27,20 +26,7 @@ scene.fog_density = (30, 100)
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
 player.cursor.enabled = False
-#level.start_point.enabled = False
 
-for e in level.children:
-    if "terrain" in e.name:
-        e.enabled = False
-        # e.collider = 'mesh'
-        # e.color = color.gray
-        # e.texture = 'shore'
-    if "Cube" in e.name:
-        e.collider = 'box'
-        e.shader = lit_with_shadows_shader
-        multiplier = random.randint(0,3)
-        e.color = color.rgba(196, multiplier*32, multiplier*32, 0)
-        e.position += Vec3(random.randint(-5, 5), 0, random.randint(-5, 5))
 Entity(model='cube', color=color.rgb(35,20,20), position=(0, -2, 0), scale=(1000,1,1000), rotation=(0,0,0))
 for x in range(-12, 12):
     for z in range(-12, 12):
@@ -49,8 +35,6 @@ for x in range(-12, 12):
 light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
 siren_light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
 CheckPoint.init_light(light)
-
-level.terrain.scale = 2000
 
 bank = Vec3(-21, 2, -35)
 
@@ -112,7 +96,7 @@ distance_text = Text(text=f"SCORE {score}",
         position=(-.5, .5), 
         color=color.black
         )
-ignore_list = [player, car, level.terrain]
+ignore_list = [player, car]
 
 
 def draw_scene():
@@ -196,15 +180,11 @@ def update():
 
         for checkpoint in CheckPoint.checkpoints:
 
-            if checkpoint.is_cleared([level]):
+            if checkpoint.is_cleared([]):
                 score += 1
 
                 Obstacle.shuffle()
 
-
-                for e in level.children:
-                    if "Cube" in e.name:
-                        e.position += Vec3()
 
         player.position = player_car.ent.position
         if ems_lighting:
@@ -224,7 +204,6 @@ def update():
 def dis_able_menu():
     global inMenu
     inMenu = not inMenu
-    level.enabled = not level.enabled
     player.enabled = not player.enabled
     mouse.visible = not mouse.visible
     mouse.locked = not mouse.locked
