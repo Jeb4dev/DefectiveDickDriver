@@ -123,7 +123,7 @@ class TheCar:
             offset = 0
         if self.forward is True and abs(self.speed) > 0.01:
             self.ent.rotation += Vec3(0, self.steering * time.dt + (self.speed * offset), 0)
-        elif self.forward is False:
+        elif self.forward is False and abs(self.speed) > 0.01:
             self.ent.rotation -= Vec3(0, self.steering * time.dt + (self.speed * offset), 0)
 
     def w(self):

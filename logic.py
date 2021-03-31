@@ -1,6 +1,7 @@
 from ursina import *
 import random
 import math
+from menu import *
 from ursina.shaders import colored_lights_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 from classes import TheCar, CheckPoint
@@ -80,63 +81,84 @@ ignore_list = [player, car, level.terrain]
 
 
 def draw_scene():
-    
-
     return
+
+
+game_paused = True
+inMenu = False
+
 
 def update():
     global score
     if held_keys['q'] and held_keys['e']:
         quit()
-    global steering, speed, forward, t, car, player_car, cars
+    global steering, speed, forward, t, car, player_car, cars, game_paused, inMenu
+
+    #  Game loop pause / play
+    if game_paused:
+        if not inMenu:
+            invoke(showMainMenu)
+            inMenu = True
+    else:
+        if main_menu.enabled:
+            main_menu.enabled = False
+            inMenu = False
 
 
-    speed_text.text = f"Speed {round(player_car.speed*80, 0)} km/h"
-    pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
-    distance_text.text = f"SCORE {score}"
-    #arrow.position = car.position + Vec3(0, 3, 0)
-    arrow.rotation = arrow.look_at(bank, axis="forward")
+        speed_text.text = f"Speed {round(player_car.speed*80, 1)} km/h"
+        pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
+        distance_text.text = f"SCORE {score}"
+        #arrow.position = car.position + Vec3(0, 3, 0)
+        arrow.rotation = arrow.look_at(bank, axis="forward")
 
 
 
-    if held_keys['w']:
-        for car in cars:
-            car.w()
-    if held_keys['a']:
-        for car in cars:
-            car.a()
-    if held_keys['s']:
-        for car in cars:
-            car.s()
-    if held_keys['d']:
-        for car in cars:
-            car.d()
-    if held_keys['space']:
-        for car in cars:
-            car.brake(False)
-    if not (held_keys['a'] or held_keys['d']):
-        car.steering = 0
-    player_car.move([*ignore_list, *CheckPoint.checkpoints])
-    player_car.rotate()
+        if held_keys['w']:
+            for car in cars:
+                car.w()
+        if held_keys['a']:
+            for car in cars:
+                car.a()
+        if held_keys['s']:
+            for car in cars:
+                car.s()
+        if held_keys['d']:
+            for car in cars:
+                car.d()
+        if held_keys['space']:
+            for car in cars:
+                car.brake(False)
+        if not (held_keys['a'] or held_keys['d']):
+            car.steering = 0
+        player_car.move([*ignore_list, *CheckPoint.checkpoints])
+        player_car.rotate()
+
+        if not (held_keys['s'] or held_keys['w']):
+            if player_car.speed > 0.001:
+                player_car.brake(True)
+            else:
+                player_car.speed = None
+
+        if player.camera_pivot.rotation_x < -10:
+            player.camera_pivot.rotation_x = -10
+        #print(player_car.steering, player_car.speed)
+
+
+        for checkpoint in CheckPoint.checkpoints:
+            if checkpoint.is_cleared([level]):
+                score += 1
     player.position = player_car.ent.position
 
-    if not (held_keys['s'] or held_keys['w']):
-        if player_car.speed > 0.001:
-            player_car.brake(True)
-        else:
-            player_car.speed = None
-
-    if player.camera_pivot.rotation_x < -10:
-        player.camera_pivot.rotation_x = -10
-    #print(player_car.steering, player_car.speed)
-
-
-    for checkpoint in CheckPoint.checkpoints:
-        if checkpoint.is_cleared([level]):
-            score += 1
 
 def input(key):
-    pass
+    global game_paused
+    if key == 'escape':
+        game_paused = not game_paused
+    if held_keys['control'] and key == 'r':
+        player_car.ent.position = Vec3(0, 0, 0)
+        player_car.speed = None
+
+
 
 Sky(texture='castaway_sky')
 #EditorCamera()
