@@ -4,15 +4,22 @@ import math
 from menu import *
 from ursina.shaders import colored_lights_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
-from classes import TheCar, CheckPoint
-from utils import collide 
+from classes import TheCar, CheckPoint, Lighting
+from utils import collide
+from ursina.shaders import lit_with_shadows_shader # you have to apply this shader to enties for them to recieve shadows.
 
-window.vsync = False # pls keep that false
+
+from ursina.shaders import *
+
 app = Ursina()
+window.fullscreen_size = (1920, 1080, 32)
+window.fullscreen = True
+window.vsync = True
 level = load_blender_scene('flatland', reload=True)
 score = 0
-scene.fog_color = color.color(6, .1, .85)
-inCar = False
+scene.fog_color = color.rgb(35, 20, 20)
+scene.fog_density = (10, 40)
+# inCar = False
 # Create FP camera/ contorl
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
@@ -20,20 +27,34 @@ camera.position = Vec3(0, 0, -20)
 #level.start_point.enabled = False
 
 for e in level.children:
-    if not 'terrain' in e.name:
-        e.shader = colored_lights_shader
-    else:
-        e.color = color.gray
-        e.texture = 'shore'
     if "terrain" in e.name:
         e.collider = 'mesh'
+        e.color = color.gray
+        e.texture = 'shore'
     if "Cube" in e.name:
         e.collider = 'box'
+        e.shader = lit_with_shadows_shader
+        multiplier = random.randint(0,3)
+        e.color = color.rgba(196, multiplier*32, multiplier*32, 0)
+        e.position += Vec3(random.randint(-5, 5), 0, random.randint(-5, 5))
+
+light = Lighting(player, player.position+Vec3(1, 7, 0), color.blue)
 
 level.terrain.scale = 2000
 
 bank = Vec3(-21, 2, -35)
 
+# basic_lighting_shader - no colored light
+# colored_lights_shader -- just white
+# fading_shadows_shader -- doesnt exist
+# fresnel_shader -- doesnt exist
+# lit_with_shadows_shader -- apply color existing white
+# matcap_shader -- mirror finish
+# normals_shader -- rainbow
+# texture_blend_shader -- doesnt exist
+# triplanar_shader -- car .png colors
+# unlit_shader - no colored light
+# __init__
 car = Entity(model='cars/80scop', 
         texture='cars/cars', 
         position = (0, 0, 4), 
@@ -65,7 +86,7 @@ cars.append(player_car)
 
 speed_text = Text(text=f"Speed {player_car.speed}", 
         position=(0, -.4), 
-        color=color.black
+        color=color.white66
         )
 
 pos_text = Text(text=f"Pos {player.position}", 
@@ -87,10 +108,12 @@ def draw_scene():
 game_paused = True
 inMenu = False
 mouse.visible = False
-
-music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True)
+ems_lighting = False
+music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True, volume=.1)
+siren_audio = Audio('assets/music/siren', pitch=1, loop=True, autoplay=False, volume=.2)
 
 def update():
+
     global score
     if held_keys['q'] and held_keys['e']:
         quit()
@@ -149,7 +172,18 @@ def update():
         for checkpoint in CheckPoint.checkpoints:
             if checkpoint.is_cleared([level]):
                 score += 1
+
         player.position = player_car.ent.position
+        if ems_lighting:
+            #['_STRUCT_TM_ITEMS', '__doc__', '__loader__', '__name__', '__package__', '__spec__', 'altzone', 'asctime', 'ctime', 'daylight', 'dt', 'get_clock_info', 'gmtime', 'localtime', 'mktime', 'monotonic', 'monotonic_ns', 'perf_counter', 'perf_counter_ns', 'process_time', 'process_time_ns', 'sleep', 'strftime', 'strptime', 'struct_time', 'thread_time', 'thread_time_ns', 'time', 'time_ns', 'timezone', 'tzname'
+
+            if int(time.time()*5)%2 == 0:
+                light.color = color.red
+
+            else:
+                light.color = color.blue
+        else:
+            light.color = color.black33
 
 
 def dis_able_menu():
@@ -169,7 +203,9 @@ def status():
     global game_paused
     game_paused = False
 
+
 def input(key):
+    global ems_lighting
     global game_paused
     if key == 'escape':
         game_paused = not game_paused
@@ -177,8 +213,14 @@ def input(key):
         player_car.ent.position = Vec3(0, 0, 0)
         player_car.speed = None
 
+    if key == "e":
+        ems_lighting = not ems_lighting
+        if ems_lighting:
+            siren_audio.play()
+        else:
+            siren_audio.stop()
 
 
-Sky(texture='night_sky_red')
+Sky(texture='night_sky_red_blur')
 #EditorCamera()
 app.run()
