@@ -46,7 +46,8 @@ for x in range(-12, 12):
     for z in range(-12, 12):
         terrain = Entity(model='cube', color=color.rgb(70,40,40), position=(x*15,-1,z*15), scale=(15,1,15), rotation=(0,0,0))
 
-light = Lighting(player, player.position+Vec3(1, 7, 0), color.green, rotation=player.down)
+light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
+siren_light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
 CheckPoint.init_light(light)
 
 level.terrain.scale = 2000
@@ -210,13 +211,13 @@ def update():
             #['_STRUCT_TM_ITEMS', '__doc__', '__loader__', '__name__', '__package__', '__spec__', 'altzone', 'asctime', 'ctime', 'daylight', 'dt', 'get_clock_info', 'gmtime', 'localtime', 'mktime', 'monotonic', 'monotonic_ns', 'perf_counter', 'perf_counter_ns', 'process_time', 'process_time_ns', 'sleep', 'strftime', 'strptime', 'struct_time', 'thread_time', 'thread_time_ns', 'time', 'time_ns', 'timezone', 'tzname'
 
             if int(time.time()*5)%2 == 0:
-                light.color = color.red
+                siren_light.color = color.red
 
 
             else:
-                light.color = color.blue
+                siren_light.color = color.blue
         else:
-            light.color = color.black33
+            siren_light.color = color.black33
 
 
 

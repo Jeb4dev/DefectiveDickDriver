@@ -5,7 +5,7 @@ from utils import collide
 # Light,DirectionalLight,PointLight,AmbientLight,SpotLight
 
 
-class Lighting(SpotLight):
+class Lighting(PointLight):
     def __init__(self, parent, position, color_, rotation):
         super().__init__(
             parent=parent,
