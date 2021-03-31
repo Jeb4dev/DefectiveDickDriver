@@ -5,11 +5,13 @@ from utils import collide
 # Light,DirectionalLight,PointLight,AmbientLight,SpotLight
 
 
-class Lighting(SpotLight):
-    def __init__(self, parent, position, color_):
+
+class Lighting(PointLight):
+    def __init__(self, parent, position, color_, rotation):
         super().__init__(
             parent=parent,
             position=position,
+            rotation=rotation,
             shadows=True,
             color=color_
 
@@ -22,6 +24,9 @@ class CheckPoint(Entity):
 
     checkpoints = []
     car = None
+    light = None
+
+
 
     def __init__(self, model, color, position, scale):
         super().__init__(model=model, 
@@ -65,15 +70,17 @@ class CheckPoint(Entity):
         car = car
 
     @classmethod
+    def init_light(cls, light):
+        print(light)
+        cls.light = light
+
+    @classmethod
     def spawn_new(cls):
-        cube = cls('cube', 
-            color.rgba(255,255,0,64), 
-            (random.randint(-100,100), 0, random.randint(-100,100)), 
-            (20,20,20)
-            )
-        light = Lighting(cube, Vec3(0, 20, 0), color.blue)
-        cube.set_light(light)
-        
+
+        cls('cube', color.rgba(255,255,0,64), (random.randint(-100,100), 0, random.randint(-100,100)), (20,20,20))
+        print(cls.light, cls.checkpoints[0])
+        cls.light.position = cls.checkpoints[0].position+Vec3(0, 15, 0)
+        # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
         for x in range(15):
             Obstacle(color.rgba(random.randint(0,128),
                                 random.randint(0,64),
