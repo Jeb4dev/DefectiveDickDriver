@@ -15,9 +15,16 @@ from ursina.shaders import *
 app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
-window.fullscreen = True
+window.windowed_size = (1920, 1080, 32)
+window.fullscreen = False
 window.vsync = True
-level = load_blender_scene('flat', reload=True)
+level = Entity(model='cube',
+               texture='shore',
+               scale=(500, 1, 500),
+               position=(0,-1,0),
+               color= color.rgb(35,20,20),
+               double_sided = True
+               )
 
 score = 0
 scene.fog_color = color.rgb(35, 20, 20)
@@ -26,24 +33,10 @@ scene.fog_density = (10, 40)
 # Create FP camera/ contorl
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
-
+player.cursor.enabled = False
 #level.start_point.enabled = False
 
-for e in level.children:
-    if "terrain" in e.name:
-        e.collider = 'mesh'
-        e.color = color.gray
-        e.texture = 'shore'
-    if "Cube" in e.name:
-        e.collider = 'box'
-        e.shader = lit_with_shadows_shader
-        multiplier = random.randint(0,3)
-        e.color = color.rgba(196, multiplier*32, multiplier*32, 0)
-        e.position += Vec3(random.randint(-5, 5), 0, random.randint(-5, 5))
-
 light = Lighting(player, player.position+Vec3(1, 7, 0), color.blue)
-
-level.terrain.scale = 2000
 
 bank = Vec3(-21, 2, -35)
 
@@ -68,10 +61,10 @@ CheckPoint.init_car(car)
 Obstacle.init_car(car)
 CheckPoint.spawn_new()
 
-arrow = Entity(model='cube', 
+arrow = Entity(model='cars/arrow', 
         color=color.orange, 
         position=car.position, 
-        scale=(.2, .2, .5), 
+        scale=(1, 1, 1), 
         rotation=(0,0,0), 
         texture='shore'
         )
@@ -103,7 +96,7 @@ distance_text = Text(text=f"SCORE {score}",
         position=(-.5, .5), 
         color=color.black
         )
-ignore_list = [player, car, level.terrain]
+ignore_list = [player, car]
 
 
 def draw_scene():
@@ -140,7 +133,7 @@ def update():
         speed_text.text = f"Speed {round(player_car.speed*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
         distance_text.text = f"SCORE {score}"
-        #arrow.position = car.position + Vec3(0, 3, 0)
+        arrow.position = player.position + Vec3(0, 3, 0)
         arrow.rotation = arrow.look_at(bank, axis="forward")
 
         if held_keys['w']:
@@ -191,10 +184,10 @@ def update():
             #['_STRUCT_TM_ITEMS', '__doc__', '__loader__', '__name__', '__package__', '__spec__', 'altzone', 'asctime', 'ctime', 'daylight', 'dt', 'get_clock_info', 'gmtime', 'localtime', 'mktime', 'monotonic', 'monotonic_ns', 'perf_counter', 'perf_counter_ns', 'process_time', 'process_time_ns', 'sleep', 'strftime', 'strptime', 'struct_time', 'thread_time', 'thread_time_ns', 'time', 'time_ns', 'timezone', 'tzname'
 
             if int(time.time()*5)%2 == 0:
-                light.color = color.red
+                light.color =color.rgb(128,10,10) 
 
             else:
-                light.color = color.blue
+                light.color = color.rgb(10,10,128)
         else:
             light.color = color.black33
 
@@ -235,6 +228,6 @@ def input(key):
 
 
 
-Sky(texture='night_sky_red_blur')
+Sky(texture='assets/textures/night_sky_red_blur')
 #EditorCamera()
 app.run()

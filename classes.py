@@ -5,7 +5,7 @@ from utils import collide
 # Light,DirectionalLight,PointLight,AmbientLight,SpotLight
 
 
-class Lighting(AmbientLight):
+class Lighting(SpotLight):
     def __init__(self, parent, position, color_):
         super().__init__(
             parent=parent,
@@ -32,6 +32,12 @@ class CheckPoint(Entity):
                          collider = 'cube'
                         )
         self.checkpoints.append(self)
+        self.light = None
+
+    def set_light(self, light):
+        self.light = light
+        self.light.position = self.position + light.position
+        print(self.light.position)
 
     def is_cleared(self, ignore_list):
         touching = boxcast(self.position,
@@ -48,6 +54,7 @@ class CheckPoint(Entity):
         if len(less_touching) == 1:
             CheckPoint.spawn_new()
             self.checkpoints.remove(self)
+            destroy(self.light, delay=0)
             destroy(self, delay=0)
 
             return True
@@ -59,7 +66,14 @@ class CheckPoint(Entity):
 
     @classmethod
     def spawn_new(cls):
-        cls('cube', color.rgba(255,255,0,64), (random.randint(-100,100), 0, random.randint(-100,100)), (20,20,20))
+        cube = cls('cube', 
+            color.rgba(255,255,0,64), 
+            (random.randint(-100,100), 0, random.randint(-100,100)), 
+            (20,20,20)
+            )
+        light = Lighting(cube, Vec3(0, 20, 0), color.blue)
+        cube.set_light(light)
+        
         for x in range(15):
             Obstacle(color.rgba(random.randint(0,128),
                                 random.randint(0,64),
@@ -88,7 +102,7 @@ class Obstacle(Entity):
     def get_position(self):
         MAXMAP = 120
         while True:
-            self.position = Vec3(random.randint(-MAXMAP,MAXMAP), 0, random.randint(-MAXMAP,MAXMAP))
+            self.position = Vec3(random.randint(-MAXMAP,MAXMAP), self.scale[1] // 2, random.randint(-MAXMAP,MAXMAP))
             if distance(self.position, self.car) > 20:
                 break
 
