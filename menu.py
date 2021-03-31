@@ -1,10 +1,10 @@
 from ursina import *
 from read_key_bindings import getValue, updateValue, saveValues
 
-main_menu = Entity(scale=Vec2(10, 10))
-options_menu = Entity(scale=Vec2(10, 10))
-mouse_keyboard_menu = Entity(scale=Vec2(10, 10))
-scoreboard_menu = Entity(scale=Vec2(10, 10))
+main_menu = Entity(scale=Vec2(12, 12), billboard=True)
+options_menu = Entity(scale=Vec2(12, 12), billboard=True)
+mouse_keyboard_menu = Entity(scale=Vec2(12, 12), billboard=True)
+scoreboard_menu = Entity(scale=Vec2(12, 12), billboard=True)
 
 
 class LoadingWheel(Entity):
@@ -48,8 +48,9 @@ class LoadingWheel(Entity):
 def showMainMenu():
     options_menu.enabled, mouse_keyboard_menu.enabled, scoreboard_menu.enabled = False, False, False
     main_menu.enabled = True
+    Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
+
     Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game")
-    print("MainMenu")
 
 
     b_play = Button(parent=main_menu, text='Play!', color=color.black10, scale=(0.5, 0.08), position=(0, 0.1))
@@ -68,6 +69,7 @@ def showMainMenu():
 
     b_quit.on_click = application.quit  # assign a function to the button.
     b_quit.tooltip = Tooltip('exit')
+
 
     #  def on_value_changed():
     #         if gender_selection.value==['Buttonlist']:
@@ -91,6 +93,7 @@ def showOptionsMenu():
     global main_menu, options_menu, mouse_keyboard_menu
     main_menu.enabled, mouse_keyboard_menu.enabled, scoreboard_menu.enabled = False, False, False
     options_menu.enabled = True
+    Entity(parent=options_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
     Text(parent=options_menu, origin=(0, -7), scale=1.8, text="Options")
 
 
@@ -120,6 +123,8 @@ allkeys = ["forward", "left", "backwards", "right", "quit", "car", "escape"]
 def showScoreboardMenu():
     main_menu.enabled, options_menu.enabled, mouse_keyboard_menu.enabled = False, False, False
     scoreboard_menu.enabled = True
+    Entity(parent=scoreboard_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
+
     Text(parent=scoreboard_menu, origin=(0, -7), scale=1.8, text="Scoreboard")
     scoreboard = getValue("scoreboard", "*")
     s = 0
@@ -144,7 +149,8 @@ def showMouseKeyboardMenu():
     global main_menu, options_menu, mouse_keyboard_menu
     main_menu.enabled, options_menu.enabled, scoreboard_menu.enabled = False, False, False
     mouse_keyboard_menu.enabled = True
-    screen = "mouse_keyboard"
+    Entity(parent=mouse_keyboard_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
+
     Text(parent=mouse_keyboard_menu, origin=(0, -7), scale=1.8, text="Mouse & Keyboard Settings")
 
     # Mouse Sensitivity
@@ -195,6 +201,9 @@ print("quit_key",quit_key)
 def input(key):
     if key == quit_key:
         invoke(application.quit)
+
+def changePos(pos):
+    main_menu.position = pos
 
 
 if __name__ == '__main__':

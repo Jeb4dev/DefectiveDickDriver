@@ -7,7 +7,7 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 from classes import TheCar, CheckPoint
 from utils import collide 
 
-window.vsync = False
+window.vsync = False # pls keep that false
 app = Ursina()
 level = load_blender_scene('flatland', reload=True)
 score = 0
@@ -86,32 +86,33 @@ def draw_scene():
 
 game_paused = True
 inMenu = False
+mouse.visible = False
 
 
 def update():
     global score
     if held_keys['q'] and held_keys['e']:
         quit()
-    global steering, speed, forward, t, car, player_car, cars, game_paused, inMenu
+    global steering, speed, forward, t, car, player_car, cars, game_paused, inMenu, pos_text, speed_text, distance_text
 
     #  Game loop pause / play
     if game_paused:
+
+        # Entity(billboard=True, scale=Vec3(10, 10, 10), color=color.black, model="plane", rotation=(-90, 0, 0))
         if not inMenu:
+            invoke(changePos, player.position)
             invoke(showMainMenu)
-            inMenu = True
+            dis_able_menu()
     else:
         if main_menu.enabled:
             main_menu.enabled = False
-            inMenu = False
-
+            dis_able_menu()
 
         speed_text.text = f"Speed {round(player_car.speed*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
         distance_text.text = f"SCORE {score}"
         #arrow.position = car.position + Vec3(0, 3, 0)
         arrow.rotation = arrow.look_at(bank, axis="forward")
-
-
 
         if held_keys['w']:
             for car in cars:
@@ -147,7 +148,20 @@ def update():
         for checkpoint in CheckPoint.checkpoints:
             if checkpoint.is_cleared([level]):
                 score += 1
-    player.position = player_car.ent.position
+        player.position = player_car.ent.position
+
+
+def dis_able_menu():
+    global inMenu
+    inMenu = not inMenu
+    level.enabled = not level.enabled
+    player.enabled = not player.enabled
+    mouse.visible = not mouse.visible
+    mouse.locked = not mouse.locked
+    player_car.ent.visible = not player_car.ent.visible
+    pos_text.enabled = not pos_text.enabled
+    speed_text.enabled = not speed_text.enabled
+    distance_text.enabled = not distance_text.enabled
 
 
 def input(key):
