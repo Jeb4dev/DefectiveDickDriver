@@ -114,13 +114,14 @@ class TheCar:
                 self.ent.position -= self.ent.forward * self.speed
 
     def rotate(self):
+
         if self.steering > 0:
             offset = 1
         elif self.steering < 0:
             offset = -1
         else:
             offset = 0
-        if self.forward is True:
+        if self.forward is True and abs(self.speed) > 0.01:
             self.ent.rotation += Vec3(0, self.steering * time.dt + (self.speed * offset), 0)
         elif self.forward is False:
             self.ent.rotation -= Vec3(0, self.steering * time.dt + (self.speed * offset), 0)
