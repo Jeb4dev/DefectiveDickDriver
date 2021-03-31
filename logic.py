@@ -3,16 +3,15 @@ import random
 import math
 from ursina.shaders import colored_lights_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
-from classes import TheCar
+from classes import TheCar, CheckPoint
 from utils import collide 
 
 window.vsync = False
 app = Ursina()
 level = load_blender_scene('flatland', reload=True)
-
+score = 0
 scene.fog_color = color.color(6, .1, .85)
 inCar = False
-
 # Create FP camera/ contorl
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
@@ -37,9 +36,11 @@ bank = Vec3(-21, 2, -35)
 car = Entity(model='cars/80scop', 
         texture='cars/cars', 
         position = (0, 0, 4), 
-        scale=1
+        scale=1,
+        collider='box'
         )
-
+CheckPoint.init_car(car)
+CheckPoint.spawn_new()
 arrow = Entity(model='cube', 
         color=color.orange, 
         position=car.position, 
@@ -48,13 +49,15 @@ arrow = Entity(model='cube',
         texture='shore'
         )
 
-cube2 = Entity(model='circle', 
-        color=color.rgba(255, 255, 0, 64), 
-        position=bank, 
-        billboard=True, 
-        scale=(20, 20, 20), 
-        double_sided=True
+for pos in [(120,0,0), (-120,0,0), (0,0,120),(0,0,-120)]:
+    Entity(
+        model='cube',
+        color=color.rgba(66,66,66,66),
+        position=pos,
+        scale=(abs(pos[2])*2+1, 5, abs(pos[0])*2+1),
+        collider='box'
         )
+
 cars = []
 player_car = TheCar(0, 0, car)
 cars.append(player_car)
@@ -69,12 +72,20 @@ pos_text = Text(text=f"Pos {player.position}",
         color=color.black
         )
 
-distance_text = Text(text=f"Distance to bank {player.position-bank}", 
+distance_text = Text(text=f"SCORE {score}", 
         position=(-.5, .5), 
         color=color.black
         )
 ignore_list = [player, car, level.terrain]
+
+
+def draw_scene():
+    
+
+    return
+
 def update():
+    global score
     if held_keys['q'] and held_keys['e']:
         quit()
     global steering, speed, forward, t, car, player_car, cars
@@ -82,7 +93,7 @@ def update():
 
     speed_text.text = f"Speed {round(player_car.speed*80, 0)} km/h"
     pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
-    distance_text.text = f"Distance to bank {round(distance(player.position,bank), 3)}"
+    distance_text.text = f"SCORE {score}"
     #arrow.position = car.position + Vec3(0, 3, 0)
     arrow.rotation = arrow.look_at(bank, axis="forward")
 
@@ -105,12 +116,11 @@ def update():
             car.brake(False)
     if not (held_keys['a'] or held_keys['d']):
         car.steering = 0
-    player_car.move(ignore_list)
+    player_car.move([*ignore_list, *CheckPoint.checkpoints])
     player_car.rotate()
     player.position = player_car.ent.position
 
     if not (held_keys['s'] or held_keys['w']):
-        print(player_car.speed)
         if player_car.speed > 0.001:
             player_car.brake(True)
         else:
@@ -118,7 +128,12 @@ def update():
 
     if player.camera_pivot.rotation_x < -10:
         player.camera_pivot.rotation_x = -10
-    print(player_car.steering, player_car.speed)
+    #print(player_car.steering, player_car.speed)
+
+
+    for checkpoint in CheckPoint.checkpoints:
+        if checkpoint.is_cleared([level]):
+            score += 1
 
 def input(key):
     pass
