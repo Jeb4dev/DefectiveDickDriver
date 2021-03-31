@@ -1,6 +1,22 @@
 from ursina import *
 import random
 from utils import collide
+# normal, top-down, PointLight, normal, super
+# Light,DirectionalLight,PointLight,AmbientLight,SpotLight
+
+
+class Lighting(AmbientLight):
+    def __init__(self, parent, position, color_):
+        super().__init__(
+            parent=parent,
+            position=position,
+            shadows=True,
+            color=color_
+
+
+        )
+
+
 
 class CheckPoint(Entity):
 
@@ -195,5 +211,7 @@ class TheCar:
             self._speed -= (1-self.speed) * time.dt
         if self._speed < .01:
             self._speed = 0
+
+
 
 

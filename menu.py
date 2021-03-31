@@ -52,14 +52,14 @@ def showMainMenu():
 
     Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game")
 
-
-    b_play = Button(parent=main_menu, text='Play!', color=color.black10, scale=(0.5, 0.08), position=(0, 0.1))
+    # fix the play button
+    b_play = Button(parent=main_menu, text='Press ESC!', color=color.black10, scale=(0.5, 0.08), position=(0, 0.1))
     b_scoreboard = Button(parent=main_menu, text='Scoreboard', color=color.black10, scale=(0.5, 0.08), position=(0, 0))
     b_options = Button(parent=main_menu, text='Options', color=color.black10, scale=(0.5, 0.08), position=(0, -0.1))
     b_quit = Button(parent=main_menu, text='Quit!', color=color.black10, scale=(0.5, 0.08), position=(0, -0.2))
 
     b_play.on_click = LoadingWheel(enabled=False)  # assign a function to the button.
-    b_play.tooltip = Tooltip('play')
+    b_play.tooltip = Tooltip('press [ESC] pls !!!')
 
     b_scoreboard.on_click = showScoreboardMenu
     b_scoreboard.tooltip = Tooltip('Show Scoreboard')
