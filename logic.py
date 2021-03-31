@@ -21,27 +21,33 @@ level = load_blender_scene('flat', reload=True)
 
 score = 0
 scene.fog_color = color.rgb(35, 20, 20)
-scene.fog_density = (10, 40)
+scene.fog_density = (30, 100)
 # inCar = False
 # Create FP camera/ contorl
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
-
+player.cursor.enabled = False
 #level.start_point.enabled = False
 
 for e in level.children:
     if "terrain" in e.name:
-        e.collider = 'mesh'
-        e.color = color.gray
-        e.texture = 'shore'
+        e.enabled = False
+        # e.collider = 'mesh'
+        # e.color = color.gray
+        # e.texture = 'shore'
     if "Cube" in e.name:
         e.collider = 'box'
         e.shader = lit_with_shadows_shader
         multiplier = random.randint(0,3)
         e.color = color.rgba(196, multiplier*32, multiplier*32, 0)
         e.position += Vec3(random.randint(-5, 5), 0, random.randint(-5, 5))
+Entity(model='cube', color=color.rgb(35,20,20), position=(0, -2, 0), scale=(1000,1,1000), rotation=(0,0,0))
+for x in range(-12, 12):
+    for z in range(-12, 12):
+        terrain = Entity(model='cube', color=color.rgb(70,40,40), position=(x*15,-1,z*15), scale=(15,1,15), rotation=(0,0,0))
 
-light = Lighting(player, player.position+Vec3(1, 7, 0), color.blue)
+light = Lighting(player, player.position+Vec3(1, 7, 0), color.green, rotation=player.down)
+CheckPoint.init_light(light)
 
 level.terrain.scale = 2000
 
@@ -67,6 +73,8 @@ car = Entity(model='cars/80scop',
 CheckPoint.init_car(car)
 Obstacle.init_car(car)
 CheckPoint.spawn_new()
+
+
 
 arrow = Entity(model='cube', 
         color=color.orange, 
@@ -116,8 +124,14 @@ mouse.visible = False
 ems_lighting = False
 music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True, volume=.1)
 siren_audio = Audio('assets/music/siren', pitch=1, loop=True, autoplay=False, volume=.2)
+driving_light1 = PointLight(position=player.position+Vec3(30,10,30), shadows=True, color=color.rgb(196,196,196))
+driving_light2 = PointLight(position=player.position+Vec3(0,10,20), shadows=True, color=color.rgb(128,128,128))
+driving_light3 = PointLight(position=player.position+Vec3(0,10,20), shadows=True, color=color.rgb(64,64,64))
+#PointLight(parent=player, y=5, z=0, shadows=True, color=color.rgb(70,40,40), rotation=Vec3(0,90,0))
+
 
 def update():
+
 
     global score
     if held_keys['q'] and held_keys['e']:
@@ -133,6 +147,9 @@ def update():
             invoke(showMainMenu)
             dis_able_menu()
     else:
+        #driving_light1.position = player_car.ent.position + player_car.ent.forward*20 + Vec3(0, 10, 0)
+        driving_light2.position = player_car.ent.position + player_car.ent.forward*30 + Vec3(0, 15, 0)
+        driving_light3.position = player_car.ent.position + player_car.ent.forward*40 + Vec3(0, 20, 0)
         if main_menu.enabled:
             main_menu.enabled = False
             dis_able_menu()
@@ -177,10 +194,12 @@ def update():
 
 
         for checkpoint in CheckPoint.checkpoints:
+
             if checkpoint.is_cleared([level]):
                 score += 1
 
                 Obstacle.shuffle()
+
 
                 for e in level.children:
                     if "Cube" in e.name:
@@ -193,10 +212,12 @@ def update():
             if int(time.time()*5)%2 == 0:
                 light.color = color.red
 
+
             else:
                 light.color = color.blue
         else:
             light.color = color.black33
+
 
 
 def dis_able_menu():
