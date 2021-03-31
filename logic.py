@@ -4,12 +4,12 @@ import math
 from menu import *
 from ursina.shaders import colored_lights_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
-from classes import TheCar, CheckPoint
+from classes import TheCar, CheckPoint, Obstacle
 from utils import collide 
 
 window.vsync = False # pls keep that false
 app = Ursina()
-level = load_blender_scene('flatland', reload=True)
+level = load_blender_scene('flat', reload=True)
 score = 0
 scene.fog_color = color.color(6, .1, .85)
 inCar = False
@@ -41,7 +41,9 @@ car = Entity(model='cars/80scop',
         collider='box'
         )
 CheckPoint.init_car(car)
+Obstacle.init_car(car)
 CheckPoint.spawn_new()
+
 arrow = Entity(model='cube', 
         color=color.orange, 
         position=car.position, 
@@ -140,14 +142,19 @@ def update():
             else:
                 player_car.speed = None
 
-        if player.camera_pivot.rotation_x < -10:
-            player.camera_pivot.rotation_x = -10
+        if player.camera_pivot.rotation_x < 5:
+            player.camera_pivot.rotation_x = 5
         #print(player_car.steering, player_car.speed)
 
 
         for checkpoint in CheckPoint.checkpoints:
             if checkpoint.is_cleared([level]):
                 score += 1
+                Obstacle.shuffle()
+
+                for e in level.children:
+                    if "Cube" in e.name:
+                        e.position += Vec3()
         player.position = player_car.ent.position
 
 
@@ -174,6 +181,6 @@ def input(key):
 
 
 
-Sky(texture='castaway_sky')
+Sky(texture='milky_way')
 #EditorCamera()
 app.run()

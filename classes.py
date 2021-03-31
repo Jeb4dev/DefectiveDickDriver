@@ -27,15 +27,15 @@ class CheckPoint(Entity):
             debug=False).entities
         less_touching = [e for e in touching if 'Cube' not in e.name 
                                              and 'check_point' not in e.name 
-                                             and 'terrain' not in e.name]
+                                             and 'terrain' not in e.name
+                                             and not isinstance(e, Obstacle)]
         if len(less_touching) == 1:
-            self.__del__()
             CheckPoint.spawn_new()
+            self.checkpoints.remove(self)
+            destroy(self, delay=0)
+
             return True
-        
-    def __del__(self):
-        self.disable()
-        self.checkpoints.remove(self)
+
 
     @classmethod
     def init_car(cls, car):
@@ -44,8 +44,47 @@ class CheckPoint(Entity):
     @classmethod
     def spawn_new(cls):
         cls('cube', color.rgba(255,255,0,64), (random.randint(-100,100), 0, random.randint(-100,100)), (20,20,20))
-        
+        for x in range(15):
+            Obstacle(color.rgba(random.randint(0,128),
+                                random.randint(0,64),
+                                random.randint(0,32)),
+                     scale = (random.randint(1,8),
+                              random.randint(2,25), 
+                              random.randint(2,8)))
 
+
+class Obstacle(Entity):
+
+    obstacles = []
+    car = None
+
+
+    def __init__(self, color, scale):
+        super().__init__(model='cube',
+                        color=color,
+                        position=(0,0,0),
+                        scale=scale,
+                        collider='cube'
+                        )
+        self.get_position()
+        self.obstacles.append(self)
+
+    def get_position(self):
+        MAXMAP = 120
+        while True:
+            self.position = Vec3(random.randint(-MAXMAP,MAXMAP), 0, random.randint(-MAXMAP,MAXMAP))
+            if distance(self.position, self.car) > 20:
+                break
+
+
+    @classmethod
+    def init_car(cls, car):
+        cls.car = car
+
+    @classmethod
+    def shuffle(cls):
+        for obstacle in cls.obstacles:
+            obstacle.get_position()
 
 
 class TheCar:
