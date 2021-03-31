@@ -30,7 +30,7 @@ for e in level.children:
     if "Cube" in e.name:
         e.collider = 'box'
 
-
+level.terrain.scale = 2000
 
 bank = Vec3(-21, 2, -35)
 
@@ -88,6 +88,7 @@ game_paused = True
 inMenu = False
 mouse.visible = False
 
+music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True)
 
 def update():
     global score
@@ -140,8 +141,8 @@ def update():
             else:
                 player_car.speed = None
 
-        if player.camera_pivot.rotation_x < -10:
-            player.camera_pivot.rotation_x = -10
+        if player.camera_pivot.rotation_x < -1:
+            player.camera_pivot.rotation_x = -1
         #print(player_car.steering, player_car.speed)
 
 
@@ -164,6 +165,10 @@ def dis_able_menu():
     distance_text.enabled = not distance_text.enabled
 
 
+def status():
+    global game_paused
+    game_paused = False
+
 def input(key):
     global game_paused
     if key == 'escape':
@@ -174,6 +179,6 @@ def input(key):
 
 
 
-Sky(texture='castaway_sky')
+Sky(texture='night_sky_red')
 #EditorCamera()
 app.run()
