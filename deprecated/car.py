@@ -43,7 +43,7 @@ speed = 0
 bank = Vec3(-21, 2, -35)
 speed_text = Text(text=f"Speed {speed}", position=(0, -.4), color=color.black)
 pos_text = Text(text=f"Pos {player.position}", position=(.3, .5), color=color.black)
-distance_text = Text(text=f"Distance to bank {player.position-bank}", position=(-.5, .5), color=color.black)
+score_text = Text(text=f"Distance to bank {player.position - bank}", position=(-.5, .5), color=color.black)
 
 arrow = Entity(model='cube', color=color.orange, position=level.car.position, scale=(2, .2, 5), rotation=(0,0,0), texture='shore')
 # level.Cylinder.position = bank
@@ -57,7 +57,7 @@ def update():
 
     speed_text.text = f"Speed {round(speed*80, 0)} km/h"
     pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
-    distance_text.text = f"Distance to bank {round(distance(player.position,bank), 3)}"
+    score_text.text = f"Distance to bank {round(distance(player.position, bank), 3)}"
     arrow.position = level.car.position + Vec3(0, 3, 0)
     arrow.rotation = arrow.look_at(bank, axis="forward")
 

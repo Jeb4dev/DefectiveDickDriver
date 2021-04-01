@@ -1,1 +1,1 @@
-assets/textures/dirt   -  https://www.deviantart.com/hhh316/art/Seamless-Cracked-Dirt-Texture-347828451
+assets/textures/dirt.jpg   -  https://www.deviantart.com/hhh316/art/Seamless-Cracked-Dirt-Texture-347828451

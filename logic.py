@@ -1,9 +1,12 @@
 from ursina import *
 from ursina.shaders import colored_lights_shader, lit_with_shadows_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
+from ursina.prefabs import health_bar
+
 
 from classes import TheCar, CheckPoint, Lighting, Obstacle, Arrow
 from utils import make_walls, make_floor
+from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import *
 
 import random
@@ -15,13 +18,13 @@ app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
-window.windowed_size = (1920/2, 1080/2, 32)
+#window.windowed_size = (1920/2, 1080/2, 32)
 window.fullscreen = False
 window.vsync = True
 
 score = 0
 
-scene.fog_color = color.rgb(35, 20, 20)
+scene.fog_color = COLOR_RUST
 scene.fog_density = (10, 60)
 
 # inCar = False
@@ -32,7 +35,7 @@ camera.position = Vec3(0, 0, -20)
 player.cursor.enabled = False
 
 walls = make_walls(120)
-floor = make_floor(12, 15)
+floor = make_floor(9, 20)
 
 lower_floor = Entity(model='cube', color=color.rgb(35,20,20),
                      position=(0, -2, 0), 
@@ -92,15 +95,19 @@ pos_text = Text(text=f"",
         color=color.black
         )
 
-distance_text = Text(text=f"", 
-        position=(-.8, .45),
-        color=color.gold
-        )
+score_text = Text(text=f"",
+                  position=(-.8, -.35),
+                  color=COLOR_RUST_2X
+                  )
+
+
+health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X,
+                                    roundness=.1,
+                                    value=100,
+                                    position=(-.8, -.40),
+                                    animation_duration=0)
         
-healthbar_text = Text(text=f"", 
-        position=(.30, -.4),
-        color=color.turquoise
-        )
+
 ignore_list = [player, car]
 
 
@@ -124,7 +131,7 @@ def update():
     global score
     if held_keys['q'] and held_keys['e']:
         quit()
-    global steering, speed, forward, t, car, player_car, cars, game_paused, inMenu, pos_text, speed_text, distance_text
+    global steering, speed, forward, t, car, player_car, cars, game_paused, inMenu, pos_text, speed_text, score_text
 
     #  Game loop pause / play
     if game_paused:
@@ -154,8 +161,8 @@ def update():
 
         speed_text.text = f"Speed {round(abs(player_car.speed)*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
-        distance_text.text = f"SCORE {score}"
-        healthbar_text.text = f"HEALTHBAR {round(player_car.hp)}"
+        score_text.text = f"SCORE {score}"
+        health_bar_1.value = round(player_car.hp)
         arrow.position = player.position + Vec3(0, 3, 0)
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
@@ -234,8 +241,9 @@ def dis_able_menu():
     player_car.ent.visible = not player_car.ent.visible
     pos_text.enabled = not pos_text.enabled
     speed_text.enabled = not speed_text.enabled
-    distance_text.enabled = not distance_text.enabled
-    healthbar_text.enabled = not healthbar_text.enabled
+    score_text.enabled = not score_text.enabled
+    health_bar_1.enabled = not health_bar_1.enabled
+    Sky.visible = not Sky.visible
 
 def status():
     global game_paused
