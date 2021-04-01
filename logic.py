@@ -21,7 +21,7 @@ window.vsync = True
 score = 0
 
 scene.fog_color = color.rgb(35, 20, 20)
-scene.fog_density = (10,60)
+scene.fog_density = (10, 60)
 
 # inCar = False
 # Create FP camera/ control
@@ -33,7 +33,7 @@ player.cursor.enabled = False
 walls = make_walls(120)
 floor = make_floor(12, 15)
 
-Entity(model='cube', color=color.rgb(35,20,20), 
+lower_floor = Entity(model='cube', color=color.rgb(35,20,20),
                      position=(0, -2, 0), 
                      scale=(1000,1,1000), 
                      rotation=(0,0,0)
@@ -111,8 +111,8 @@ siren_audio = Audio('assets/music/siren', pitch=1, loop=True, autoplay=False, vo
 driving_light1 = PointLight(position=player.position+Vec3(30,10,30), shadows=True, color=color.rgb(196,196,196))
 driving_light2 = PointLight(position=player.position+Vec3(0,10,20), shadows=True, color=color.rgb(128,128,128))
 driving_light3 = PointLight(position=player.position+Vec3(0,10,20), shadows=True, color=color.rgb(64,64,64))
+menu_light = AmbientLight(position=camera.position, shadows=True, color=color.rgb(255,255,255))
 #PointLight(parent=player, y=5, z=0, shadows=True, color=color.rgb(70,40,40), rotation=Vec3(0,90,0))
-
 
 def update():
 
@@ -124,13 +124,20 @@ def update():
 
     #  Game loop pause / play
     if game_paused:
-
+        menu_light.color = color.rgb(100,50,50)
+        driving_light1.color = color.black
+        driving_light2.color = color.black
+        driving_light3.color = color.black
         # Entity(billboard=True, scale=Vec3(10, 10, 10), color=color.black, model="plane", rotation=(-90, 0, 0))
         if not inMenu:
             invoke(changePos, player.position)
             invoke(showMainMenu)
             dis_able_menu()
     else:
+        menu_light.color = color.black
+        driving_light1.color = color.rgb(196,196,196)
+        driving_light2.color = color.rgb(128,128,128)
+        driving_light3.color = color.rgb(64,64,64)
         #driving_light1.position = player_car.ent.position + player_car.ent.forward*20 + Vec3(0, 10, 0)
         driving_light2.position = player_car.ent.position + player_car.ent.forward*30 + Vec3(0, 15, 0)
         driving_light3.position = player_car.ent.position + player_car.ent.forward*40 + Vec3(0, 20, 0)
@@ -195,6 +202,17 @@ def update():
 def dis_able_menu():
     global inMenu
     inMenu = not inMenu
+    for i in range(len(floor)):
+        floor[i].enabled = not floor[i].enabled
+    for i in range(len(walls)):
+        walls[i].enabled = not walls[i].enabled
+    for i in range(len(Obstacle.obstacles)):
+        Obstacle.obstacles[i].enabled = not Obstacle.obstacles[i].enabled
+    arrow.enabled = not arrow.enabled
+    lower_floor.enabled = not lower_floor.enabled
+    # menu_light.visible = not menu_light.visible
+    CheckPoint.checkpoints[0].enabled = not CheckPoint.checkpoints[0].enabled
+
     player.enabled = not player.enabled
     mouse.visible = not mouse.visible
     mouse.locked = not mouse.locked
