@@ -81,7 +81,7 @@ cars = []
 player_car = TheCar(0, 0, car)
 cars.append(player_car)
 
-speed_text = Text(text=f"Speed {player_car.speed}", 
+speed_text = Text(text=f"Speed {abs(player_car.speed)}",
         position=(0, -.4), 
         color=color.white66
         )
@@ -92,8 +92,8 @@ pos_text = Text(text=f"Pos {player.position}",
         )
 
 distance_text = Text(text=f"SCORE {score}", 
-        position=(-.5, .5), 
-        color=color.black
+        position=(-.8, .45),
+        color=color.gold
         )
 ignore_list = [player, car]
 

@@ -42,10 +42,10 @@ def make_floor(tiles, size):
     for x in range(-tiles, tiles):
         for z in range(-tiles, tiles):
             floor.append(Entity(model='cube',
-                                 color=color.rgb(70,40,40),
+                                 color=color.rgb(197,147,100),
                                  position=(x*size, -1, z*size),
                                  scale=(size, 1, size),
-                                 texture='assets/textures/gravel'
+                                 texture='assets/textures/mars'
                                  ))
     return floor
 # ---------------------------------------------------------------------------- #
