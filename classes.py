@@ -136,6 +136,8 @@ class TheCar:
 
     @speed.setter
     def speed(self, x):
+        if x == None:
+            self._speed = 0
         if x == 0:
             self._speed *= .994
             if abs(self._speed) < .001:
