@@ -82,9 +82,9 @@ class CheckPoint(Entity):
             Obstacle(color.rgba(random.randint(32,128),
                                 random.randint(16,64),
                                 random.randint(0,32)),
-                     scale = (random.randint(1,8),
-                              random.randint(2,25), 
-                              random.randint(2,8)))
+                     scale = (random.randint(3,8),
+                              random.randint(3,25), 
+                              random.randint(3,8)))
 
 
 class Obstacle(Entity):
@@ -192,10 +192,13 @@ class TheCar:
                 self._steering = -100
 
     def move(self, ignore_list):
-        if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
-            self.speed = None
-        else:
-           self.ent.position += self.ent.forward * self.speed
+        if self.speed > 0:
+            if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
+                self.speed = None
+        if self.speed < 0:
+            if collide(self.ent.position, self.ent.back, 2.3, ignore_list, self._speed):
+                self.speed = None
+        self.ent.position += self.ent.forward * self.speed
 
     def rotate(self):
 
