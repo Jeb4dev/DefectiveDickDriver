@@ -129,7 +129,8 @@ class TheCar:
         self._steering = steering
         self.ent = ent
         self._hp = 100
-    
+        self.score = 0
+
     @property
     def hp(self):
         return self._hp if self._hp >0 else 0

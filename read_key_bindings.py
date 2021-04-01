@@ -9,30 +9,30 @@ data["player_name"] = []
 data["settings"] = []
 
 
-def getValue(type, asked_key):
+def get_value(type, asked_key):
     if asked_key == "*":
-        return saved_data[type]
-    for keys in saved_data[type]:
+        return load_saved_data()[type]
+    for keys in load_saved_data()[type]:
         for key in keys:
             if key == asked_key:
                 return keys[key]
 
 
-def updateValue(type, asked_key, value):
-    for keys in saved_data[type]:
+def update_value(type, asked_key, value):
+    for keys in load_saved_data()[type]:
         for key in keys:
             if key == asked_key:
                 keys[key] = value
                 return keys[key]
 
 
-def saveValues():
+def save_values():
     with open('data.txt', 'w') as outfile:
-        json.dump(saved_data, outfile)
-        print("Saved")
+        json.dump(load_saved_data(), outfile)
+        print("Data Saved")
 
 
-def getDefaultValues():
+def get_default_values():
     data = {}
     data["keybindings"] = []
     data['keybindings'].append({
@@ -62,32 +62,37 @@ def getDefaultValues():
 
     data["settings"] = []
     data['settings'].append({
-        "hints": True
+        "hints": "on"
     })
 
     with open('data.txt', 'w') as outfile:
         json.dump(data, outfile)
         print("Saved")
+    return data
 
 
-with open('data.txt') as json_file:
-    saved_data = json.load(json_file)
+def load_saved_data():
     try:
-        for keys in saved_data['keybindings']:
-            for key in keys:
-                data['keybindings'].append({key: keys[key]})
-        for keys in saved_data['mouse_settings']:
-            for key in keys:
-                data['mouse_settings'].append({key: keys[key]})
-        for keys in saved_data['scoreboard']:
-            for key in keys:
-                data['scoreboard'].append({key: keys[key]})
+        with open('data.txt') as json_file:
+            saved_data = json.load(json_file)
+            for keys in saved_data['keybindings']:
+                for key in keys:
+                    data['keybindings'].append({key: keys[key]})
+            for keys in saved_data['mouse_settings']:
+                for key in keys:
+                    data['mouse_settings'].append({key: keys[key]})
+            for keys in saved_data['scoreboard']:
+                for key in keys:
+                    data['scoreboard'].append({key: keys[key]})
 
-        for keys in saved_data['player_name']:
-            for key in keys:
-                data['player_name'].append({key: keys[key]})
-        for keys in saved_data['settings']:
-            for key in keys:
-                data['settings'].append({key: keys[key]})
+            for keys in saved_data['player_name']:
+                for key in keys:
+                    data['player_name'].append({key: keys[key]})
+            for keys in saved_data['settings']:
+                for key in keys:
+                    data['settings'].append({key: keys[key]})
+        return saved_data
     except:
-        getDefaultValues()
+        return get_default_values()
+
+load_saved_data()
