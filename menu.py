@@ -5,6 +5,8 @@ main_menu = Entity(scale=Vec2(12, 12), billboard=True)
 options_menu = Entity(scale=Vec2(12, 12), billboard=True)
 mouse_keyboard_menu = Entity(scale=Vec2(12, 12), billboard=True)
 scoreboard_menu = Entity(scale=Vec2(12, 12), billboard=True)
+other_options_menu = Entity(scale=Vec2(12, 12), billboard=True)
+graphic_options_menu = Entity(scale=Vec2(12, 12), billboard=True)
 
 
 class LoadingWheel(Entity):
@@ -46,6 +48,7 @@ class LoadingWheel(Entity):
 
 
 def showMainMenu():
+
     options_menu.enabled, mouse_keyboard_menu.enabled, scoreboard_menu.enabled = False, False, False
     main_menu.enabled = True
     Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
@@ -89,9 +92,62 @@ def showMainMenu():
     window.color = color._32
 
 
+def showGraphicOptionsMenu():
+    options_menu.enabled = False
+    graphic_options_menu.enabled = True
+    Entity(parent=graphic_options_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
+
+    Text(parent=graphic_options_menu, origin=(0, -10), text="Graphic Settings")
+
+    b_oo_back = Button(parent=graphic_options_menu, text='Back', color=color.black10, scale=(0.5, 0.08), position=(0, -0.2))
+
+    b_oo_back.on_click = showOptionsMenu  # assign a function to the button.
+    b_oo_back.tooltip = Tooltip('Back to Options menu')
+
+
+def showOtherOptionsMenu():
+    other_options_menu = Entity(scale=Vec2(12, 12), billboard=True)
+    options_menu.enabled = False
+    other_options_menu.enabled = True
+    Entity(parent=other_options_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
+
+    Text(parent=other_options_menu, origin=(0, -10), text="Other Settings")
+    if getValue("settings", "hints") == 'off':
+        hints = 'off'
+    else:
+        hints = 'on'
+
+
+    Text(parent=other_options_menu, position=(.05, .2), scale=1, text="Tips")
+    on_off_switch = ButtonGroup(('off', 'on'), parent=other_options_menu, min_selection=1, position=(.05, .2), default=f"{hints}", selected_color=color.red)
+
+    def on_value_changed():
+        global hints
+        updateValue("settings", "hints", "".join(on_off_switch.value))
+        saveValues()
+
+    on_off_switch.on_value_changed = on_value_changed
+
+    def goback():
+        saveValues()
+        showOptionsMenu()
+        destroy(other_options_menu)
+
+
+
+    #     on_off_switch.on_value_changed = on_value_changed
+
+    b_oo_back = Button(parent=other_options_menu, text='Back', color=color.black10, scale=(0.5, 0.08), position=(0, -0.2))
+
+    b_oo_back.on_click = goback  # assign a function to the button.
+    b_oo_back.tooltip = Tooltip('Back to Options menu')
+
+
+
+
 def showOptionsMenu():
-    global main_menu, options_menu, mouse_keyboard_menu
-    main_menu.enabled, mouse_keyboard_menu.enabled, scoreboard_menu.enabled = False, False, False
+    global main_menu, options_menu, mouse_keyboard_menu, other_options_menu, graphic_options_menu
+    main_menu.enabled, mouse_keyboard_menu.enabled, other_options_menu.enabled, graphic_options_menu.enabled = False, False, False, False
     options_menu.enabled = True
     Entity(parent=options_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2))
     Text(parent=options_menu, origin=(0, -7), scale=1.8, text="Options")
@@ -105,10 +161,10 @@ def showOptionsMenu():
     b_o_mouse_keys.on_click = showMouseKeyboardMenu  # assign a function to the button.
     b_o_mouse_keys.tooltip = Tooltip('Mouse sensitivity & keybindings')
 
-    b_o_graphics.on_click = application.quit  # assign a function to the button.
+    b_o_graphics.on_click = showGraphicOptionsMenu  # assign a function to the button.
     b_o_graphics.tooltip = Tooltip('Graphic settings')
 
-    b_o_other.on_click = application.quit  # assign a function to the button.
+    b_o_other.on_click = showOtherOptionsMenu  # assign a function to the button.
     b_o_other.tooltip = Tooltip('Other settings')
 
     b_o_back.on_click = showMainMenu

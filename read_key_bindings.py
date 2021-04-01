@@ -6,6 +6,7 @@ data["keybindings"] = []
 data["mouse_settings"] = []
 data["scoreboard"] = []
 data["player_name"] = []
+data["settings"] = []
 
 
 def getValue(type, asked_key):
@@ -59,6 +60,11 @@ def getDefaultValues():
         "name": "You"
     })
 
+    data["settings"] = []
+    data['settings'].append({
+        "hints": True
+    })
+
     with open('data.txt', 'w') as outfile:
         json.dump(data, outfile)
         print("Saved")
@@ -80,5 +86,8 @@ with open('data.txt') as json_file:
         for keys in saved_data['player_name']:
             for key in keys:
                 data['player_name'].append({key: keys[key]})
+        for keys in saved_data['settings']:
+            for key in keys:
+                data['settings'].append({key: keys[key]})
     except:
         getDefaultValues()

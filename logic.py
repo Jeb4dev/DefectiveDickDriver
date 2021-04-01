@@ -15,6 +15,7 @@ app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
+window.windowed_size = (1920/2, 1080/2, 32)
 window.fullscreen = False
 window.vsync = True
 
@@ -107,11 +108,11 @@ inMenu = False
 mouse.visible = False
 ems_lighting = False
 music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True, volume=.1)
-siren_audio = Audio('assets/music/siren', pitch=1, loop=True, autoplay=False, volume=.2)
-driving_light1 = PointLight(position=player.position+Vec3(30,10,30), shadows=True, color=color.rgb(196,196,196))
-driving_light2 = PointLight(position=player.position+Vec3(0,10,20), shadows=True, color=color.rgb(128,128,128))
-driving_light3 = PointLight(position=player.position+Vec3(0,10,20), shadows=True, color=color.rgb(64,64,64))
-menu_light = AmbientLight(position=camera.position, shadows=True, color=color.rgb(255,255,255))
+siren_audio = Audio('assets/music/siren', pitch=1, loop=True, autoplay=False, volume=.1)
+driving_light1 = PointLight(shadows=True, color=color.rgb(196,196,196))
+driving_light2 = PointLight(shadows=True, color=color.rgb(128,128,128))
+driving_light3 = PointLight(shadows=True, color=color.rgb(64,64,64))
+menu_light = AmbientLight(position=camera.position, shadows=True)
 #PointLight(parent=player, y=5, z=0, shadows=True, color=color.rgb(70,40,40), rotation=Vec3(0,90,0))
 
 def update():
@@ -138,14 +139,17 @@ def update():
         driving_light1.color = color.rgb(196,196,196)
         driving_light2.color = color.rgb(128,128,128)
         driving_light3.color = color.rgb(64,64,64)
-        #driving_light1.position = player_car.ent.position + player_car.ent.forward*20 + Vec3(0, 10, 0)
-        driving_light2.position = player_car.ent.position + player_car.ent.forward*30 + Vec3(0, 15, 0)
-        driving_light3.position = player_car.ent.position + player_car.ent.forward*40 + Vec3(0, 20, 0)
+        driving_light1.position = player_car.ent.position# + player_car.ent.forward*0 + Vec3(0, 0, 0)
+        driving_light1.rotation_x = -90
+        driving_light2.rotation_x = -90
+        driving_light3.rotation_x = -90
+        driving_light2.position = player_car.ent.position + player_car.ent.forward*15 + Vec3(0, 5, 0)
+        driving_light3.position = player_car.ent.position + player_car.ent.forward*40 + Vec3(0, 5, 0)
         if main_menu.enabled:
             main_menu.enabled = False
             dis_able_menu()
 
-        speed_text.text = f"Speed {round(player_car.speed*80, 1)} km/h"
+        speed_text.text = f"Speed {round(abs(player_car.speed)*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
         distance_text.text = f"SCORE {score}"
         arrow.position = player.position + Vec3(0, 3, 0)
@@ -168,7 +172,12 @@ def update():
                 car.brake(False)
         if not (held_keys['a'] or held_keys['d']):
             car.steering = 0
-        player_car.move([*ignore_list, *CheckPoint.checkpoints])
+        crash_speed = player_car.move([*ignore_list, *CheckPoint.checkpoints])
+        if crash_speed > (5/80):
+            print(" big crash", crash_speed)
+            # place crash sound  here
+            # remove pass
+            pass
         player_car.rotate()
 
         if not (held_keys['w'] or held_keys['s]']):

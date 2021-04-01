@@ -106,7 +106,7 @@ class Obstacle(Entity):
     def get_position(self):
         MAXMAP = 120
         while True:
-            self.position = Vec3(random.randint(-MAXMAP,MAXMAP), self.scale[1] // 2, random.randint(-MAXMAP,MAXMAP))
+            self.position = Vec3(random.randint(-MAXMAP,MAXMAP), (self.scale[1] // 2)-.5, random.randint(-MAXMAP,MAXMAP))
             if distance(self.position, self.car) > 20:
                 break
 
@@ -194,11 +194,16 @@ class TheCar:
     def move(self, ignore_list):
         if self.speed > 0:
             if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
+                speed = self.speed
                 self.speed = None
+                return speed
         if self.speed < 0:
             if collide(self.ent.position, self.ent.back, 2.3, ignore_list, self._speed):
+                speed = self.speed
                 self.speed = None
+                return -speed
         self.ent.position += self.ent.forward * self.speed
+        return 0
 
     def rotate(self):
 
@@ -232,6 +237,7 @@ class TheCar:
             self._speed -= (1-self.speed) * time.dt
         if self._speed < .01:
             self._speed = 0
+
 
 class Arrow(Entity):
     def __init__(self):
