@@ -81,19 +81,24 @@ cars = []
 player_car = TheCar(0, 0, car)
 cars.append(player_car)
 
-speed_text = Text(text=f"Speed {abs(player_car.speed)}",
+speed_text = Text(text=f"",
         position=(0, -.4), 
         color=color.white66
         )
 
-pos_text = Text(text=f"Pos {player.position}", 
+pos_text = Text(text=f"", 
         position=(.3, .5), 
         color=color.black
         )
 
-distance_text = Text(text=f"SCORE {score}", 
+distance_text = Text(text=f"", 
         position=(-.8, .45),
         color=color.gold
+        )
+        
+healthbar_text = Text(text=f"", 
+        position=(.30, -.4),
+        color=color.turquoise
         )
 ignore_list = [player, car]
 
@@ -115,8 +120,6 @@ menu_light = AmbientLight(position=camera.position, shadows=True, color=color.rg
 #PointLight(parent=player, y=5, z=0, shadows=True, color=color.rgb(70,40,40), rotation=Vec3(0,90,0))
 
 def update():
-
-
     global score
     if held_keys['q'] and held_keys['e']:
         quit()
@@ -148,6 +151,7 @@ def update():
         speed_text.text = f"Speed {round(player_car.speed*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
         distance_text.text = f"SCORE {score}"
+        healthbar_text.text = f"HEALTHBAR {round(player_car.hp)}"
         arrow.position = player.position + Vec3(0, 3, 0)
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
@@ -170,6 +174,7 @@ def update():
             car.steering = 0
         player_car.move([*ignore_list, *CheckPoint.checkpoints])
         player_car.rotate()
+        
 
         if not (held_keys['w'] or held_keys['s]']):
             car.speed = 0
@@ -177,6 +182,7 @@ def update():
 
         if player.camera_pivot.rotation_x < 5:
             player.camera_pivot.rotation_x = 5
+
 
         for checkpoint in CheckPoint.checkpoints:
 
@@ -220,6 +226,7 @@ def dis_able_menu():
     pos_text.enabled = not pos_text.enabled
     speed_text.enabled = not speed_text.enabled
     distance_text.enabled = not distance_text.enabled
+    healthbar_text.enabled = not healthbar_text.enabled
 
 def status():
     global game_paused

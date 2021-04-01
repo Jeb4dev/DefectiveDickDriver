@@ -122,16 +122,22 @@ class Obstacle(Entity):
 class TheCar:
     BOUNDS = (120,120)
     MAXSPEED = 1
-
+    
+    
     def __init__(self, speed, steering, ent):
         self._speed = speed
         self._steering = steering
         self.ent = ent
+        self._hp = 100
+    
+    @property
+    def hp(self):
+        return self._hp if self._hp >0 else 0
 
     @property
     def speed(self):
         return self._speed
-
+    
     @speed.setter
     def speed(self, x):
         if x == None:
@@ -166,6 +172,7 @@ class TheCar:
     def steering(self):
         return self._steering
 
+
     @steering.setter
     def steering(self, x):
         if x == 0:
@@ -192,11 +199,14 @@ class TheCar:
     def move(self, ignore_list):
         if self.speed > 0:
             if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
+                self._hp -= self.speed*80
                 self.speed = None
         if self.speed < 0:
             if collide(self.ent.position, self.ent.back, 2.3, ignore_list, self._speed):
+                self._hp -= abs(self.speed)*80
                 self.speed = None
         self.ent.position += self.ent.forward * self.speed
+        
 
     def rotate(self):
 
