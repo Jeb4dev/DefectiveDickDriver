@@ -18,8 +18,6 @@ class Lighting(PointLight):
 
         )
 
-
-
 class CheckPoint(Entity):
 
     checkpoints = []

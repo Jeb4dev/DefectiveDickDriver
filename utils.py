@@ -4,11 +4,11 @@ from ursina import *
 
 def collide(position, direction, distance, ignore_list, speed):
     if boxcast(position, direction=direction, 
-               distance=distance + speed, 
+               distance=distance + speed *.8, 
                thickness=(1.5, 2),
                traverse_target=scene, 
                ignore=ignore_list,
-               debug=False
+               debug=True
                ).entity is None:
         # print(boxcast(position, direction=direction, distance=distance, thickness=(2, 2),
                #traverse_target=scene, ignore=[player, car, level.terrain], debug=False).entity)
@@ -16,11 +16,11 @@ def collide(position, direction, distance, ignore_list, speed):
 
     elif boxcast(position, 
             direction=direction, 
-            distance=distance + speed, 
+            distance=distance + speed * .8, 
             thickness=(1.5,2),
             traverse_target=scene, 
             ignore=ignore_list,
-            debug=False
+            debug=True
             ).entity != None:
         return True
     return False
@@ -42,10 +42,10 @@ def make_floor(tiles, size):
     for x in range(-tiles, tiles):
         for z in range(-tiles, tiles):
             floor.append(Entity(model='cube',
-                                 color=color.rgb(197,147,100),
+                                 color=color.rgb(140,60,44),
                                  position=(x*size, -1, z*size),
                                  scale=(size, 1, size),
-                                 texture='assets/textures/mars'
+                                 texture='assets/textures/dirt'
                                  ))
     return floor
 # ---------------------------------------------------------------------------- #
