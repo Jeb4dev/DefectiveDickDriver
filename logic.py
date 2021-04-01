@@ -9,11 +9,6 @@ from utils import make_walls, make_floor
 from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
 
-import random
-import math
-
-from ursina.shaders import *
-
 app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
