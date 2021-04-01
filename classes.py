@@ -124,12 +124,13 @@ class TheCar:
     MAXSPEED = 1
     
     
-    def __init__(self, speed, steering, ent):
+    def __init__(self, speed, steering, ent, paused):
         self._speed = speed
         self._steering = steering
         self.ent = ent
         self._hp = 100
         self.score = 0
+        self.paused = paused
 
     @property
     def hp(self):

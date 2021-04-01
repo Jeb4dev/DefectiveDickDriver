@@ -63,7 +63,7 @@ CheckPoint.spawn_new()
 arrow = Arrow()
 menu = Menu(player)
 cars = []
-player_car = TheCar(0, 0, car)
+player_car = TheCar(0, 0, car, True)
 cars.append(player_car)
 
 speed_text = Text(text=f"",
@@ -91,7 +91,6 @@ health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X,
 
 ignore_list = [player, car]
 
-game_paused = True
 inMenu = False
 mouse.visible = False
 ems_lighting = False
@@ -110,7 +109,7 @@ menu_light = AmbientLight(position=camera.position, shadows=True)
 def update():
 
     # Main Loop - Game Paused
-    if game_paused:
+    if player_car.paused:
         menu_light.color = color.rgb(100,50,50)
         driving_light1.color = color.black
         driving_light2.color = color.black
@@ -221,9 +220,8 @@ def dis_able_menu():
 
 def input(key):
     global ems_lighting
-    global game_paused
     if key == 'escape':
-        game_paused = not game_paused
+        player_car.paused = not player_car.paused
     if held_keys['control'] and key == 'r':
         player_car.ent.position = Vec3(0, 0, 0)
         player_car.speed = None
