@@ -30,7 +30,7 @@ def make_walls(width):
     for pos in [(width, 0, 0), (-width, 0, 0), (0, 0, width),(0, 0, -width)]:
         walls.append(Entity(
             model='cube',
-            color=color.rgba(66,66,66,66),
+            color=color.rgba(66,26,26,66),
             position=pos,
             scale=(abs(pos[2])*2+1, 5, abs(pos[0])*2+1),
             collider='box'

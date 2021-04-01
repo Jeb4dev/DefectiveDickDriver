@@ -82,8 +82,8 @@ class CheckPoint(Entity):
         cls.light.position = cls.checkpoints[0].position+Vec3(0, 15, 0)
         # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
         for x in range(15):
-            Obstacle(color.rgba(random.randint(0,128),
-                                random.randint(0,64),
+            Obstacle(color.rgba(random.randint(32,128),
+                                random.randint(16,64),
                                 random.randint(0,32)),
                      scale = (random.randint(1,8),
                               random.randint(2,25), 
@@ -147,6 +147,10 @@ class TheCar:
             self._speed *= .9999
         elif x == 1:
             self._speed += time.dt * .1
+            if self._speed < .33:
+                self._speed += time.dt * .1
+                if self._speed < .13:
+                    self._speed += time.dt * .1
             if self._speed > self.MAXSPEED:
                 self._speed = self.MAXSPEED
         elif x == -1:
@@ -166,12 +170,20 @@ class TheCar:
                 self._steering = 0
         if x == 1:
             self._steering += 1
-            if self._steering > 60:
-                self._steering = 60
+            if self._steering < -30:
+                self._steering += 2
+            if self._steering < 0:
+                self._steering += 2
+            if self._steering > 100:
+                self._steering = 100
         if x == -1:
             self._steering -= 1
-            if self._steering < -60:
-                self._steering = -60
+            if self._steering > 30:
+                self._steering -= 2
+            if self._steering > 0:
+                self._steering -= 2
+            if self._steering < -100:
+                self._steering = -100
 
     def move(self, ignore_list):
         if self.forward:
