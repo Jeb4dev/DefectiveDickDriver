@@ -22,8 +22,8 @@ def collide(position, direction, distance, ignore_list, speed):
             ignore=ignore_list,
             debug=False
             ).entity != None:
-        return False
-    return True
+        return True
+    return False
 
 def make_walls(width):
     walls = []

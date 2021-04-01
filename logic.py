@@ -3,7 +3,7 @@ from ursina.shaders import colored_lights_shader, lit_with_shadows_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 from classes import TheCar, CheckPoint, Lighting, Obstacle, Arrow
-from utils import collide, make_walls, make_floor
+from utils import make_walls, make_floor
 from menu import *
 
 import random
@@ -164,18 +164,12 @@ def update():
         player_car.move([*ignore_list, *CheckPoint.checkpoints])
         player_car.rotate()
 
-        if not (held_keys['s'] or held_keys['w']):
-            if player_car.speed > 0.001:
-                player_car.brake(True)
-            else:
-                player_car.speed = None
+        if not (held_keys['w'] or held_keys['s]']):
+            car.speed = 0
 
 
         if player.camera_pivot.rotation_x < 5:
             player.camera_pivot.rotation_x = 5
-
-        #print(player_car.steering, player_car.speed)
-
 
         for checkpoint in CheckPoint.checkpoints:
 
@@ -183,7 +177,6 @@ def update():
                 score += 1
 
                 Obstacle.shuffle()
-
 
         player.position = player_car.ent.position
         if ems_lighting:
@@ -199,7 +192,6 @@ def update():
             siren_light.color = color.black33
 
 
-
 def dis_able_menu():
     global inMenu
     inMenu = not inMenu
@@ -210,7 +202,6 @@ def dis_able_menu():
     pos_text.enabled = not pos_text.enabled
     speed_text.enabled = not speed_text.enabled
     distance_text.enabled = not distance_text.enabled
-
 
 def status():
     global game_paused

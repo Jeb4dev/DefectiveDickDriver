@@ -42,7 +42,6 @@ class CheckPoint(Entity):
     def set_light(self, light):
         self.light = light
         self.light.position = self.position + light.position
-        print(self.light.position)
 
     def is_cleared(self, ignore_list):
         touching = boxcast(self.position,
@@ -71,14 +70,12 @@ class CheckPoint(Entity):
 
     @classmethod
     def init_light(cls, light):
-        print(light)
         cls.light = light
 
     @classmethod
     def spawn_new(cls):
 
         cls('cube', color.rgba(255,255,0,64), (random.randint(-100,100), 0, random.randint(-100,100)), (20,20,20))
-        print(cls.light, cls.checkpoints[0])
         cls.light.position = cls.checkpoints[0].position+Vec3(0, 15, 0)
         # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
         for x in range(15):
@@ -132,7 +129,6 @@ class TheCar:
         self._speed = speed
         self._steering = steering
         self.ent = ent
-        self.forward = None
 
     @property
     def speed(self):
@@ -140,23 +136,31 @@ class TheCar:
 
     @speed.setter
     def speed(self, x):
-        if x is None:
-            self._speed = 0
-            self.forward = None
-        elif x == 0:
-            self._speed *= .9999
+        if x == 0:
+            self._speed *= .994
+            if abs(self._speed) < .001:
+                self._speed = 0
         elif x == 1:
             self._speed += time.dt * .1
             if self._speed < .33:
-                self._speed += time.dt * .1
-                if self._speed < .13:
-                    self._speed += time.dt * .1
+                self._speed += time.dt * .05
+                if self._speed < .1:
+                    self._speed += time.dt * .05
+                    if self._speed < 0:
+                        self._speed += time.dt *.1
+
             if self._speed > self.MAXSPEED:
                 self._speed = self.MAXSPEED
         elif x == -1:
             self._speed -= time.dt * .1
+            if self._speed > 0:
+                self._speed -= time.dt * .15
+                if self._speed > .5:
+                    self._speed -= time.dt * .2
+
             if self._speed < -self.MAXSPEED:
                 self._speed = -self.MAXSPEED
+
 
     @property
     def steering(self):
@@ -170,36 +174,26 @@ class TheCar:
                 self._steering = 0
         if x == 1:
             self._steering += 1
-            if self._steering < -30:
-                self._steering += 2
+            if self._steering < -40:
+                self._steering += 4
             if self._steering < 0:
                 self._steering += 2
             if self._steering > 100:
                 self._steering = 100
         if x == -1:
             self._steering -= 1
-            if self._steering > 30:
-                self._steering -= 2
+            if self._steering > 40:
+                self._steering -= 4
             if self._steering > 0:
                 self._steering -= 2
             if self._steering < -100:
                 self._steering = -100
 
     def move(self, ignore_list):
-        if self.forward:
-            if not collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
-                self.speed = None
-            if self.speed > 0:
-                self.ent.position += self.ent.forward * self.speed
-            elif self.speed < 0:
-                self.ent.position -= self.ent.forward * - self.speed
-        elif self.forward == False:
-            if not collide(self.ent.position, self.ent.back, 2.1, ignore_list, self._speed):
-                self.speed = None
-            if self.speed > 0:
-                self.ent.position += self.ent.forward * -self.speed
-            elif self.speed < 0:
-                self.ent.position -= self.ent.forward * self.speed
+        if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
+            self.speed = None
+        else:
+           self.ent.position += self.ent.forward * self.speed
 
     def rotate(self):
 
@@ -209,28 +203,17 @@ class TheCar:
             offset = -1
         else:
             offset = 0
-        if self.forward is True and abs(self.speed) > 0.01:
-            self.ent.rotation += Vec3(0, self.steering * time.dt + (self.speed * offset), 0)
-        elif self.forward is False and abs(self.speed) > 0.01:
-            self.ent.rotation -= Vec3(0, self.steering * time.dt + (self.speed * offset), 0)
+        if abs(self.speed) > 0.01:
+            reverse_multiplier = 1
+            if self.speed < 0:
+                reverse_multiplier = -1
+            self.ent.rotation += Vec3(0, (self.steering * time.dt + (abs(self.speed) * offset)) * reverse_multiplier, 0)
 
     def w(self):
-        if self.forward == None:
-            self.forward = True
-        if self.forward:
-            self.speed = 1 
-        if self.forward == False:
-            if self.speed < 0:
-                self.speed = 1
+        self.speed = 1 
 
     def s(self):
-        if self.forward == None:
-            self.forward = False
-        if self.forward:
-            if self.speed > 0:
-                self.speed = -1
-        if self.forward == False:
-            self.speed = 1
+        self.speed = -1
 
     def a(self):
         self.steering = -1
