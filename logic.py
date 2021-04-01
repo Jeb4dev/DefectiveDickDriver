@@ -15,7 +15,7 @@ app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
-#window.fullscreen = False
+window.fullscreen = False
 window.vsync = True
 
 score = 0
