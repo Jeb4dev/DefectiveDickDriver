@@ -233,6 +233,9 @@ class TheCar:
         if self._speed < .01:
             self._speed = 0
 
-
+class Arrow(Entity):
+    def __init__(self):
+        super().__init__(model='assets/models/arrow',
+                         color=color.rgba(70,40,40,200))
 
 

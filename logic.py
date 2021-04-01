@@ -2,8 +2,8 @@ from ursina import *
 from ursina.shaders import colored_lights_shader, lit_with_shadows_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 
-from classes import TheCar, CheckPoint, Lighting, Obstacle
-from utils import collide
+from classes import TheCar, CheckPoint, Lighting, Obstacle, Arrow
+from utils import collide, make_walls, make_floor
 from menu import *
 
 import random
@@ -14,33 +14,30 @@ from ursina.shaders import *
 app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
-window.windowed_size = (2560, 1440, 32)
+window.windowed_size = (1920, 1080, 32)
 window.fullscreen = False
 window.vsync = True
 
 score = 0
+
 scene.fog_color = color.rgb(35, 20, 20)
-scene.fog_density = (30, 100)
+scene.fog_density = (10,60)
+
 # inCar = False
 # Create FP camera/ control
+
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
 player.cursor.enabled = False
+
+walls = make_walls(120)
+floor = make_floor(12, 15)
 
 Entity(model='cube', color=color.rgb(35,20,20), 
                      position=(0, -2, 0), 
                      scale=(1000,1,1000), 
                      rotation=(0,0,0)
                      )
-for x in range(-12, 12):
-    for z in range(-12, 12):
-        terrain = Entity(model='cube',
-                         color=color.rgb(70,40,40), 
-                         position=(x*15,-1,z*15), 
-                         scale=(15,1,15), 
-                         rotation=(0,0,0),
-                         texture='gravel'
-                         )
 
 light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
 siren_light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
@@ -70,24 +67,15 @@ Obstacle.init_car(car)
 
 CheckPoint.spawn_new()
 
+arrow = Arrow()
 
-
-arrow = Entity(model='assets/models/arrow', 
+'''arrow = Entity(model='assets/models/arrow', 
         color=color.orange, 
-        position=car.position, 
         scale=(1, 1, 1), 
         rotation=(0,0,0), 
         texture='shore'
-        )
+        )'''
 
-for pos in [(120,0,0), (-120,0,0), (0,0,120),(0,0,-120)]:
-    Entity(
-        model='cube',
-        color=color.rgba(66,66,66,66),
-        position=pos,
-        scale=(abs(pos[2])*2+1, 5, abs(pos[0])*2+1),
-        collider='box'
-        )
 
 cars = []
 player_car = TheCar(0, 0, car)
