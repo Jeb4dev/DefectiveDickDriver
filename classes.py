@@ -67,7 +67,7 @@ class CheckPoint(Entity):
 
     @classmethod
     def init_car(cls, car):
-        car = car
+        cls.car = car
 
     @classmethod
     def init_light(cls, light):

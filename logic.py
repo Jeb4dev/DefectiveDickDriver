@@ -1,36 +1,46 @@
 from ursina import *
-import random
-import math
-from menu import *
-from ursina.shaders import colored_lights_shader
+from ursina.shaders import colored_lights_shader, lit_with_shadows_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 
 from classes import TheCar, CheckPoint, Lighting, Obstacle
 from utils import collide
-from ursina.shaders import lit_with_shadows_shader # you have to apply this shader to enties for them to recieve shadows.
+from menu import *
 
+import random
+import math
 
 from ursina.shaders import *
 
 app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
-window.fullscreen = True
+window.windowed_size = (2560, 1440, 32)
+window.fullscreen = False
 window.vsync = True
 
 score = 0
 scene.fog_color = color.rgb(35, 20, 20)
 scene.fog_density = (30, 100)
 # inCar = False
-# Create FP camera/ contorl
+# Create FP camera/ control
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
 player.cursor.enabled = False
 
-Entity(model='cube', color=color.rgb(35,20,20), position=(0, -2, 0), scale=(1000,1,1000), rotation=(0,0,0))
+Entity(model='cube', color=color.rgb(35,20,20), 
+                     position=(0, -2, 0), 
+                     scale=(1000,1,1000), 
+                     rotation=(0,0,0)
+                     )
 for x in range(-12, 12):
     for z in range(-12, 12):
-        terrain = Entity(model='cube', color=color.rgb(70,40,40), position=(x*15,-1,z*15), scale=(15,1,15), rotation=(0,0,0))
+        terrain = Entity(model='cube',
+                         color=color.rgb(70,40,40), 
+                         position=(x*15,-1,z*15), 
+                         scale=(15,1,15), 
+                         rotation=(0,0,0),
+                         texture='gravel'
+                         )
 
 light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
 siren_light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
@@ -38,33 +48,34 @@ CheckPoint.init_light(light)
 
 bank = Vec3(-21, 2, -35)
 
-# basic_lighting_shader - no colored light
-# colored_lights_shader -- just white
-# fading_shadows_shader -- doesnt exist
-# fresnel_shader -- doesnt exist
+# basic_lighting_shader   -- no colored light
+# colored_lights_shader   -- just white
+# fading_shadows_shader   -- doesnt exist
+# fresnel_shader          -- doesnt exist
 # lit_with_shadows_shader -- apply color existing white
-# matcap_shader -- mirror finish
-# normals_shader -- rainbow
-# texture_blend_shader -- doesnt exist
-# triplanar_shader -- car .png colors
-# unlit_shader - no colored light
-# __init__
-car = Entity(model='cars/80scop', 
-        texture='cars/cars', 
+# matcap_shader           -- mirror finish
+# normals_shader          -- rainbow
+# texture_blend_shader    -- doesnt exist
+# triplanar_shader        -- car .png colors
+# unlit_shader            -- no colored light
+
+car = Entity(model='assets/models/80scop', 
+        texture='assets/models/cars', 
         position = (0, 0, 4), 
         scale=1,
         collider='box'
         )
 CheckPoint.init_car(car)
 Obstacle.init_car(car)
+
 CheckPoint.spawn_new()
 
 
 
-arrow = Entity(model='cube', 
+arrow = Entity(model='assets/models/arrow', 
         color=color.orange, 
         position=car.position, 
-        scale=(.2, .2, .5), 
+        scale=(1, 1, 1), 
         rotation=(0,0,0), 
         texture='shore'
         )
@@ -142,8 +153,8 @@ def update():
         speed_text.text = f"Speed {round(player_car.speed*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
         distance_text.text = f"SCORE {score}"
-        #arrow.position = car.position + Vec3(0, 3, 0)
-        arrow.rotation = arrow.look_at(bank, axis="forward")
+        arrow.position = player.position + Vec3(0, 3, 0)
+        arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
         if held_keys['w']:
             for car in cars:
