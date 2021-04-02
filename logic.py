@@ -1,5 +1,4 @@
 from ursina import *
-from ursina.shaders import colored_lights_shader, lit_with_shadows_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 from ursina.prefabs import health_bar
 
@@ -9,14 +8,11 @@ from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
 
 from sys import argv
-import random
-import math
 
-from ursina.shaders import *
+
 app = Ursina()
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
-#window.windowed_size = (2560, 1440, 32)
 window.fullscreen = False
 
 if len(argv) > 1:
@@ -116,6 +112,7 @@ def update():
         if not inMenu:
             invoke(menu.show_main_menu)
             dis_able_menu()
+
     # Main Loop - Game Running
     else:
         camera.rotation = Vec3(25,0,0)
@@ -147,6 +144,7 @@ def update():
         if player_car.new_game:
             player_car.ent.position = Vec3(0,0,0)
             player_car.new_game = False
+            player_car.score = 0
 
         if held_keys['w']:
             for car in cars:
@@ -193,9 +191,11 @@ def update():
         else:
             siren_light.color = color.black33
 
-        if player_car.hp <= 0:
-            reset_game(player_car, Obstacle, CheckPoint)
-            player_car.paused = True
+    if player_car.hp <= 0:
+        player_car.paused = True
+        reset_game(player_car, Obstacle, CheckPoint)
+        invoke(menu.show_score_menu)
+        dis_able_menu()
 
 
 def dis_able_menu():
@@ -220,7 +220,6 @@ def dis_able_menu():
     speed_text.enabled = not speed_text.enabled
     score_text.enabled = not score_text.enabled
     health_bar_1.enabled = not health_bar_1.enabled
-    Sky.visible = not Sky.visible
 
 
 def input(key):

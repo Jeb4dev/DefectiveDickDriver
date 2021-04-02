@@ -157,6 +157,26 @@ class Menu:
         self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.2), on_click=goback, tooltip=Tooltip('Back to Options menu')))
 
+    def show_score_menu(self):
+        camera.rotation = Vec3(0, 0, 0)
+        camera.position = Vec3(0, 0, -20)
+
+        self.clear_menu()
+        main_menu = Entity(scale=Vec2(12, 12),
+                           billboard=True,
+                           position=self.player.position)
+        self.e(main_menu)
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
+                      position=(2, 2, 2)))
+
+        self.e(Text(parent=main_menu, origin=(0, 0), scale=4, text=f"Final Score: {round(self.player_car.score)}"))
+
+        self.e(Button(parent=main_menu, text='Back', color=color.black10, scale=(0.5, 0.08),
+                      position=(0, -0.2), on_click=self.show_main_menu,
+                      tooltip=Tooltip('Back to Main menu or just press [ESC] to replay')))
+
+
+
     def show_graphic_options_menu(self):
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)

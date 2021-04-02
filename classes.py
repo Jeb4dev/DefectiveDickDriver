@@ -88,12 +88,12 @@ class CheckPoint(Entity):
         cls.light.position = cls.checkpoints[0].position+Vec3(0, 15, 0)
         # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
         for x in range(15):
-            Obstacle(color.rgba(random.randint(32,128),
-                                random.randint(16,64),
-                                random.randint(0,32)),
-                     scale = (random.randint(3,8),
-                              random.randint(3,25), 
-                              random.randint(3,8)))
+            Obstacle(color.rgba(random.randint(32, 128),
+                                random.randint(16, 64),
+                                random.randint(0, 32)),
+                     scale = (random.uniform(3, 8),
+                              random.uniform(3, 25),
+                              random.uniform(3, 8)))
 
 
 class Obstacle(Entity):
