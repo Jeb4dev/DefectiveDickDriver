@@ -3,18 +3,38 @@ from ursina.shaders import colored_lights_shader, lit_with_shadows_shader
 from ursina.prefabs.first_person_controller import FirstPersonController
 from ursina.prefabs import health_bar
 
-
 from classes import TheCar, CheckPoint, Lighting, Obstacle, Arrow
 from utils import make_walls, make_floor, reset_game
 from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
 
-app = Ursina()
+from sys import argv
+import random
+import math
+
+from ursina.shaders import *
 
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
 #window.windowed_size = (2560, 1440, 32)
 window.fullscreen = False
+
+if len(argv) > 1:
+    try:
+        scale = int(argv[1])
+        resolution = (scale/9*16, scale, 32)
+        window.fullscreen_size = resolution
+        window.windowed_size = resolution
+        if len(argv) > 2:
+            window.fullscreen = int(argv[2])
+
+    except exception as e:
+        print(f'correct usage is ``logic.py height fullscreen`` height should be in pixels, 1 for fullscreen, 0 for windowed')
+
+
+
+app = Ursina()
+
 window.vsync = True
 
 scene.fog_color = COLOR_RUST
@@ -132,13 +152,14 @@ def update():
                 car.brake(False)
         if not (held_keys['a'] or held_keys['d']):
             player_car.steering = 0
-        crash_speed = player_car.move([*ignore_list, *CheckPoint.checkpoints])
-        if crash_speed > (5/80):
+
+        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints])> (10/80):
             print("big crash", crash_speed)
+            Audio('assets/sfx/short_crash')
+
             # place crash sound  here
 
         player_car.rotate()
-        
         if not (held_keys['w'] or held_keys['s]']):
             player_car.speed = 0
 
