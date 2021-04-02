@@ -224,12 +224,17 @@ def dis_able_menu():
 
 def input(key):
     global ems_lighting
+
+    # toggle pause menu
     if key == 'escape':
         player_car.paused = not player_car.paused
+
+    # respawn 0, 0
     if held_keys['control'] and key == 'r':
         player_car.ent.position = Vec3(0, 0, 0)
         player_car.speed = None
 
+    # EMS lights toggle
     if key == "e":
         ems_lighting = not ems_lighting
         if ems_lighting:
@@ -237,6 +242,7 @@ def input(key):
         else:
             siren_audio.stop()
 
+    # music toggle
     if key == "m":
         if music.playing:
             music.pause()
