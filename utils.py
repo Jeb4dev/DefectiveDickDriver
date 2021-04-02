@@ -70,21 +70,21 @@ def reset_game(player_car, obs, chk, menu):
             data = json.load(f)
     except:
         data = {}
-    print(data)
+    # print(data)
     data[time.strftime('%X %x')] = player_car.score
-    print(data)
+    # print(data)
     sorted_scores =  {k: v for k, v in sorted(data.items(), key=lambda item: item[1], reverse=True)}
-    print(sorted_scores)
-    print(len(data))
+    # print(sorted_scores)
+    # print(len(data))
 
     counter = 0
     new_high_score = False
     top_five = {}
     for date, score in sorted_scores.items():
-        print(date, score, counter)
+        # print(date, score, counter)
         if counter == 0 and score <= player_car.score:
             new_high_score = True
-            print('new high score')
+            # print('new high score')
         top_five[date] = score
         counter += 1
         if counter > 5:

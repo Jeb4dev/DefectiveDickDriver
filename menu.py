@@ -1,6 +1,6 @@
 from ursina import *
 from read_key_bindings import *
-import shelve
+import json
 
 
 class Menu:
@@ -46,18 +46,27 @@ class Menu:
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
         self.e(main_menu)
 
+        try:
+            with open('scores.json', 'r') as f:
+                data = json.load(f)
+        except:
+            data = {}
 
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
 
-        self.e(Text(parent=main_menu, position=(0, .25), text="Scoreboard"))
+        self.e(Button(parent=main_menu, text=f'High Scores', scale=(0.5, 0.08),
+                      position=(0, .35), highlight_color=color.rgba(0,0,0,0),
+                      color=color.rgba(0,0,0,0), pressed_color=color.rgba(0,0,0,0)))
 
-        high_scores = shelve.open('high_scores')
-
-        for date, score in high_scores.items():
-            print(date, score)
+        for idx, (date, score) in enumerate(data.items()):
+            if idx == 5:
+                break
+            temp = time.strptime(date, "%X %x")
+            self.e(Button(parent=main_menu, text=f'{time.strftime("%x", temp)}          {round(score)}', color=color.black10, scale=(0.5, 0.08),
+                          position=(0, 0.2-idx*0.1), on_click=self._pass, tooltip=Tooltip(time.strftime("%X on %A %B %d %Y", temp))))
 
         self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
-                        position=(0, -0.2), on_click=self.show_main_menu, tooltip=Tooltip('Back to Main menu')))
+                        position=(0, -0.35), on_click=self.show_main_menu, tooltip=Tooltip('Back to Main menu')))
 
     def show_options_menu(self):
         self.clear_menu()
