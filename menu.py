@@ -142,7 +142,7 @@ class Menu:
         self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.2), on_click=goback, tooltip=Tooltip('Back to Options menu')))
 
-    def show_score_menu(self):
+    def show_score_menu(self, new_hs):
         camera.rotation = Vec3(0, 0, 0)
         camera.position = Vec3(0, 0, -20)
 
@@ -153,8 +153,12 @@ class Menu:
         self.e(main_menu)
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                       position=(2, 2, 2)))
+        if new_hs:
+            score_text = f'New High Score!\nFinal Score: {round(self.player_car.score)}\nNew High Score!'
+        else:
+            score_text = f"Final Score: {round(self.player_car.score)}"
 
-        self.e(Text(parent=main_menu, origin=(0, 0), scale=4, text=f"Final Score: {round(self.player_car.score)}"))
+        self.e(Text(parent=main_menu, origin=(0, 0), scale=4, text=score_text))
 
         self.e(Button(parent=main_menu, text='Back', color=color.black10, scale=(0.5, 0.08),
                       position=(0, -0.2), on_click=self.show_main_menu,
