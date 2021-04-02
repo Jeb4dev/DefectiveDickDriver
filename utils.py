@@ -1,4 +1,6 @@
 from ursina import *
+import shelve
+
 
 # 'distance', 'entities', 'entity', 'hit', 'hits', 'normal', 'point', 'world_normal', 'world_point' BOXCAST METHODS
 def collide(position, direction, distance, ignore_list, speed):
@@ -10,20 +12,22 @@ def collide(position, direction, distance, ignore_list, speed):
                debug=True
                ).entity is None:
         # print(boxcast(position, direction=direction, distance=distance, thickness=(2, 2),
-        #traverse_target=scene, ignore=[player, car, level.terrain], debug=False).entity)
+        # traverse_target=scene, ignore=[player, car, level.terrain], debug=False).entity)
         # This is here just avoiding us crashing for None
         pass
 
-    elif boxcast(position, 
-            direction=direction, 
-            distance=distance + speed * .8, 
+    elif boxcast(
+            position,
+            direction=direction,
+            distance=distance + speed * .8,
             thickness=(1.5,2),
-            traverse_target=scene, 
+            traverse_target=scene,
             ignore=ignore_list,
             debug=True
-            ).entity != None:
+            ).entity is not None:
         return True
     return False
+
 
 def make_walls(width):
     walls = []
@@ -36,6 +40,7 @@ def make_walls(width):
             collider='box'
             ))
     return walls
+
 
 def make_floor(tiles, size):
     floor = []
@@ -58,8 +63,9 @@ def reset_game(player_car, obs, chk):
     destroy(check.light, delay=0)
     destroy(check, delay=0)
     chk.spawn_new()
-    
+    high_scores = shelve.open('high_scores')
+    high_scores[time.strftime("%d/%m/%Y %H:%M")] = player_car.score
+    # {k: v for k, v in sorted(high_scores.items(), key=lambda item: item[1])}
 
-# ---------------------------------------------------------------------------- #
+    high_scores.close()
 
-# IGNORE LIST = [player, car, level.terrain]

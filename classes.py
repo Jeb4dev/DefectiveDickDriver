@@ -137,10 +137,9 @@ class Obstacle(Entity):
 
 
 class TheCar:
-    BOUNDS = (120,120)
+    BOUNDS = (120, 120)
     MAXSPEED = 1
-    
-    
+
     def __init__(self, ent):
         self.ent = ent
         self._speed = 0

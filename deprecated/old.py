@@ -48,3 +48,22 @@ def show_keyboard_menu(self):
     self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                   position=(0, -0.2), on_click=self.show_options_menu,
                   tooltip=Tooltip('Back to Options menu')))
+
+
+
+
+
+
+
+import shelve
+shelfFile = shelve.open('mydata')
+cats = ['Zophie', 'Pooka', 'Simon']
+shelfFile['cats'] = cats
+shelfFile.close()
+
+
+import time
+
+print(time.strftime("%d/%m/%Y %H:%M"))
+print(time.strftime("%X"))
+print(time.strftime("%x"))

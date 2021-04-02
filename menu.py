@@ -1,5 +1,6 @@
 from ursina import *
 from read_key_bindings import *
+import shelve
 
 
 class Menu:
@@ -45,19 +46,16 @@ class Menu:
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
         self.e(main_menu)
 
-        scoreboard = get_value("scoreboard", "*")
 
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
 
         self.e(Text(parent=main_menu, position=(0, .25), text="Scoreboard"))
 
-        s = 0
-        for i in range(len(scoreboard)):
-            for j in scoreboard[i]:
-                s += 1  # just here chilling, don't touch
-                self.e(Text(parent=main_menu, position=(0, .17 - s * .05), text=f"{scoreboard[i][j]}".center(8)))
+        high_scores = shelve.open('high_scores')
 
-        self.e(Text(parent=main_menu, position=(0, .17), text="Score"))
+        for date, score in high_scores.items():
+            print(date, score)
+
         self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.2), on_click=self.show_main_menu, tooltip=Tooltip('Back to Main menu')))
 
