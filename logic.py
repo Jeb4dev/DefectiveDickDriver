@@ -193,8 +193,7 @@ def update():
 
     if player_car.hp <= 0:
         player_car.paused = True
-        reset_game(player_car, Obstacle, CheckPoint)
-        invoke(menu.show_score_menu)
+        reset_game(player_car, Obstacle, CheckPoint, menu)
         dis_able_menu()
 
 

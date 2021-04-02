@@ -1,5 +1,5 @@
 from ursina import *
-import shelve
+import json
 
 
 # 'distance', 'entities', 'entity', 'hit', 'hits', 'normal', 'point', 'world_normal', 'world_point' BOXCAST METHODS
@@ -55,7 +55,8 @@ def make_floor(tiles, size):
     return floor
 
 
-def reset_game(player_car, obs, chk):
+def reset_game(player_car, obs, chk, menu):
+    player_car.new_game = True
     player_car.hp = None
     player_car.speed = 0
     obs.clear_all()
@@ -63,9 +64,34 @@ def reset_game(player_car, obs, chk):
     destroy(check.light, delay=0)
     destroy(check, delay=0)
     chk.spawn_new()
-    high_scores = shelve.open('high_scores')
-    high_scores[time.strftime("%d/%m/%Y %H:%M")] = player_car.score
-    # {k: v for k, v in sorted(high_scores.items(), key=lambda item: item[1])}
+    
+    try:
+        with open('scores.json', 'r') as f:
+            data = json.load(f)
+    except:
+        data = {}
+    print(data)
+    data[time.strftime('%X %x')] = player_car.score
+    print(data)
+    sorted_scores =  {k: v for k, v in sorted(data.items(), key=lambda item: item[1], reverse=True)}
+    print(sorted_scores)
+    print(len(data))
 
-    high_scores.close()
+    counter = 0
+    new_high_score = False
+    top_five = {}
+    for date, score in sorted_scores.items():
+        print(date, score, counter)
+        if counter == 0 and score <= player_car.score:
+            new_high_score = True
+            print('new high score')
+        top_five[date] = score
+        counter += 1
+        if counter > 5:
+            break
+    with open('scores.json', 'w') as f:
+        json.dump(top_five, f)
+
+    menu.show_score_menu(new_high_score)
+
 

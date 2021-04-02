@@ -144,7 +144,7 @@ class TheCar:
         self.ent = ent
         self._speed = 0
         self._steering = 0
-        self._hp = 100
+        self._hp = 10  # FIX THIS!
         self.score = 0
         self.paused = True
         self.new_game = True
