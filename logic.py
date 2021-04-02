@@ -119,7 +119,7 @@ def update():
     # Main Loop - Game Running
     else:
         camera.rotation = Vec3(25,0,0)
-        camera.position = Vec3(0,10,-20)
+        camera.position = Vec3(0,10,-10)
         menu_light.color = color.black
         driving_light1.color = color.rgb(196,196,196)
         driving_light2.color = color.rgb(128,128,128)
@@ -143,6 +143,10 @@ def update():
         # Arrow
         arrow.position = player.position + Vec3(0, 3, 0)
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
+
+        if player_car.new_game:
+            player_car.ent.position = Vec3(0,0,0)
+            player_car.new_game = False
 
         if held_keys['w']:
             for car in cars:
@@ -169,9 +173,6 @@ def update():
         player_car.rotate()
         if not (held_keys['w'] or held_keys['s]']):
             player_car.speed = 0
-
-        if player.camera_pivot.rotation_x < 5:
-            player.camera_pivot.rotation_x = 5
 
         for checkpoint in CheckPoint.checkpoints:
 
