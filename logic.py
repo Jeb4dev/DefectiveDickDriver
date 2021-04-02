@@ -13,7 +13,7 @@ import random
 import math
 
 from ursina.shaders import *
-
+app = Ursina()
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
 #window.windowed_size = (2560, 1440, 32)
@@ -32,8 +32,13 @@ if len(argv) > 1:
         print(f'correct usage is ``logic.py height fullscreen`` height should be in pixels, 1 for fullscreen, 0 for windowed')
 
 
-
-app = Ursina()
+def center_on_screen(self):
+        print('size;', self.size)
+        self.position = Vec2(
+            int((self.screen_resolution[0] - self.size[0]) / 2),
+            int((self.screen_resolution[1] - self.size[1]) / 2)
+            )
+center_on_screen(window)
 
 window.vsync = True
 
@@ -41,7 +46,8 @@ scene.fog_color = COLOR_RUST
 scene.fog_density = (10, 60)
 
 player = FirstPersonController(gravity=0)
-camera.position = Vec3(0, 0, -20)
+camera.position = Vec3(0, 1, -20)
+camera.rotation = Vec3(15, 0, 0)
 player.cursor.enabled = False
 
 walls = make_walls(120)
@@ -75,6 +81,7 @@ menu = Menu(player, player_car)
 cars = []
 cars.append(player_car)
 
+camera.parent = player_car.ent
 speed_text = Text(text=f"", position=(0, -.4), color=color.white66)
 pos_text = Text(text=f"", position=(.3, .5), color=color.black)
 score_text = Text(text=f"", position=(-.8, -.35), color=COLOR_RUST_2X)
@@ -111,6 +118,8 @@ def update():
             dis_able_menu()
     # Main Loop - Game Running
     else:
+        camera.rotation = Vec3(25,0,0)
+        camera.position = Vec3(0,10,-20)
         menu_light.color = color.black
         driving_light1.color = color.rgb(196,196,196)
         driving_light2.color = color.rgb(128,128,128)
@@ -157,8 +166,6 @@ def update():
             print("big crash", crash_speed)
             Audio('assets/sfx/short_crash')
 
-            # place crash sound  here
-
         player_car.rotate()
         if not (held_keys['w'] or held_keys['s]']):
             player_car.speed = 0
@@ -174,6 +181,7 @@ def update():
                 Obstacle.shuffle()
 
         player.position = player_car.ent.position
+
         if ems_lighting:
 
             if int(time.time()*5)%2 == 0:
@@ -185,7 +193,8 @@ def update():
             siren_light.color = color.black33
 
         if player_car.hp <= 0:
-            reset_game(player_car, player, Obstacle, CheckPoint)
+            reset_game(player_car, Obstacle, CheckPoint)
+            player_car.paused = True
 
 
 def dis_able_menu():
