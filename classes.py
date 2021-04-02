@@ -148,6 +148,7 @@ class TheCar:
         self._hp = 100
         self.score = 0
         self.paused = True
+        self.new_game = True
         
     @property
     def hp(self):

@@ -52,7 +52,6 @@ def make_floor(tiles, size):
 def reset_game(player_car, obs, chk):
     player_car.hp = None
     print(player_car.hp)
-    player_car.ent.position = Vec3(0,0,0)
     player_car.score = 0
     player_car.speed = 0
     obs.clear_all()
