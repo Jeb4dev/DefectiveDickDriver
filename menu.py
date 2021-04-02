@@ -170,10 +170,8 @@ class Menu:
         self.e(Text(parent=main_menu, origin=(0, 0), scale=4, text=score_text))
 
         self.e(Button(parent=main_menu, text='Back', color=color.black10, scale=(0.5, 0.08),
-                      position=(0, -0.2), on_click=self.show_main_menu,
+                      position=(0, -0.40), on_click=self.show_main_menu,
                       tooltip=Tooltip('Back to Main menu or just press [ESC] to replay')))
-
-
 
     def show_graphic_options_menu(self):
         self.clear_menu()
