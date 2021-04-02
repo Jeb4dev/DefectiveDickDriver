@@ -19,6 +19,9 @@ class Menu:
             destroy(cls.entities.pop(), delay=0)
 
     def show_main_menu(self):
+        camera.rotation = Vec3(0,0,0)
+        camera.position = Vec3(0,0,-20)
+        
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), 
                            billboard=True, 

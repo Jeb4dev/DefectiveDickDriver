@@ -153,6 +153,13 @@ class TheCar:
     def hp(self):
         return self._hp if self._hp >0 else 0
 
+    @hp.setter
+    def hp(self, x):
+        if x == None:
+            self._hp = 100
+        else: self._hp = x
+
+
     @property
     def speed(self):
         return self._speed
@@ -199,19 +206,19 @@ class TheCar:
             if abs(self._steering) < .1:
                 self._steering = 0
         if x == 1:
-            self._steering += 1
+            self._steering += 2
             if self._steering < -40:
-                self._steering += 4
+                self._steering += 6
             if self._steering < 0:
-                self._steering += 2
+                self._steering += 4
             if self._steering > 100:
                 self._steering = 100
         if x == -1:
-            self._steering -= 1
+            self._steering -= 2
             if self._steering > 40:
-                self._steering -= 4
+                self._steering -= 6
             if self._steering > 0:
-                self._steering -= 2
+                self._steering -= 4
             if self._steering < -100:
                 self._steering = -100
 
@@ -219,13 +226,13 @@ class TheCar:
         if self.speed > 0:
             if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
                 speed = self.speed
-                self._hp -= self.speed*80
+                self.hp -= self.speed*80
                 self.speed = None
                 return speed
         if self.speed < 0:
             if collide(self.ent.position, self.ent.back, 2.3, ignore_list, self._speed):
                 speed = self.speed
-                self._hp -= abs(self.speed)*80
+                self.hp -= abs(self.speed)*80
                 self.speed = None
                 return -speed
         self.ent.position += self.ent.forward * self.speed
