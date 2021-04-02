@@ -237,6 +237,12 @@ def input(key):
         else:
             siren_audio.stop()
 
+    if key == "m":
+        if music.playing:
+            music.pause()
+        else:
+            music.resume()
+
 
 Sky(texture='night_sky_red_blur')
 # EditorCamera()
