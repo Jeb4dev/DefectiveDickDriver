@@ -5,7 +5,7 @@ from ursina.prefabs import health_bar
 
 
 from classes import TheCar, CheckPoint, Lighting, Obstacle, Arrow
-from utils import make_walls, make_floor
+from utils import make_walls, make_floor, reset_game
 from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
 
@@ -13,17 +13,12 @@ app = Ursina()
 
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
-#window.windowed_size = (1920/2, 1080/2, 32)
+#window.windowed_size = (2560, 1440, 32)
 window.fullscreen = False
 window.vsync = True
 
-score = 0
-
 scene.fog_color = COLOR_RUST
 scene.fog_density = (10, 60)
-
-# inCar = False
-# Create FP camera/ control
 
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 0, -20)
@@ -32,8 +27,7 @@ player.cursor.enabled = False
 walls = make_walls(120)
 floor = make_floor(9, 20)
 
-lower_floor = Entity(model='cube', color=color.rgb(35,20,20),
-                     position=(0, -2, 0), 
+lower_floor = Entity(model='cube', color=color.rgb(35,20,20),                     position=(0, -2, 0), 
                      scale=(1000,1,1000), 
                      rotation=(0,0,0)
                      )
@@ -56,33 +50,15 @@ Obstacle.init_car(car)
 CheckPoint.spawn_new()
 
 arrow = Arrow()
-menu = Menu(player)
+player_car = TheCar(car)
+menu = Menu(player, player_car)
 cars = []
-player_car = TheCar(0, 0, car, True)
 cars.append(player_car)
 
-speed_text = Text(text=f"",
-        position=(0, -.4), 
-        color=color.white66
-        )
-
-pos_text = Text(text=f"", 
-        position=(.3, .5), 
-        color=color.black
-        )
-
-score_text = Text(text=f"",
-                  position=(-.8, -.35),
-                  color=COLOR_RUST_2X
-                  )
-
-
-health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X,
-                                    roundness=.1,
-                                    value=100,
-                                    position=(-.8, -.40),
-                                    animation_duration=0)
-        
+speed_text = Text(text=f"", position=(0, -.4), color=color.white66)
+pos_text = Text(text=f"", position=(.3, .5), color=color.black)
+score_text = Text(text=f"", position=(-.8, -.35), color=COLOR_RUST_2X)
+health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40), animation_duration=0)
 
 ignore_list = [player, car]
 
@@ -132,7 +108,7 @@ def update():
         # HUD
         speed_text.text = f"Speed {round(abs(player_car.speed)*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
-        score_text.text = f"SCORE {player_car.score}"
+        score_text.text = f"SCORE {round(player_car.score)}"
         health_bar_1.value = round(player_car.hp)
 
         # Arrow
@@ -172,7 +148,7 @@ def update():
         for checkpoint in CheckPoint.checkpoints:
 
             if checkpoint.is_cleared([]):
-                player_car.score += 1
+                player_car.score += checkpoint.lastpoint
 
                 Obstacle.shuffle()
 
@@ -186,6 +162,9 @@ def update():
                 siren_light.color = color.blue
         else:
             siren_light.color = color.black33
+
+        if player_car.hp <= 0:
+            reset_game(player_car, player, Obstacle, CheckPoint)
 
 
 def dis_able_menu():

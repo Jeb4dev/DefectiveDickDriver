@@ -48,6 +48,19 @@ def make_floor(tiles, size):
                                  texture='assets/textures/dirt'
                                  ))
     return floor
+
+def reset_game(player_car, player, obs, chk):
+    player_car._hp = 100
+    player_car.ent.position = Vec3(0,0,0)
+    player_car.score = 0
+    player_car.paused = True
+    player_car.speed = 0
+    obs.clear_all()
+    check = chk.checkpoints.pop()
+    destroy(check.light, delay=0)
+    destroy(check, delay=0)
+    chk.spawn_new()
+
 # ---------------------------------------------------------------------------- #
 
 # IGNORE LIST = [player, car, level.terrain]
