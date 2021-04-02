@@ -154,7 +154,7 @@ def update():
         if not (held_keys['a'] or held_keys['d']):
             player_car.steering = 0
 
-        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints])> (88888888/80):
+        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints])> (10/80):
             print("big crash", crash_speed)
             Audio('assets/sfx/short_crash')
 
