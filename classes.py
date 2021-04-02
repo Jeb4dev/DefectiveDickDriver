@@ -118,20 +118,26 @@ class Obstacle(Entity):
         for obstacle in cls.obstacles:
             obstacle.get_position()
 
+    @classmethod
+    def clear_all(cls):
+        while cls.obstacles:
+            cls.obstacles[-1].enabled = False
+            destroy(cls.obstacles.pop(), delay=0)
+
 
 class TheCar:
     BOUNDS = (120,120)
     MAXSPEED = 1
     
     
-    def __init__(self, speed, steering, ent, paused):
-        self._speed = speed
-        self._steering = steering
+    def __init__(self, ent):
         self.ent = ent
+        self._speed = 0
+        self._steering = 0
         self._hp = 100
         self.score = 0
-        self.paused = paused
-
+        self.paused = True
+        
     @property
     def hp(self):
         return self._hp if self._hp >0 else 0
@@ -214,9 +220,10 @@ class TheCar:
         self.ent.position += self.ent.forward * self.speed
         return 0
 
+    def pause(self):
+        self.paused = not self.paused
 
     def rotate(self):
-
         if self.steering > 0:
             offset = 1
         elif self.steering < 0:

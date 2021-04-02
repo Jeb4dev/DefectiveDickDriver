@@ -5,16 +5,17 @@ from read_key_bindings import *
 class Menu:
     entities = []
 
-    def __init__(self, player):
+    def __init__(self, player, player_car):
         self.hints = get_value("settings", "hints")
         self.player = player
+        self.player_car = player_car
 
         self.show_main_menu()
 
     @classmethod
     def clear_menu(cls):
         while cls.entities:
-            destroy(cls.entities.pop(), 0)
+            destroy(cls.entities.pop(), delay=0)
 
     def show_main_menu(self):
         self.clear_menu()
@@ -24,8 +25,8 @@ class Menu:
 
         self.entities.append(Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game"))
 
-        self.entities.append(Button(parent=main_menu, text='Press ESC!', color=color.black10, scale=(0.5, 0.08),
-                        position=(0, 0.1), on_click=self._pass, tooltip=Tooltip('PLAY')))
+        self.entities.append(Button(parent=main_menu, text='Play', color=color.black10, scale=(0.5, 0.08),
+                        position=(0, 0.1), on_click=self.player_car.pause, tooltip=Tooltip('PLAY')))
         self.entities.append(Button(parent=main_menu, text='Scoreboard', color=color.black10, scale=(0.5, 0.08),
                         position=(0, 0), on_click=self.show_scoreboard_menu, tooltip=Tooltip('Show Scoreboard')))
         self.entities.append(Button(parent=main_menu, text='Options', color=color.black10, scale=(0.5, 0.08),
