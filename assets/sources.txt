@@ -1,1 +1,3 @@
-assets/textures/dirt.jpg   -  https://www.deviantart.com/hhh316/art/Seamless-Cracked-Dirt-Texture-347828451
+assets/textures/dirt.jpg  -  https://www.deviantart.com/hhh316/art/Seamless-Cracked-Dirt-Texture-347828451
+assets/textures/night_sky_red_blur.png  -  https://unsplash.com/photos/YAnOTaxbuaM
+assets/music/backaround_music.ogg  -  https://cdn.pixabay.com/download/audio/2021/03/26/audio_08a9a1a098.mp3
