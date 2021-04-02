@@ -24,73 +24,73 @@ class Menu:
                            billboard=True, 
                            position=self.player.position)
         self.e(main_menu)
-        self.entities.append(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
 
-        self.entities.append(Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game"))
+        self.e(Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game"))
 
-        self.entities.append(Button(parent=main_menu, text='Play', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Play', color=color.black10, scale=(0.5, 0.08),
                         position=(0, 0.1), on_click=self.player_car.pause, tooltip=Tooltip('PLAY')))
-        self.entities.append(Button(parent=main_menu, text='Scoreboard', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Scoreboard', color=color.black10, scale=(0.5, 0.08),
                         position=(0, 0), on_click=self.show_scoreboard_menu, tooltip=Tooltip('Show Scoreboard')))
-        self.entities.append(Button(parent=main_menu, text='Options', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Options', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.1), on_click=self.show_options_menu, tooltip=Tooltip('options')))
-        self.entities.append(Button(parent=main_menu, text='Quit!', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Quit!', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.2), on_click=application.quit, tooltip=Tooltip('exit')))
 
     def show_scoreboard_menu(self):
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-        self.entities.append(main_menu)
+        self.e(main_menu)
 
         scoreboard = get_value("scoreboard", "*")
 
-        self.entities.append(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
 
-        self.entities.append(Text(parent=main_menu, position=(0, .25), text="Scoreboard"))
+        self.e(Text(parent=main_menu, position=(0, .25), text="Scoreboard"))
 
         s = 0
         for i in range(len(scoreboard)):
             for j in scoreboard[i]:
                 s += 1  # just here chilling, don't touch
-                self.entities.append(Text(parent=main_menu, position=(0, .17 - s * .05), text=f"{scoreboard[i][j]}".center(8)))
+                self.e(Text(parent=main_menu, position=(0, .17 - s * .05), text=f"{scoreboard[i][j]}".center(8)))
 
-        self.entities.append(Text(parent=main_menu, position=(0, .17), text="Score"))
-        self.entities.append(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
+        self.e(Text(parent=main_menu, position=(0, .17), text="Score"))
+        self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.2), on_click=self.show_main_menu, tooltip=Tooltip('Back to Main menu')))
 
     def show_options_menu(self):
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-        self.entities.append(main_menu)
-        self.entities.append(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
+        self.e(main_menu)
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
 
-        self.entities.append(Text(parent=main_menu, origin=(0, -10), text="Options"))
+        self.e(Text(parent=main_menu, origin=(0, -10), text="Options"))
 
-        self.entities.append(Button(parent=main_menu, text='Mouse & Keys', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Mouse & Keys', color=color.black10, scale=(0.5, 0.08),
                         position=(0, 0.1), on_click=self.show_keyboard_menu, tooltip=Tooltip('Mouse sensitivity & keybindings')))
-        self.entities.append(Button(parent=main_menu, text='Graphics', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Graphics', color=color.black10, scale=(0.5, 0.08),
                         position=(0, 0), on_click=self.show_graphic_options_menu, tooltip=Tooltip('Graphic settings')))
-        self.entities.append(Button(parent=main_menu, text='Other', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Other', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.1), on_click=self.show_other_options_menu, tooltip=Tooltip('Other settings')))
-        self.entities.append(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.2), on_click=self.show_main_menu, tooltip=Tooltip('Back to Main menu')))
 
     def show_keyboard_menu(self):
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-        self.entities.append(main_menu)
+        self.e(main_menu)
 
         sensitivity = get_value("mouse_settings", "sensitivity")
 
-        self.entities.append(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                                     position=(2, 2, 2)))
 
-        self.entities.append(Text(parent=main_menu, origin=(0, -10), text="Mouse & Keyboard Settings"))
+        self.e(Text(parent=main_menu, origin=(0, -10), text="Mouse & Keyboard Settings"))
 
         # Mouse Sensitivity
         self.slider = ThinSlider(parent=main_menu, text="Mouse Sensitivity", min=0, max=10,
                    default=sensitivity, x=-.4, y=.2, step=0.1, dynamic=True, scale=.5)
-        self.entities.append(self.slider)
+        self.e(self.slider)
 
         def on_slider_changed(slider=self.slider):
             global sensitivity
@@ -118,17 +118,17 @@ class Menu:
                  position=(.5, .2125 - .05 * key))
 
         # Buttons
-        self.entities.append(Button(parent=main_menu, text='Save!', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Save!', color=color.black10, scale=(0.5, 0.08),
                                     position=(0, -0.1), on_click=save_values,
                                     tooltip=Tooltip('Save Changes')))
-        self.entities.append(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                                     position=(0, -0.2), on_click=self.show_options_menu,
                                     tooltip=Tooltip('Back to Options menu')))
 
     def show_other_options_menu(self):
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-        self.entities.append(main_menu)
+        self.e(main_menu)
 
         def goback():
             save_values()
@@ -139,33 +139,33 @@ class Menu:
             update_value("settings", "hints", "".join(on_off_switch.value))
             save_values()
 
-        self.entities.append(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
 
-        self.entities.append(Text(parent=main_menu, origin=(0, -10), text="Other Settings"))
+        self.e(Text(parent=main_menu, origin=(0, -10), text="Other Settings"))
 
         # Hints
-        self.entities.append(Text(parent=main_menu, position=(-.025, .19), scale=1, text="Tips"))
+        self.e(Text(parent=main_menu, position=(-.025, .19), scale=1, text="Tips"))
         on_off_switch = ButtonGroup(('off', 'on'), parent=main_menu, min_selection=1, position=(.05, .2),
                                     default=f"{self.hints}", selected_color=color.red)
-        self.entities.append(on_off_switch)
+        self.e(on_off_switch)
         on_off_switch.on_value_changed = on_value_changed
 
         # Buttons
-        self.entities.append(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                         position=(0, -0.2), on_click=goback, tooltip=Tooltip('Back to Options menu')))
 
     def show_graphic_options_menu(self):
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-        self.entities.append(main_menu)
+        self.e(main_menu)
 
-        self.entities.append(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                                     position=(2, 2, 2)))
 
-        self.entities.append(Text(parent=main_menu, origin=(0, -10), text="Graphic Settings"))
+        self.e(Text(parent=main_menu, origin=(0, -10), text="Graphic Settings"))
 
         # Buttons
-        self.entities.append(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
+        self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                                     position=(0, -0.2), on_click=self.show_options_menu, tooltip=Tooltip('Back to Options menu')))
 
     def _pass(self):
