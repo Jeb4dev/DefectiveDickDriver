@@ -8,7 +8,6 @@ from utils import make_walls, make_floor, reset_game
 from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
 
-
 from sys import argv
 import random
 import math
