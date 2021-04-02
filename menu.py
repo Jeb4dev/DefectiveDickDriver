@@ -154,7 +154,7 @@ class Menu:
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                       position=(2, 2, 2)))
         if new_hs:
-            score_text = f'New High Score!\nFinal Score: {round(self.player_car.score)}\nNew High Score!'
+            score_text = f'New High Score!\n{round(self.player_car.score)}\nNew High Score!'
         else:
             score_text = f"Final Score: {round(self.player_car.score)}"
 
