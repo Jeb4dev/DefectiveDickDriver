@@ -23,6 +23,7 @@ class CheckPoint(Entity):
     checkpoints = []
     car = None
     light = None
+    lastpoint = 0
 
 
 
@@ -36,6 +37,7 @@ class CheckPoint(Entity):
                         )
         self.checkpoints.append(self)
         self.light = None
+        self.getby = round(time.time() + 30)
 
     def set_light(self, light):
         self.light = light
@@ -54,6 +56,9 @@ class CheckPoint(Entity):
                                              and 'terrain' not in e.name
                                              and not isinstance(e, Obstacle)]
         if len(less_touching) == 1:
+            self.lastpoint = (self.getby - time.time())
+            if self.lastpoint < 0:
+                self.lastpoint = 0
             CheckPoint.spawn_new()
             self.checkpoints.remove(self)
             destroy(self.light, delay=0)
@@ -73,7 +78,13 @@ class CheckPoint(Entity):
     @classmethod
     def spawn_new(cls):
 
-        cls('cube', color.rgba(255,255,0,64), (random.randint(-100,100), 0, random.randint(-100,100)), (20,20,20))
+        cls('cube', 
+            color.rgba(255,255,0,64),
+            (random.randint(-100,100),
+            0,
+            random.randint(-100,100)), 
+            (20,20,20)
+            )
         cls.light.position = cls.checkpoints[0].position+Vec3(0, 15, 0)
         # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
         for x in range(15):

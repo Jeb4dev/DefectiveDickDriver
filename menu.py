@@ -9,6 +9,7 @@ class Menu:
         self.hints = get_value("settings", "hints")
         self.player = player
         self.player_car = player_car
+        self.e = self.entities.append
 
         self.show_main_menu()
 
@@ -19,8 +20,10 @@ class Menu:
 
     def show_main_menu(self):
         self.clear_menu()
-        main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-        self.entities.append(main_menu)
+        main_menu = Entity(scale=Vec2(12, 12), 
+                           billboard=True, 
+                           position=self.player.position)
+        self.e(main_menu)
         self.entities.append(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90), position=(2, 2, 2)))
 
         self.entities.append(Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game"))

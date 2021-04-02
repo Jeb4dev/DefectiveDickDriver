@@ -113,7 +113,7 @@ def update():
         # HUD
         speed_text.text = f"Speed {round(abs(player_car.speed)*80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
-        score_text.text = f"SCORE {player_car.score}"
+        score_text.text = f"SCORE {round(player_car.score)}"
         health_bar_1.value = round(player_car.hp)
 
         # Arrow
@@ -153,7 +153,7 @@ def update():
         for checkpoint in CheckPoint.checkpoints:
 
             if checkpoint.is_cleared([]):
-                player_car.score += 1
+                player_car.score += checkpoint.lastpoint
 
                 Obstacle.shuffle()
 
