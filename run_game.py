@@ -158,6 +158,8 @@ def update():
         if player_car.story:
             if time.time() < player_car.story_time:
                 story_text.text = f"Alert: {player_car.story[0]}"
+                story_text.position = (-.8, .45)
+                story_text.scale = 2
             else:
                 story_text.text = ''
         health_bar_1.value = round(player_car.hp)
