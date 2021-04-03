@@ -2,4 +2,5 @@
 __pycache__
 *.swo
 *.pyc
+scores.json
 
