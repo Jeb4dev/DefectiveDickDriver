@@ -32,7 +32,7 @@ This is an AAA RPG VR game and Not recommended for beginners.
     <td>LEFT</td>
     <td>"A"</td>
     <td>MENU</td>
-    <td>"Esc"</td>
+    <td>"ESC"</td>
   </tr>
   <tr>
     <td>RIGHT</td>
