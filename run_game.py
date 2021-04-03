@@ -151,12 +151,12 @@ def update():
             player_car.score = 0
 
         # HUD
-        speed_text.text = f"Speed {round(abs(player_car.speed) * 80, 1)} km/h"
+        speed_text.text = f"{round(abs(player_car.speed) * 80, 1)} km/h"
         # pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
         score_text.text = f"SCORE {round(player_car.score)}"
         if player_car.story:
             if time.time() < player_car.story_time:
-                story_text.text = f"Alert: {player_car.story[0]}"
+                story_text.text = f"Solve the case : {player_car.story[0]}, follow the clues..."
                 story_text.position = (-.8, .45)
                 story_text.scale = 2
             else:
