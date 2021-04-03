@@ -57,7 +57,7 @@ Dependencies:
 	ursina and dependenciesi(https://github.com/pokepetter/ursina)
 
 you can set the video options when running the game
-```python3 logic.py 1080 1```
+```python3 run_game.py 1080 1```
 Screen height in pixels(all options are 16:9)
 1 for fullscreen, 0 for windowed.
 
