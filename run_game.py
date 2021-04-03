@@ -90,7 +90,7 @@ camera.parent = player_car.ent
 speed_text = Text(text=f"", position=(0, -.4), color=color.white66)
 pos_text = Text(text=f"", position=(.3, .5), color=color.black)
 score_text = Text(text=f"", position=(-.8, -.35), color=COLOR_RUST_2X)
-story_text = Text(text=f"", position=(0, 0), color=COLOR_RUST_2X)
+story_text = Text(text=f"", position=(-.3, .2), color=COLOR_RUST_2X)
 health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40), animation_duration=0)
 siren_bar_1 = health_bar.HealthBar(bar_color=color.rgb(40, 40, 70), roundness=.1, value=100, position=(-.8, -.4375), animation_duration=0)
 
