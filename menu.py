@@ -38,7 +38,7 @@ class Menu:
         self.e(Button(parent=main_menu, text='Scoreboard', color=color.black10, scale=(0.5, 0.08),
                       position=(0, 0), on_click=self.show_scoreboard_menu, tooltip=Tooltip('Show High Scores')))
         self.e(Button(parent=main_menu, text='Controls', color=color.black10, scale=(0.5, 0.08),
-                      position=(0, -0.1), on_click=self.show_keyboard_menu, tooltip=Tooltip('Show Controls')))
+                      position=(0, -0.1), on_click=self.show_story_menu, tooltip=Tooltip('Show Controls')))
         self.e(Button(parent=main_menu, text='Quit!', color=color.black10, scale=(0.5, 0.08),
                       position=(0, -0.2), on_click=application.quit, tooltip=Tooltip('exit')))
 
@@ -177,6 +177,53 @@ class Menu:
             score_text = f"Final Score: {round(self.player_car.score)}"
 
         self.e(Text(parent=main_menu, origin=(0, 0), scale=4, text=score_text))
+
+        self.e(Button(parent=main_menu, text='Back', color=color.black10, scale=(0.5, 0.08),
+                      position=(0, -0.40), on_click=self.show_main_menu,
+                      tooltip=Tooltip('Back to Main menu or just press [ESC] to replay')))
+
+    def show_story_menu(self):
+
+        story = """
+        His Dad's greatest dream was that his son Dick Rider can become a good police officer.
+        However reality is often disappointing and Dick Rider had been in the same position for past 20 years.
+        His dad couldn't see his son fulfilling his dream.
+        As he laid on the deathbead he asked his son to fulfill his promise.
+        Before He could even do the last rites for his late father, 
+        He got an urgent assignment which had high risk and high return.
+        Hence, Our cop Dick Rider set his mind up today "I should solve a big case today and get my promotion atleast for my father's sake".
+        Little did he know that the case he was going to recieve would be so tantalizing 
+        """
+
+        camera.rotation = Vec3(0, 0, 0)
+        camera.position = Vec3(0, 0, -20)
+
+        self.clear_menu()
+        main_menu = Entity(scale=Vec2(12, 12),
+                           billboard=True,
+                           position=self.player.position)
+        self.e(main_menu)
+        self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
+                      position=(2, 2, 2)))
+
+        self.e(Text(parent=main_menu, origin=(0, 0), scale=1,
+                    text="His Dad's greatest dream was "
+                         "that his son Dick Driver would have successful career as police officer."))
+        self.e(Text(parent=main_menu, origin=(0, 1), scale=1,
+                    text="However the reality is often disappointing "
+                         "and Dick Driver had been in the same position for past 20 years."))
+        self.e(Text(parent=main_menu, origin=(0, 2), scale=1,
+                    text="His dad couldn't see his son fulfilling his dream."))
+        self.e(Text(parent=main_menu, origin=(0, 3), scale=1,
+                    text="As he laid on the deathbed, he asked his son to fulfill his promise."))
+        self.e(Text(parent=main_menu, origin=(0, 4), scale=1,
+                    text="Before he could even do the last rites for his late father, "))
+        self.e(Text(parent=main_menu, origin=(0, 5), scale=1,
+                    text="""Hence, Our cop Dick Rider set his mind up today "I should solve a big case today and get my promotion atleast for my father's sake"."""))
+        self.e(Text(parent=main_menu, origin=(0, 6), scale=1,
+                    text="Little did he know that the case he was going to recieve would be so tantalizing "))
+
+
 
         self.e(Button(parent=main_menu, text='Back', color=color.black10, scale=(0.5, 0.08),
                       position=(0, -0.40), on_click=self.show_main_menu,
