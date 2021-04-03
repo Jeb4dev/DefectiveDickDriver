@@ -18,21 +18,27 @@ This is an AAA RPG VR game and Not recommended for beginners.
   <em>
     <td>FORWARD</td>
     <td>PRESS "W"</td>
-    </em>
-    
+    <td>SIREN</td>
+    <td>PRESS "E"</td>
+    </em>  
   </tr>
   <tr>
     <td>RIGHT</td>
     <td>PRESS "D"</td>
-    
+    <td>BRAKE</td>
+    <td>PRESS "SPACE"</td>
   </tr>
   <tr>
-  <td>left</td>
-  <td> PRESS "A"</td>
+    <td>LEFT</td>
+    <td> PRESS "A"</td>
+    <td>MENU</td>
+    <td>PRESS "Esc"</td>
   </tr>
   <tr>
-  <td>BACK</td>
-  <td>PRESS "S"</td>
+    <td>BACK</td>
+    <td>PRESS "S"</td>
+    <td>QUIT</td>
+    <td>PRESS "SHIFT + Q"</td>
   </tr>
 </table>
 
