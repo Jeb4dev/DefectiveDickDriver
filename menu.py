@@ -38,9 +38,11 @@ class Menu:
         self.e(Button(parent=main_menu, text='Scoreboard', color=color.black10, scale=(0.5, 0.08),
                       position=(0, 0), on_click=self.show_scoreboard_menu, tooltip=Tooltip('Show High Scores')))
         self.e(Button(parent=main_menu, text='Controls', color=color.black10, scale=(0.5, 0.08),
-                      position=(0, -0.1), on_click=self.show_story_menu, tooltip=Tooltip('Show Controls')))
+                      position=(0, -0.1), on_click=self.show_keyboard_menu, tooltip=Tooltip('Show Controls')))
         self.e(Button(parent=main_menu, text='Quit!', color=color.black10, scale=(0.5, 0.08),
                       position=(0, -0.2), on_click=application.quit, tooltip=Tooltip('exit')))
+        self.e(Button(parent=main_menu, text='Story', color=color.black10, scale=(0.5, 0.08),
+                      position=(0, -0.4), on_click=self.show_story_menu, tooltip=Tooltip('Read story')))
 
     def show_scoreboard_menu(self):
         self.clear_menu()
@@ -79,8 +81,6 @@ class Menu:
         self.e(Button(parent=main_menu, text='Clear', color=color.black10, scale=(0.5, 0.08),
                       position=(0, -0.50), on_click=delete_scores,
                       tooltip=Tooltip('Clear all High Scored, cannot be undone.')))
-
-
 
     # def show_options_menu(self):
     #     self.clear_menu()
@@ -194,17 +194,6 @@ class Menu:
 
     def show_story_menu(self):
 
-        story = """
-        His Dad's greatest dream was that his son Dick Rider can become a good police officer.
-        However reality is often disappointing and Dick Rider had been in the same position for past 20 years.
-        His dad couldn't see his son fulfilling his dream.
-        As he laid on the deathbead he asked his son to fulfill his promise.
-        Before He could even do the last rites for his late father, 
-        He got an urgent assignment which had high risk and high return.
-        Hence, Our cop Dick Rider set his mind up today "I should solve a big case today and get my promotion atleast for my father's sake".
-        Little did he know that the case he was going to recieve would be so tantalizing 
-        """
-
         camera.rotation = Vec3(0, 0, 0)
         camera.position = Vec3(0, 0, -20)
 
@@ -216,27 +205,27 @@ class Menu:
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                       position=(2, 2, 2)))
 
-        self.e(Text(parent=main_menu, origin=(0, 0), scale=1,
-                    text="His Dad's greatest dream was "
-                         "that his son Dick Driver would have successful career as police officer."))
-        self.e(Text(parent=main_menu, origin=(0, 1), scale=1,
-                    text="However the reality is often disappointing "
-                         "and Dick Driver had been in the same position for past 20 years."))
-        self.e(Text(parent=main_menu, origin=(0, 2), scale=1,
-                    text="His dad couldn't see his son fulfilling his dream."))
-        self.e(Text(parent=main_menu, origin=(0, 3), scale=1,
-                    text="As he laid on the deathbed, he asked his son to fulfill his promise."))
-        self.e(Text(parent=main_menu, origin=(0, 4), scale=1,
-                    text="Before he could even do the last rites for his late father, "))
-        self.e(Text(parent=main_menu, origin=(0, 5), scale=1,
-                    text="""Hence, Our cop Dick Rider set his mind up today "I should solve a big case today and get my promotion atleast for my father's sake"."""))
-        self.e(Text(parent=main_menu, origin=(0, 6), scale=1,
-                    text="Little did he know that the case he was going to recieve would be so tantalizing "))
+        self.e(Text(parent=main_menu, origin=(0, -6.0), scale=2,
+                    text="Richard Driver always knew he was destined for greatness."))
+        self.e(Text(parent=main_menu, origin=(0, -4.8), scale=2,
+                    text="Having quickly climbed the ranks to Detective in the Shitty City Police Department,"))
+        self.e(Text(parent=main_menu, origin=(0, -3.6), scale=2,
+                    text="Richard thought he could change the world."))
+        self.e(Text(parent=main_menu, origin=(0, -2.4), scale=2,
+                    text="Unfortunately for Richard, the city had other plans."))
+        self.e(Text(parent=main_menu, origin=(0, -1.2), scale=2,
+                    text="20 years of Detective work for the SCPD took its toll,"))
+        self.e(Text(parent=main_menu, origin=(0, 0), scale=2,
+                    text="and it wasn't long before Dick emerged, hardened by the streets."))
+        self.e(Text(parent=main_menu, origin=(0, 1.2), scale=2,
+                    text="Until one fateful morning when the Chief came by with a file,"))
+        self.e(Text(parent=main_menu, origin=(0, 2.4), scale=2,
+                    text='"Close this case and you earn your stripes," he said with a grin'))
+        self.e(Text(parent=main_menu, origin=(0, 3.6), scale=2,
+                    text="Help Dick fulfill his destiny."))
 
-
-
-        self.e(Button(parent=main_menu, text='Back', color=color.black10, scale=(0.5, 0.08),
-                      position=(0, -0.40), on_click=self.show_main_menu,
+        self.e(Button(parent=main_menu, text='Drive!', color=color.black10, scale=(0.5, 0.08),
+                      position=(0, -0.40), on_click=self.player_car.pause,
                       tooltip=Tooltip('Back to Main menu or just press [ESC] to replay')))
 
     # def show_graphic_options_menu(self):
