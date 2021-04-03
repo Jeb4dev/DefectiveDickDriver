@@ -1,11 +1,10 @@
 from ursina import *
 import random
 from utils import collide
+
+
 # normal, top-down, PointLight, normal, super
 # Light,DirectionalLight,PointLight,AmbientLight,SpotLight
-
-
-
 class Lighting(PointLight):
     def __init__(self, parent, position, color_, rotation):
         super().__init__(
@@ -15,26 +14,23 @@ class Lighting(PointLight):
             shadows=True,
             color=color_
 
-
         )
 
-class CheckPoint(Entity):
 
+class CheckPoint(Entity):
     checkpoints = []
     car = None
     light = None
     lastpoint = 0
 
-
-
     def __init__(self, model, color, position, scale):
-        super().__init__(model=model, 
-                         color=color, 
-                         position=position, 
-                         scale=scale, 
+        super().__init__(model=model,
+                         color=color,
+                         position=position,
+                         scale=scale,
                          double_sided=True,
-                         collider = 'cube'
-                        )
+                         collider='cube'
+                         )
         self.checkpoints.append(self)
         self.light = None
         self.getby = round(time.time() + 30)
@@ -44,17 +40,18 @@ class CheckPoint(Entity):
         self.light.position = self.position + light.position
 
     def is_cleared(self, ignore_list):
-        touching = boxcast(self.position,
+        touching = boxcast(
+            self.position,
             direction=self.up,
             distance=5,
-            thickness=(20,20),
+            thickness=(20, 20),
             traverse_target=scene,
             ignore=ignore_list,
             debug=False).entities
-        less_touching = [e for e in touching if 'Cube' not in e.name 
-                                             and 'check_point' not in e.name 
-                                             and 'terrain' not in e.name
-                                             and not isinstance(e, Obstacle)]
+        less_touching = [e for e in touching if 'Cube' not in e.name
+                         and 'check_point' not in e.name
+                         and 'terrain' not in e.name
+                         and not isinstance(e, Obstacle)]
         if len(less_touching) == 1:
             self.lastpoint = (self.getby - time.time())
             if self.lastpoint < 0:
@@ -65,7 +62,6 @@ class CheckPoint(Entity):
             destroy(self, delay=0)
 
             return True
-
 
     @classmethod
     def init_car(cls, car):
@@ -78,47 +74,45 @@ class CheckPoint(Entity):
     @classmethod
     def spawn_new(cls):
 
-        cls('cube', 
-            color.rgba(255,255,0,64),
-            (random.randint(-100,100),
-            0,
-            random.randint(-100,100)), 
-            (20,20,20)
+        cls('cube',
+            color.rgba(255, 255, 0, 64),
+            (random.randint(-100, 100),
+             0,
+             random.randint(-100, 100)),
+            (20, 20, 20)
             )
-        cls.light.position = cls.checkpoints[0].position+Vec3(0, 15, 0)
+        cls.light.position = cls.checkpoints[0].position + Vec3(0, 15, 0)
         # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
         for x in range(15):
             Obstacle(color.rgba(random.randint(32, 128),
                                 random.randint(16, 64),
                                 random.randint(0, 32)),
-                     scale = (random.uniform(3, 8),
-                              random.uniform(3, 25),
-                              random.uniform(3, 8)))
+                     scale=(random.uniform(3, 8),
+                            random.uniform(3, 25),
+                            random.uniform(3, 8)))
 
 
 class Obstacle(Entity):
-
     obstacles = []
     car = None
 
-
     def __init__(self, color, scale):
         super().__init__(model='cube',
-                        color=color,
-                        position=(0,0,0),
-                        scale=scale,
-                        collider='cube'
-                        )
+                         color=color,
+                         position=(0, 0, 0),
+                         scale=scale,
+                         collider='cube'
+                         )
         self.get_position()
         self.obstacles.append(self)
 
     def get_position(self):
         MAXMAP = 120
         while True:
-            self.position = Vec3(random.randint(-MAXMAP,MAXMAP), (self.scale[1] // 2)-.5, random.randint(-MAXMAP,MAXMAP))
+            self.position = Vec3(random.randint(-MAXMAP, MAXMAP), (self.scale[1] // 2) - .5,
+                                 random.randint(-MAXMAP, MAXMAP))
             if distance(self.position, self.car) > 20:
                 break
-
 
     @classmethod
     def init_car(cls, car):
@@ -148,22 +142,22 @@ class TheCar:
         self.score = 0
         self.paused = True
         self.new_game = True
-        
+
     @property
     def hp(self):
-        return self._hp if self._hp >0 else 0
+        return self._hp if self._hp > 0 else 0
 
     @hp.setter
     def hp(self, x):
         if x == None:
             self._hp = 100
-        else: self._hp = x
-
+        else:
+            self._hp = x
 
     @property
     def speed(self):
         return self._speed
-    
+
     @speed.setter
     def speed(self, x):
         if x == None:
@@ -179,7 +173,7 @@ class TheCar:
                 if self._speed < .1:
                     self._speed += time.dt * .05
                     if self._speed < 0:
-                        self._speed += time.dt *.1
+                        self._speed += time.dt * .1
 
             if self._speed > self.MAXSPEED:
                 self._speed = self.MAXSPEED
@@ -193,11 +187,9 @@ class TheCar:
             if self._speed < -self.MAXSPEED:
                 self._speed = -self.MAXSPEED
 
-
     @property
     def steering(self):
         return self._steering
-
 
     @steering.setter
     def steering(self, x):
@@ -226,13 +218,13 @@ class TheCar:
         if self.speed > 0:
             if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
                 speed = self.speed
-                self.hp -= self.speed*80
+                self.hp -= self.speed * 80
                 self.speed = None
                 return speed
         if self.speed < 0:
             if collide(self.ent.position, self.ent.back, 2.3, ignore_list, self._speed):
                 speed = self.speed
-                self.hp -= abs(self.speed)*80
+                self.hp -= abs(self.speed) * 80
                 self.speed = None
                 return -speed
         self.ent.position += self.ent.forward * self.speed
@@ -255,7 +247,7 @@ class TheCar:
             self.ent.rotation += Vec3(0, (self.steering * time.dt + (abs(self.speed) * offset)) * reverse_multiplier, 0)
 
     def w(self):
-        self.speed = 1 
+        self.speed = 1
 
     def s(self):
         self.speed = -1
@@ -269,7 +261,7 @@ class TheCar:
     def brake(self, coasting):
         self._speed *= .99
         if not coasting:
-            self._speed -= (1-self.speed) * time.dt
+            self._speed -= (1 - self.speed) * time.dt
         if self._speed < .01:
             self._speed = 0
 
@@ -277,6 +269,4 @@ class TheCar:
 class Arrow(Entity):
     def __init__(self):
         super().__init__(model='assets/models/arrow',
-                         color=color.rgba(70,40,40,200))
-
-
+                         color=color.rgba(70, 40, 40, 200))

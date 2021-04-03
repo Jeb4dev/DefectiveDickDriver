@@ -9,7 +9,6 @@ from menu import Menu
 
 from sys import argv
 
-
 app = Ursina()
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
@@ -18,22 +17,25 @@ window.fullscreen = False
 if len(argv) > 1:
     try:
         scale = int(argv[1])
-        resolution = (scale/9*16, scale, 32)
+        resolution = (scale / 9 * 16, scale, 32)
         window.fullscreen_size = resolution
         window.windowed_size = resolution
         if len(argv) > 2:
             window.fullscreen = int(argv[2])
 
     except exception as e:
-        print(f'correct usage is ``logic.py height fullscreen`` height should be in pixels, 1 for fullscreen, 0 for windowed')
+        print(
+            f'correct usage is ``logic.py height fullscreen`` height should be in pixels, 1 for fullscreen, 0 for windowed')
 
 
 def center_on_screen(self):
-        print('size;', self.size)
-        self.position = Vec2(
-            int((self.screen_resolution[0] - self.size[0]) / 2),
-            int((self.screen_resolution[1] - self.size[1]) / 2)
-            )
+    print('size;', self.size)
+    self.position = Vec2(
+        int((self.screen_resolution[0] - self.size[0]) / 2),
+        int((self.screen_resolution[1] - self.size[1]) / 2)
+    )
+
+
 center_on_screen(window)
 
 window.vsync = True
@@ -49,23 +51,21 @@ player.cursor.enabled = False
 walls = make_walls(120)
 floor = make_floor(9, 20)
 
-lower_floor = Entity(model='cube', color=color.rgb(35,20,20),                     position=(0, -2, 0), 
-                     scale=(1000,1,1000), 
-                     rotation=(0,0,0)
+lower_floor = Entity(model='cube', color=color.rgb(35, 20, 20), position=(0, -2, 0),
+                     scale=(1000, 1, 1000),
+                     rotation=(0, 0, 0)
                      )
 
-light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
-siren_light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
+light = Lighting(player, player.position + Vec3(1, 7, 0), color.black, rotation=player.down)
+siren_light = Lighting(player, player.position + Vec3(1, 7, 0), color.black, rotation=player.down)
 CheckPoint.init_light(light)
 
-
-
-car = Entity(model='assets/models/80scop', 
-        texture='assets/models/cars', 
-        position = (0, 0, 4), 
-        scale=1,
-        collider='box'
-        )
+car = Entity(model='assets/models/80scop',
+             texture='assets/models/cars',
+             position=(0, 0, 4),
+             scale=1,
+             collider='box'
+             )
 CheckPoint.init_car(car)
 Obstacle.init_car(car)
 
@@ -74,14 +74,14 @@ CheckPoint.spawn_new()
 arrow = Arrow()
 player_car = TheCar(car)
 menu = Menu(player, player_car)
-cars = []
-cars.append(player_car)
+cars = [player_car]
 
 camera.parent = player_car.ent
 speed_text = Text(text=f"", position=(0, -.4), color=color.white66)
 pos_text = Text(text=f"", position=(.3, .5), color=color.black)
 score_text = Text(text=f"", position=(-.8, -.35), color=COLOR_RUST_2X)
-health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40), animation_duration=0)
+health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40),
+                                    animation_duration=0)
 
 ignore_list = [player, car]
 
@@ -94,17 +94,16 @@ music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True
 siren_audio = Audio('assets/music/siren', pitch=1, loop=True, autoplay=False, volume=.1)
 
 # Lights
-driving_light1 = PointLight(shadows=True, color=color.rgb(196,196,196))
-driving_light2 = PointLight(shadows=True, color=color.rgb(128,128,128))
-driving_light3 = PointLight(shadows=True, color=color.rgb(64,64,64))
+driving_light1 = PointLight(shadows=True, color=color.rgb(196, 196, 196))
+driving_light2 = PointLight(shadows=True, color=color.rgb(128, 128, 128))
+driving_light3 = PointLight(shadows=True, color=color.rgb(64, 64, 64))
 menu_light = AmbientLight(position=camera.position, shadows=True)
 
 
 def update():
-
     # Main Loop - Game Paused
     if player_car.paused:
-        menu_light.color = color.rgb(100,50,50)
+        menu_light.color = color.rgb(100, 50, 50)
         driving_light1.color = color.black
         driving_light2.color = color.black
         driving_light3.color = color.black
@@ -115,25 +114,25 @@ def update():
 
     # Main Loop - Game Running
     else:
-        camera.rotation = Vec3(25,0,0)
-        camera.position = Vec3(0,10,-10)
+        camera.rotation = Vec3(25, 0, 0)
+        camera.position = Vec3(0, 10, -10)
         menu_light.color = color.black
-        driving_light1.color = color.rgb(196,196,196)
-        driving_light2.color = color.rgb(128,128,128)
-        driving_light3.color = color.rgb(64,64,64)
+        driving_light1.color = color.rgb(196, 196, 196)
+        driving_light2.color = color.rgb(128, 128, 128)
+        driving_light3.color = color.rgb(64, 64, 64)
         driving_light1.position = player_car.ent.position
         driving_light1.rotation_x = -90
         driving_light2.rotation_x = -90
         driving_light3.rotation_x = -90
-        driving_light2.position = player_car.ent.position + player_car.ent.forward*15 + Vec3(0, 5, 0)
-        driving_light3.position = player_car.ent.position + player_car.ent.forward*40 + Vec3(0, 5, 0)
+        driving_light2.position = player_car.ent.position + player_car.ent.forward * 15 + Vec3(0, 5, 0)
+        driving_light3.position = player_car.ent.position + player_car.ent.forward * 40 + Vec3(0, 5, 0)
         if inMenu:
             dis_able_menu()
             Menu.clear_menu()
 
         # HUD
-        speed_text.text = f"Speed {round(abs(player_car.speed)*80, 1)} km/h"
-        pos_text.text = f"Pos: {round(player.position[0],2), round(player.position[1],2), round(player.position[2],2)}"
+        speed_text.text = f"Speed {round(abs(player_car.speed) * 80, 1)} km/h"
+        pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
         score_text.text = f"SCORE {round(player_car.score)}"
         health_bar_1.value = round(player_car.hp)
 
@@ -142,7 +141,7 @@ def update():
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
         if player_car.new_game:
-            player_car.ent.position = Vec3(0,0,0)
+            player_car.ent.position = Vec3(0, 0, 0)
             player_car.new_game = False
             player_car.score = 0
 
@@ -164,7 +163,7 @@ def update():
         if not (held_keys['a'] or held_keys['d']):
             player_car.steering = 0
 
-        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints])> (10/80):
+        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints]) > (10 / 80):
             print("big crash", crash_speed)
             Audio('assets/sfx/short_crash')
 
@@ -183,7 +182,7 @@ def update():
 
         if ems_lighting:
 
-            if int(time.time()*5)%2 == 0:
+            if int(time.time() * 5) % 2 == 0:
                 siren_light.color = color.red
 
             else:
@@ -252,7 +251,6 @@ def input(key):
 Sky(texture='night_sky_red_blur')
 # EditorCamera()
 app.run()
-
 
 # basic_lighting_shader   -- no colored light
 # colored_lights_shader   -- just white
