@@ -6,6 +6,8 @@ from classes import TheCar, CheckPoint, Lighting, Obstacle, Arrow
 from utils import make_walls, make_floor, reset_game
 from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
+from story import new_story
+
 
 from sys import argv
 
@@ -145,6 +147,8 @@ def update():
                 player_car.audio_list.pop().stop(destroy=True)
             player_car.ent.position = Vec3(0, 0, 0)
             player_car.new_game = False
+            player_car.story = new_story()
+            player_car.story_time = time.time() + 10
             player_car.score = 0
 
         # HUD
