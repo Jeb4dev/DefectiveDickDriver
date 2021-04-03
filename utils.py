@@ -9,12 +9,9 @@ def collide(position, direction, distance, ignore_list, speed):
                thickness=(1.5, 2),
                traverse_target=scene, 
                ignore=ignore_list,
-               debug=True
+               debug=False
                ).entity is None:
-        # print(boxcast(position, direction=direction, distance=distance, thickness=(2, 2),
-        # traverse_target=scene, ignore=[player, car, level.terrain], debug=False).entity)
-        # This is here just avoiding us crashing for None
-        pass
+         pass
 
     elif boxcast(
             position,
@@ -23,7 +20,7 @@ def collide(position, direction, distance, ignore_list, speed):
             thickness=(1.5,2),
             traverse_target=scene,
             ignore=ignore_list,
-            debug=True
+            debug=False
             ).entity is not None:
         return True
     return False
