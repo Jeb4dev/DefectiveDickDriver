@@ -41,18 +41,19 @@ center_on_screen(window)
 window.vsync = True
 
 scene.fog_color = COLOR_RUST
-scene.fog_density = (10, 60)
+#scene.fog_density = (10, 60)
 
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 1, -20)
 camera.rotation = Vec3(15, 0, 0)
 player.cursor.enabled = False
 
-walls = make_walls(120)
-floor = make_floor(9, 20)
+walls = make_walls(10000)
+floor = make_floor(12, 30)
 
-lower_floor = Entity(model='cube', color=color.rgb(35, 20, 20), position=(0, -2, 0),
-                     scale=(1000, 1, 1000),
+
+lower_floor = Entity(model='cube', color=COLOR_RUST,  position=(0, -2, 0), 
+                     scale=(1000, 1, 1000), 
                      rotation=(0, 0, 0)
                      )
 
@@ -60,12 +61,16 @@ light = Lighting(player, player.position + Vec3(1, 7, 0), color.black, rotation=
 siren_light = Lighting(player, player.position + Vec3(1, 7, 0), color.black, rotation=player.down)
 CheckPoint.init_light(light)
 
-car = Entity(model='assets/models/80scop',
-             texture='assets/models/cars',
-             position=(0, 0, 4),
-             scale=1,
-             collider='box'
-             )
+
+city = Entity(model='assets/models/chicago', color=COLOR_RUST, position =(0, -5, 0), collider='mesh', reload=True)
+
+car = Entity(model='assets/models/80scop', 
+        texture='assets/models/cars', 
+        position = (0, 0, 4), 
+        scale=1,
+        collider='box',
+        name='player_car'
+        )
 CheckPoint.init_car(car)
 Obstacle.init_car(car)
 
@@ -137,7 +142,7 @@ def update():
         health_bar_1.value = round(player_car.hp)
 
         # Arrow
-        arrow.position = player.position + Vec3(0, 3, 0)
+        arrow.position = player.position + Vec3(0, 5, 0)
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
         if player_car.new_game:
@@ -148,20 +153,25 @@ def update():
         if held_keys['w']:
             for car in cars:
                 car.w()
-        if held_keys['a']:
-            for car in cars:
-                car.a()
-        if held_keys['s']:
+        elif held_keys['s']:
             for car in cars:
                 car.s()
-        if held_keys['d']:
-            for car in cars:
-                car.d()
         if held_keys['space']:
             for car in cars:
                 car.brake(False)
-        if not (held_keys['a'] or held_keys['d']):
+        if (held_keys['a'] and held_keys['d']):
+            print('straight ahead!')
+            player_car.steering = None
+        elif not (held_keys['a'] or held_keys['d']):
             player_car.steering = 0
+            print('magic!')
+        elif held_keys['d']:
+            for car in cars:
+                car.d()
+        elif held_keys['a']:
+            for car in cars:
+                car.a()
+
 
         if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints]) > (10 / 80):
             print("big crash", crash_speed)
@@ -218,6 +228,7 @@ def dis_able_menu():
     speed_text.enabled = not speed_text.enabled
     score_text.enabled = not score_text.enabled
     health_bar_1.enabled = not health_bar_1.enabled
+    city.enabled = not city.enabled
 
 
 def input(key):

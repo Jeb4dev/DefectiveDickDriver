@@ -33,7 +33,7 @@ class CheckPoint(Entity):
                          )
         self.checkpoints.append(self)
         self.light = None
-        self.getby = round(time.time() + 30)
+        self.getby = round(time.time() + distance(self.car, self))
 
     def set_light(self, light):
         self.light = light
@@ -48,11 +48,11 @@ class CheckPoint(Entity):
             traverse_target=scene,
             ignore=ignore_list,
             debug=False).entities
-        less_touching = [e for e in touching if 'Cube' not in e.name
-                         and 'check_point' not in e.name
-                         and 'terrain' not in e.name
-                         and not isinstance(e, Obstacle)]
+
+        less_touching = [e for e in touching if 'player_car' in e.name]
+        print(less_touching)
         if len(less_touching) == 1:
+            
             self.lastpoint = (self.getby - time.time())
             if self.lastpoint < 0:
                 self.lastpoint = 0
@@ -74,22 +74,23 @@ class CheckPoint(Entity):
     @classmethod
     def spawn_new(cls):
 
-        cls('cube',
-            color.rgba(255, 255, 0, 64),
-            (random.randint(-100, 100),
-             0,
-             random.randint(-100, 100)),
-            (20, 20, 20)
+        cls('cube', 
+            color.rgba(255,255,0,64),
+            (random.randint(-250,250),
+            0,
+            random.randint(-250,250)), 
+            (25,25,25)
             )
         cls.light.position = cls.checkpoints[0].position + Vec3(0, 15, 0)
         # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
-        for x in range(15):
-            Obstacle(color.rgba(random.randint(32, 128),
-                                random.randint(16, 64),
-                                random.randint(0, 32)),
-                     scale=(random.uniform(3, 8),
-                            random.uniform(3, 25),
-                            random.uniform(3, 8)))
+
+        '''  for x in range(15):
+            z = random.random() * 3 
+            Obstacle(color.rgba((35*z), (20*z), (20*z)),
+                     scale = (random.uniform(3, 8),
+                              random.uniform(3, 25),
+                              random.uniform(3, 8)))
+'''
 
 
 class Obstacle(Entity):
@@ -193,9 +194,13 @@ class TheCar:
 
     @steering.setter
     def steering(self, x):
+        if x == None:
+            self._steering *= .8
+            if abs(self.steering < 2):
+                self._steering = 0
         if x == 0:
             self._steering *= .92
-            if abs(self._steering) < .1:
+            if abs(self._steering) < 2:
                 self._steering = 0
         if x == 1:
             self._steering += 2
