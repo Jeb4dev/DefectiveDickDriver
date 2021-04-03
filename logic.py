@@ -31,7 +31,7 @@ if len(argv) > 1:
 window.vsync = True
 
 scene.fog_color = COLOR_RUST
-#scene.fog_density = (10, 60)
+scene.fog_density = (10, 60)
 
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 1, -20)
@@ -74,14 +74,13 @@ camera.parent = player_car.ent
 speed_text = Text(text=f"", position=(0, -.4), color=color.white66)
 pos_text = Text(text=f"", position=(.3, .5), color=color.black)
 score_text = Text(text=f"", position=(-.8, -.35), color=COLOR_RUST_2X)
-health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40),
-                                    animation_duration=0)
+health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40), animation_duration=0)
+siren_bar_1 = health_bar.HealthBar(bar_color=color.rgb(40, 40, 70), roundness=.1, value=100, position=(-.8, -.4375), animation_duration=0)
 
 ignore_list = [player, car]
 
 inMenu = False
 mouse.visible = False
-ems_lighting = False
 
 # Audio
 music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True, volume=.1)
@@ -129,6 +128,7 @@ def update():
         pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
         score_text.text = f"SCORE {round(player_car.score)}"
         health_bar_1.value = round(player_car.hp)
+        siren_bar_1.value = round(player_car.light_time)
 
         # Arrow
         arrow.position = player.position + Vec3(0, 5, 0)
@@ -163,15 +163,23 @@ def update():
         elif held_keys['a']:
             for car in cars:
                 car.a()
-
+        if player_car.lights:
+            player_car.light_time -= 1
+            if player_car.light_time < 0:
+                player_car.lights = False
+                siren_audio.stop()
+        else:
+            if player_car.light_time < 100:
+                player_car.light_time += .1
         if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints]):
             if player_car.hp < 1:
                 print("end crash")
-                if crash_speed < (10 / 80):
-                    player_car.audio_list.append(Audio('assets/sfx/slow_crash_end'))
-                else:
-                    player_car.audio_list.append(Audio('assets/sfx/fast_crash_end'))
-                player_car.audio_list[-1].play(start=9)
+                if not player_car.audio_list:
+                    if crash_speed < (10 / 80):
+                        player_car.audio_list.append(Audio('assets/sfx/slow_crash_end'))
+                    else:
+                        player_car.audio_list.append(Audio('assets/sfx/fast_crash_end'))
+                    player_car.audio_list[-1].play()
             else:
                 if crash_speed > (10 / 80):
                     print("big crash", crash_speed)
@@ -190,7 +198,7 @@ def update():
 
         player.position = player_car.ent.position
 
-        if ems_lighting:
+        if player_car.lights:
 
             if int(time.time() * 5) % 2 == 0:
                 siren_light.color = color.red
@@ -203,6 +211,7 @@ def update():
     if player_car.hp <= 0:
         player_car.paused = True
         reset_game(player_car, Obstacle, CheckPoint, menu)
+        siren_audio.stop()
         dis_able_menu()
 
 
@@ -227,12 +236,12 @@ def dis_able_menu():
     pos_text.enabled = not pos_text.enabled
     speed_text.enabled = not speed_text.enabled
     score_text.enabled = not score_text.enabled
+    siren_bar_1.enabled = not siren_bar_1.enabled
     health_bar_1.enabled = not health_bar_1.enabled
     city.enabled = not city.enabled
 
 
 def input(key):
-    global ems_lighting
 
     # toggle pause menu
     if key == 'escape':
@@ -245,8 +254,8 @@ def input(key):
 
     # EMS lights toggle
     if key == "e":
-        ems_lighting = not ems_lighting
-        if ems_lighting:
+        player_car.lights = not player_car.lights
+        if player_car.lights:
             siren_audio.play()
         else:
             siren_audio.stop()

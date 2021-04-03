@@ -143,6 +143,8 @@ class TheCar:
         self.paused = True
         self.new_game = True
         self.audio_list = []
+        self.lights = False
+        self.light_time = 100
 
     @property
     def hp(self):
@@ -223,13 +225,21 @@ class TheCar:
         if self.speed > 0:
             if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
                 speed = self.speed
-                self.hp -= self.speed * 80
+                if self.lights:
+                    self.hp -= self.speed * 40
+                    self.light_time -= self.speed * 40
+                else:
+                    self.hp -= self.speed * 80
                 self.speed = None
                 return speed
         if self.speed < 0:
             if collide(self.ent.position, self.ent.back, 2.3, ignore_list, self._speed):
                 speed = self.speed
-                self.hp -= abs(self.speed) * 80
+                if self.lights:
+                    self.hp -= abs(self.speed) * 40
+                    self.light_time -= abs(self.speed) * 40
+                else:
+                    self.hp -= abs(self.speed) * 80
                 self.speed = None
                 return -speed
         self.ent.position += self.ent.forward * self.speed

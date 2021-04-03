@@ -54,6 +54,8 @@ def make_floor(tiles, size):
 
 
 def reset_game(player_car, obs, chk, menu):
+    player_car.lights = False
+    player_car.light_time = 100
     player_car.new_game = True
     player_car.hp = None
     player_car.speed = 0
@@ -68,21 +70,15 @@ def reset_game(player_car, obs, chk, menu):
             data = json.load(f)
     except:
         data = {}
-    # print(data)
     data[time.strftime('%X %x')] = player_car.score
-    # print(data)
     sorted_scores = {k: v for k, v in sorted(data.items(), key=lambda item: item[1], reverse=True)}
-    # print(sorted_scores)
-    # print(len(data))
 
     counter = 0
     new_high_score = False
     top_five = {}
     for date, score in sorted_scores.items():
-        # print(date, score, counter)
         if counter == 0 and score <= player_car.score:
             new_high_score = True
-            # print('new high score')
         top_five[date] = score
         counter += 1
         if counter > 5:
