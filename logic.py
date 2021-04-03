@@ -9,6 +9,17 @@ from menu import Menu
 
 from sys import argv
 
+import sys
+
+# The major, minor version numbers your require
+MIN_VER = (3, 7)
+
+if sys.version_info[:2] < MIN_VER:
+    sys.exit(
+        "This game requires Python {}.{}.".format(*MIN_VER)
+    )
+
+
 app = Ursina()
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
@@ -171,7 +182,8 @@ def update():
         else:
             if player_car.light_time < 100:
                 player_car.light_time += .1
-        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints]):
+        crash_speed = player_car.move([*ignore_list, *CheckPoint.checkpoints]):
+        if crash_speed:
             if player_car.hp < 1:
                 print("end crash")
                 if not player_car.audio_list:
@@ -270,7 +282,7 @@ def input(key):
 
 Sky(texture='night_sky_red_blur')
 # EditorCamera()
-if __name__ = '__main__':
+if __name__ == '__main__':
     app.run()
 
 # basic_lighting_shader   -- no colored light
