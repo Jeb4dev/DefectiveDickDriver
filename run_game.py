@@ -111,7 +111,6 @@ menu_light = AmbientLight(position=camera.position, shadows=True)
 # ERROR: not creating when u play againg
 destroy(story_text, 7)
 
-
 def update():
     # Main Loop - Game Paused
     if player_car.paused:
@@ -146,7 +145,7 @@ def update():
         speed_text.text = f"Speed {round(abs(player_car.speed) * 80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
         score_text.text = f"SCORE {round(player_car.score)}"
-        if story_text:
+        if time.time < player_car.story_time:
             story_text.text = f"Alert: {get_story()[0]}"
         health_bar_1.value = round(player_car.hp)
         siren_bar_1.value = round(player_car.light_time)

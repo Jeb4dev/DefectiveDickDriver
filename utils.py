@@ -60,6 +60,7 @@ def reset_game(player_car, obs, chk, menu):
     player_car.new_game = True
     player_car.hp = None
     player_car.speed = 0
+    player_car.story_time = time.time() + 10
     obs.clear_all()
     check = chk.checkpoints.pop()
     destroy(check.light, delay=0)

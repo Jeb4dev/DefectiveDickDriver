@@ -140,6 +140,7 @@ class TheCar:
         self.audio_list = []
         self.lights = False
         self.light_time = 100
+        self.story_time = time.time() + 10
 
     @property
     def hp(self):
@@ -279,4 +280,4 @@ class TheCar:
 class Arrow(Entity):
     def __init__(self):
         super().__init__(model='assets/models/arrow',
-                         color=color.rgba(70, 40, 40, 200))
+                color=color.rgba(70, 40, 40, 200))
