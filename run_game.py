@@ -109,7 +109,6 @@ driving_light2 = PointLight(shadows=True, color=color.rgb(128, 128, 128))
 driving_light3 = PointLight(shadows=True, color=color.rgb(64, 64, 64))
 menu_light = AmbientLight(position=camera.position, shadows=True)
 
-# ERROR: not creating when u play againg
 
 def update():
     # Main Loop - Game Paused
@@ -153,7 +152,7 @@ def update():
 
         # HUD
         speed_text.text = f"Speed {round(abs(player_car.speed) * 80, 1)} km/h"
-        pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
+        # pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
         score_text.text = f"SCORE {round(player_car.score)}"
         if player_car.story:
             if time.time() < player_car.story_time:
@@ -169,7 +168,6 @@ def update():
         arrow.position = player.position + Vec3(0, 5, 0)
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
-
         if held_keys['w']:
             for car in cars:
                 car.w()
@@ -179,12 +177,11 @@ def update():
         if held_keys['space']:
             for car in cars:
                 car.brake(False)
-        if (held_keys['a'] and held_keys['d']):
-            #print('straight ahead!')
+        if held_keys['a'] and held_keys['d']:
             player_car.steering = None
         elif not (held_keys['a'] or held_keys['d']):
             player_car.steering = 0
-            #print('magic!')
+
         elif held_keys['d']:
             for car in cars:
                 car.d()
@@ -265,6 +262,7 @@ def dis_able_menu():
     pos_text.enabled = not pos_text.enabled
     speed_text.enabled = not speed_text.enabled
     score_text.enabled = not score_text.enabled
+    story_text.enabled = not story_text.enabled
     siren_bar_1.enabled = not siren_bar_1.enabled
     health_bar_1.enabled = not health_bar_1.enabled
     city.enabled = not city.enabled
