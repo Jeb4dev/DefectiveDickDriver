@@ -158,7 +158,7 @@ def update():
             if time.time() < player_car.story_time:
                 story_text.text = f"Solve the case : {player_car.story[0]}, follow the clues..."
                 story_text.position = (-.8, .45)
-                story_text.scale = 2
+                story_text.scale = 1.5
             else:
                 story_text.text = ''
         health_bar_1.value = round(player_car.hp)
