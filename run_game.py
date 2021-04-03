@@ -108,7 +108,7 @@ driving_light3 = PointLight(shadows=True, color=color.rgb(64, 64, 64))
 menu_light = AmbientLight(position=camera.position, shadows=True)
 
 # ERROR: not creating when u play againg
-from story import new_story
+
 def update():
     # Main Loop - Game Paused
     if player_car.paused:
@@ -139,6 +139,14 @@ def update():
             dis_able_menu()
             Menu.clear_menu()
 
+        if player_car.new_game:
+            while player_car.audio_list:
+                print(player_car.audio_list)
+                player_car.audio_list.pop().stop(destroy=True)
+            player_car.ent.position = Vec3(0, 0, 0)
+            player_car.new_game = False
+            player_car.score = 0
+
         # HUD
         speed_text.text = f"Speed {round(abs(player_car.speed) * 80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
@@ -155,13 +163,6 @@ def update():
         arrow.position = player.position + Vec3(0, 5, 0)
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
-        if player_car.new_game:
-            while player_car.audio_list:
-                print(player_car.audio_list)
-                player_car.audio_list.pop().stop(destroy=True)
-            player_car.ent.position = Vec3(0, 0, 0)
-            player_car.new_game = False
-            player_car.score = 0
 
         if held_keys['w']:
             for car in cars:
