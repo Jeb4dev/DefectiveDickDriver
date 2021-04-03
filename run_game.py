@@ -25,11 +25,11 @@ if sys.version_info[:2] < MIN_VER:
 app = Ursina()
 window.show_ursina_splash = True
 window.icon = "assets/icon/icon.ico"
-window.fullscreen_size = (1920, 1080, 32)
-window.windowed_size = (1920, 1080, 32)
+window.fullscreen_size = (1280, 720, 32)
+window.windowed_size = (1280, 720, 32)
 window.fullscreen = True
 window.title = "Defective: Dick Driver"
-#window.icon = 'assets/icon/icon'
+window.icon = 'assets/icon/icon'
 
 if len(argv) > 1:
     try:
