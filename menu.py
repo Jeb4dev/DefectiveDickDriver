@@ -47,6 +47,11 @@ class Menu:
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
         self.e(main_menu)
 
+        def delete_scores():
+            with open('scores.json', 'w') as f:
+                f.write("")
+            self.show_main_menu()
+
         try:
             with open('scores.json', 'r') as f:
                 data = json.load(f)
@@ -71,6 +76,11 @@ class Menu:
 
         self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
                       position=(0, -0.35), on_click=self.show_main_menu, tooltip=Tooltip('Back to Main menu')))
+        self.e(Button(parent=main_menu, text='Clear', color=color.black10, scale=(0.5, 0.08),
+                      position=(0, -0.50), on_click=delete_scores,
+                      tooltip=Tooltip('Clear all High Scored, cannot be undone.')))
+
+
 
     # def show_options_menu(self):
     #     self.clear_menu()
