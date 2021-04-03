@@ -1,4 +1,5 @@
 from ursina import *
+from story import *
 import json
 
 
@@ -86,5 +87,6 @@ def reset_game(player_car, obs, chk, menu):
     with open('scores.json', 'w') as f:
         json.dump(top_five, f)
 
-    text = "They got away..."
-    menu.show_score_menu(new_high_score, text)
+    menu.show_score_menu(new_high_score, get_story()[-1])
+    new_story()
+
