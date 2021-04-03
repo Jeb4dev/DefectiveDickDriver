@@ -182,7 +182,7 @@ def update():
         else:
             if player_car.light_time < 100:
                 player_car.light_time += .1
-        crash_speed = player_car.move([*ignore_list, *CheckPoint.checkpoints]):
+        crash_speed = player_car.move([*ignore_list, *CheckPoint.checkpoints])
         if crash_speed:
             if player_car.hp < 1:
                 print("end crash")

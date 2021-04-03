@@ -29,7 +29,7 @@ class Menu:
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                       position=(2, 2, 2)))
 
-        self.e(Text(parent=main_menu, position=(-.2, .5), text="Detective:", scale=4.4))
+        self.e(Text(parent=main_menu, position=(-.2, .5), text="Defective:", scale=4.4))
         self.e(Text(parent=main_menu, position=(-.1, .4), text="Dick", scale=4.4*.67))
         self.e(Text(parent=main_menu, position=(-.03, .33), text="Driver", scale=4.4*.67))
 
