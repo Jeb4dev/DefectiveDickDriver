@@ -29,7 +29,9 @@ class Menu:
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                       position=(2, 2, 2)))
 
-        self.e(Text(parent=main_menu, origin=(0, -10), text="Our Perfect Game"))
+        self.e(Text(parent=main_menu, position=(-.2, .5), text="Detective:", scale=4.4))
+        self.e(Text(parent=main_menu, position=(-.1, .4), text="Dick", scale=4.4*.67))
+        self.e(Text(parent=main_menu, position=(-.03, .33), text="Driver", scale=4.4*.67))
 
         self.e(Button(parent=main_menu, text='Play', color=color.black10, scale=(0.5, 0.08),
                       position=(0, 0.1), on_click=self.player_car.pause, tooltip=Tooltip('to game')))
@@ -156,7 +158,7 @@ class Menu:
     #     self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
     #                   position=(0, -0.2), on_click=goback, tooltip=Tooltip('Back to Options menu')))
 
-    def show_score_menu(self, new_hs):
+    def show_score_menu(self, new_hs, txt):
         camera.rotation = Vec3(0, 0, 0)
         camera.position = Vec3(0, 0, -20)
 
@@ -167,6 +169,8 @@ class Menu:
         self.e(main_menu)
         self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
                       position=(2, 2, 2)))
+
+        self.e(Text(parent=main_menu, origin=(0, -8), scale=2, text=txt[:], color=color.black33))
         if new_hs:
             score_text = f'New High Score!\n           {round(self.player_car.score)}\nNew High Score!'
         else:
