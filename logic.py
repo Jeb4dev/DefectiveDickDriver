@@ -31,7 +31,7 @@ if len(argv) > 1:
 window.vsync = True
 
 scene.fog_color = COLOR_RUST
-#scene.fog_density = (10, 60)
+scene.fog_density = (10, 60)
 
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 1, -20)
