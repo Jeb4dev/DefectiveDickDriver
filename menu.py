@@ -1,5 +1,4 @@
 from ursina import *
-from pyweek_31.read_key_bindings import *
 import json
 
 
@@ -7,7 +6,6 @@ class Menu:
     entities = []
 
     def __init__(self, player, player_car):
-        self.hints = get_value("settings", "hints")
         self.player = player
         self.player_car = player_car
         self.e = self.entities.append
