@@ -90,4 +90,5 @@ def reset_game(player_car, obs, chk, menu):
     with open('scores.json', 'w') as f:
         json.dump(top_five, f)
 
-    menu.show_score_menu(new_high_score)
+    text = "They got away..."
+    menu.show_score_menu(new_high_score, text)
