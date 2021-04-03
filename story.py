@@ -1,3 +1,4 @@
+import random
 stories = [
     ["Pizza thief committed at local Pizza Hut", "The Pizza thief was never found..."],
     ["Lost paperclip reported in downtown", "The lost paperclip was never found..."],
@@ -6,3 +7,17 @@ stories = [
     ["Your co-worker has stolen your donut", "The lost donut was never found..."],
     ["Your girlfriend has been seen with someone", "The girlfriend left u..."]
 ]
+
+Story = False
+
+
+def new_story():
+    global Story
+    Story = random.choice(stories)
+
+
+def get_story():
+    global Story
+    if not Story:
+        Story = random.choice(stories)
+    return Story
