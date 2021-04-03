@@ -11,28 +11,34 @@ This is an AAA RPG VR game and Not recommended for beginners.
 
 <em class = "something ">just kidding </em>this game was devolped for pyweek 31 and was made to match the theme which was <mark> "cops"</mark>.</br>
 
-<h3> <em class = "detail">controls: </h3></em>
+<h3>Controls: </h3>
 <table style="width:100%">
     
   <tr>
   <em>
     <td>FORWARD</td>
-    <td>PRESS "W"</td>
-    </em>
-    
+    <td>"W"</td>
+    <td>SIREN</td>
+    <td>"E"</td>
+    </em>  
+  </tr>
+  <tr>
+    <td>BACK</td>
+    <td>"S"</td>
+    <td>BRAKE</td>
+    <td>"SPACE"</td>
+  </tr>
+  <tr>
+    <td>LEFT</td>
+    <td>"A"</td>
+    <td>MENU</td>
+    <td>"Esc"</td>
   </tr>
   <tr>
     <td>RIGHT</td>
-    <td>PRESS "D"</td>
-    
-  </tr>
-  <tr>
-  <td>left</td>
-  <td> PRESS "A"</td>
-  </tr>
-  <tr>
-  <td>BACK</td>
-  <td>PRESS "S"</td>
+    <td>"D"</td>
+    <td>QUIT</td>
+    <td>"SHIFT + Q"</td>
   </tr>
 </table>
 
@@ -41,7 +47,10 @@ This is an AAA RPG VR game and Not recommended for beginners.
 <p>
 </p>
 
-to install clone repo, install ursina and dependenciesi(https://github.com/pokepetter/ursina), run logic.py(I know, it'll get it into main...).
+<h3>Installation:</h3>
+Clone repo
+install ursina and dependenciesi(https://github.com/pokepetter/ursina)
+run logic.py (no time for a refactor...😬)
 
 <strong>ENJOY!!!!! 😎😎😎</strong></p>
 </body>
