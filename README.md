@@ -7,7 +7,7 @@
 
 <h2><p>Pyg's team repository</h2>
 
-This is an AAA RPG VR game and Not recommended for beginners.
+Welcome to Defective: Dick Driver, a realistic Police Simulator.
 
 <em class = "something ">just kidding </em>this game was devolped for pyweek 31 and was made to match the theme which was <mark> "cops"</mark>.</br>
 
@@ -48,15 +48,18 @@ This is an AAA RPG VR game and Not recommended for beginners.
 </p>
 
 <h3>Installation:</h3>
-Clone repo
-install ursina and dependenciesi(https://github.com/pokepetter/ursina)
-run logic.py (no time for a refactor...😬)
+Clone repo and run run_game.py
+
+Dependencies:
+	Python 3.7+
+	ursina and dependenciesi(https://github.com/pokepetter/ursina)
+
 you can set the video options when running the game
 ```python3 logic.py 1080 1```
 Screen height in pixels(all options are 16:9)
 1 for fullscreen, 0 for windowed.
 
 
-<strong>ENJOY!!!!! 😎😎😎</strong></p>
+<strong>ENJOY! 💎🙌🚀😎</strong></p>
 </body>
 </html>
