@@ -35,7 +35,7 @@ def make_walls(width):
             model='cube',
             color=color.rgba(66, 26, 26, 66),
             position=pos,
-            scale=(abs(pos[2]) * 2 + 1, 5, abs(pos[0]) * 2 + 1),
+            scale=(abs(pos[2]) * 2 + 3, 5, abs(pos[0]) * 2 + 3),
             collider='box'
         ))
     return walls

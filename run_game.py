@@ -54,8 +54,8 @@ camera.position = Vec3(0, 1, -20)
 camera.rotation = Vec3(15, 0, 0)
 player.cursor.enabled = False
 
-walls = make_walls(10000)
-floor = make_floor(12, 30)
+walls = make_walls(400)
+floor = make_floor(8, 60)
 
 
 lower_floor = Entity(model='cube', color=COLOR_RUST,  position=(0, -2, 0), 
