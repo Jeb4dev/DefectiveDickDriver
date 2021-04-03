@@ -1,6 +1,7 @@
 from ursina import *
 import random
 from utils import collide
+from story import new_story
 
 
 # normal, top-down, PointLight, normal, super
@@ -141,6 +142,7 @@ class TheCar:
         self.lights = False
         self.light_time = 100
         self.story_time = time.time() + 10
+        self.story = new_story()
 
     @property
     def hp(self):

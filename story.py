@@ -8,16 +8,8 @@ stories = [
     ["Your girlfriend has been seen with someone", "The girlfriend left u..."]
 ]
 
-Story = False
 
 
 def new_story():
-    global Story
     Story = random.choice(stories)
-
-
-def get_story():
-    global Story
-    if not Story:
-        Story = random.choice(stories)
     return Story

@@ -1,5 +1,5 @@
 from ursina import *
-from story import *
+from story import new_story
 import json
 
 
@@ -35,7 +35,7 @@ def make_walls(width):
             model='cube',
             color=color.rgba(66, 26, 26, 66),
             position=pos,
-            scale=(abs(pos[2]) * 2 + 3, 5, abs(pos[0]) * 2 + 3),
+            scale=(abs(pos[2]) * 2 + 1, 5, abs(pos[0]) * 2 + 1),
             collider='box'
         ))
     return walls
@@ -61,6 +61,8 @@ def reset_game(player_car, obs, chk, menu):
     player_car.hp = None
     player_car.speed = 0
     player_car.story_time = time.time() + 10
+    player_car.story = new_story()
+
     obs.clear_all()
     check = chk.checkpoints.pop()
     destroy(check.light, delay=0)
@@ -87,7 +89,7 @@ def reset_game(player_car, obs, chk, menu):
             break
     with open('scores.json', 'w') as f:
         json.dump(top_five, f)
+    menu.show_score_menu(new_high_score, player_car.story[-1])
+    
 
-    menu.show_score_menu(new_high_score, get_story()[-1])
-    new_story()
 

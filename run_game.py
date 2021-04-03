@@ -6,7 +6,6 @@ from classes import TheCar, CheckPoint, Lighting, Obstacle, Arrow
 from utils import make_walls, make_floor, reset_game
 from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
-from story import get_story
 
 from sys import argv
 
@@ -87,9 +86,9 @@ cars = [player_car]
 
 camera.parent = player_car.ent
 speed_text = Text(text=f"", position=(0, -.4), color=color.white66)
-story_text = Text(text=f"", position=(-.8, .4), color=COLOR_RUST_2X)
 pos_text = Text(text=f"", position=(.3, .5), color=color.black)
 score_text = Text(text=f"", position=(-.8, -.35), color=COLOR_RUST_2X)
+story_text = Text(text=f"", position=(0, 0), color=COLOR_RUST_2X)
 health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40), animation_duration=0)
 siren_bar_1 = health_bar.HealthBar(bar_color=color.rgb(40, 40, 70), roundness=.1, value=100, position=(-.8, -.4375), animation_duration=0)
 
@@ -109,8 +108,7 @@ driving_light3 = PointLight(shadows=True, color=color.rgb(64, 64, 64))
 menu_light = AmbientLight(position=camera.position, shadows=True)
 
 # ERROR: not creating when u play againg
-destroy(story_text, 7)
-
+from story import new_story
 def update():
     # Main Loop - Game Paused
     if player_car.paused:
@@ -145,8 +143,11 @@ def update():
         speed_text.text = f"Speed {round(abs(player_car.speed) * 80, 1)} km/h"
         pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
         score_text.text = f"SCORE {round(player_car.score)}"
-        if time.time < player_car.story_time:
-            story_text.text = f"Alert: {get_story()[0]}"
+        if player_car.story:
+            if time.time() < player_car.story_time:
+                story_text.text = f"Alert: {player_car.story[0]}"
+            else:
+                story_text.text = ''
         health_bar_1.value = round(player_car.hp)
         siren_bar_1.value = round(player_car.light_time)
 
@@ -238,8 +239,6 @@ def update():
 
 def dis_able_menu():
     global inMenu
-    if story_text:
-        story_text.enabled = not story_text.enabled
     inMenu = not inMenu
     for i in range(len(floor)):
         floor[i].enabled = not floor[i].enabled
