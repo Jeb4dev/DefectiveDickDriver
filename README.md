@@ -51,6 +51,11 @@ This is an AAA RPG VR game and Not recommended for beginners.
 Clone repo
 install ursina and dependenciesi(https://github.com/pokepetter/ursina)
 run logic.py (no time for a refactor...😬)
+you can set the video options when running the game
+```python3 logic.py 1080 1```
+Screen height in pixels(all options are 16:9)
+1 for fullscreen, 0 for windowed.
+
 
 <strong>ENJOY!!!!! 😎😎😎</strong></p>
 </body>
