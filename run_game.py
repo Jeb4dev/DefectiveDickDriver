@@ -22,9 +22,12 @@ if sys.version_info[:2] < MIN_VER:
 
 
 app = Ursina()
+window.show_ursina_splash = True
 window.fullscreen_size = (1920, 1080, 32)
 window.windowed_size = (1920, 1080, 32)
-window.fullscreen = False
+window.fullscreen = True
+window.title = "Defective: Dick Driver"
+#window.icon = 'assets/icon/icon'
 
 if len(argv) > 1:
     try:
@@ -59,9 +62,8 @@ lower_floor = Entity(model='cube', color=COLOR_RUST,  position=(0, -2, 0),
                      rotation=(0, 0, 0)
                      )
 
-light = Lighting(player, player.position + Vec3(1, 7, 0), color.black, rotation=player.down)
 siren_light = Lighting(player, player.position + Vec3(1, 7, 0), color.black, rotation=player.down)
-CheckPoint.init_light(light)
+CheckPoint.init_light(Entity('cube', color=color.rgba(255,5,5,128), scale=(25,25,25)))
 
 city = Entity(model='assets/models/city800', color=COLOR_RUST, position =(0, .1, 0), collider='mesh', reload=True)
 

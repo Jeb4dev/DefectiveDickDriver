@@ -20,24 +20,19 @@ class Lighting(PointLight):
 class CheckPoint(Entity):
     checkpoints = []
     car = None
-    light = None
     lastpoint = 0
 
-    def __init__(self, model, color, position, scale):
+    def __init__(self, model, clr, position, scale):
         super().__init__(model=model,
-                         color=color,
+                         color=clr,
                          position=position,
                          scale=scale,
                          double_sided=True,
                          collider='cube'
                          )
         self.checkpoints.append(self)
-        self.light = None
+        self.light = Entity(model='cube', position=position, scale = 25, color=color.rgba(64,64,0,64))
         self.getby = round(time.time() + distance(self.car, self))
-
-    def set_light(self, light):
-        self.light = light
-        self.light.position = self.position + light.position
 
     def is_cleared(self, ignore_list):
         touching = boxcast(
@@ -74,13 +69,13 @@ class CheckPoint(Entity):
     def spawn_new(cls):
 
         cls('cube', 
-            color.rgba(255,255,0,64),
+            color.rgba(0,0,0,0),
             (random.randint(-250,250),
             0,
             random.randint(-250,250)), 
-            (25,25,25)
+            (28,28,28)
             )
-        cls.light.position = cls.checkpoints[0].position + Vec3(0, 15, 0)
+        cls.light.position = cls.checkpoints[0].position
         # cls.light.position = cls.checkpoints[0].position+Vec3(0, 20, 0)
 
         '''  for x in range(15):
@@ -138,7 +133,7 @@ class TheCar:
         self.ent = ent
         self._speed = 0
         self._steering = 0
-        self._hp = 10  # FIX THIS!
+        self._hp = 100
         self.score = 0
         self.paused = True
         self.new_game = True
@@ -226,20 +221,20 @@ class TheCar:
             if collide(self.ent.position, self.ent.forward, 2.5, ignore_list, self._speed):
                 speed = self.speed
                 if self.lights:
-                    self.hp -= self.speed * 40
+                    self.hp -= self.speed * 20
                     self.light_time -= self.speed * 40
                 else:
-                    self.hp -= self.speed * 80
+                    self.hp -= self.speed * 40
                 self.speed = None
                 return speed
         if self.speed < 0:
             if collide(self.ent.position, self.ent.back, 2.3, ignore_list, self._speed):
                 speed = self.speed
                 if self.lights:
-                    self.hp -= abs(self.speed) * 40
+                    self.hp -= abs(self.speed) * 20
                     self.light_time -= abs(self.speed) * 40
                 else:
-                    self.hp -= abs(self.speed) * 80
+                    self.hp -= abs(self.speed) * 40
                 self.speed = None
                 return -speed
         self.ent.position += self.ent.forward * self.speed
