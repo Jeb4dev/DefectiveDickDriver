@@ -1,3 +1,11 @@
+
+assets/music/backaround_music.ogg  -  https://cdn.pixabay.com/download/audio/2021/03/26/audio_08a9a1a098.mp3
+assets/music/siren.ogg  -  https://samplefocus.com/samples/police-siren-a
+assets/models/80scop.obj  -  https://www.cgtrader.com/items/822784/download-page
+assets/sfx/fast_crash_end.ogg  -  https://freesound.org/people/Pertti.Orn/sounds/250965/
+assets/sfx/short_crash.ogg  -  https://freesound.org/people/PauliusI/sounds/346299/
+assets/sfx/slow_crash_end.ogg  -  https://freesound.org/people/mnbbrws6.-+/sounds/439255/
 assets/textures/dirt.jpg  -  https://www.deviantart.com/hhh316/art/Seamless-Cracked-Dirt-Texture-347828451
 assets/textures/night_sky_red_blur.png  -  https://unsplash.com/photos/YAnOTaxbuaM
-assets/music/backaround_music.ogg  -  https://cdn.pixabay.com/download/audio/2021/03/26/audio_08a9a1a098.mp3
+
+# more here  "Old chicago" (https://skfb.ly/6VxWI) by Acronhym is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
