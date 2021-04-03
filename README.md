@@ -11,7 +11,7 @@ This is an AAA RPG VR game and Not recommended for beginners.
 
 <em class = "something ">just kidding </em>this game was devolped for pyweek 31 and was made to match the theme which was <mark> "cops"</mark>.</br>
 
-<h3>controls: </h3>
+<h3>Controls: </h3>
 <table style="width:100%">
     
   <tr>
