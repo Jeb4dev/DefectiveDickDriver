@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 </head>
 <body>
-<h1><strong><em class="detail">T</em><em class="name">B</em><em class = "something">A</em>🕵👮🕵️‍♀️</h1></strong>
+<h1><strong><em class="detail">Defective:</em><em class="name">Dick</em><em class = "something">Driver</em>🕵👮🕵️‍♀️</h1></strong>
 
 <h2><p>Pyg's team repository</h2>
 
