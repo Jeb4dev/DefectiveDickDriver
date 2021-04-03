@@ -50,7 +50,6 @@ class CheckPoint(Entity):
             debug=False).entities
 
         less_touching = [e for e in touching if 'player_car' in e.name]
-        print(less_touching)
         if len(less_touching) == 1:
             
             self.lastpoint = (self.getby - time.time())
@@ -143,6 +142,7 @@ class TheCar:
         self.score = 0
         self.paused = True
         self.new_game = True
+        self.audio_list = []
 
     @property
     def hp(self):

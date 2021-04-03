@@ -28,16 +28,6 @@ if len(argv) > 1:
             f'correct usage is ``logic.py height fullscreen`` height should be in pixels, 1 for fullscreen, 0 for windowed')
 
 
-def center_on_screen(self):
-    print('size;', self.size)
-    self.position = Vec2(
-        int((self.screen_resolution[0] - self.size[0]) / 2),
-        int((self.screen_resolution[1] - self.size[1]) / 2)
-    )
-
-
-center_on_screen(window)
-
 window.vsync = True
 
 scene.fog_color = COLOR_RUST
@@ -145,6 +135,9 @@ def update():
         arrow.rotation = arrow.look_at(CheckPoint.checkpoints[0], axis="forward")
 
         if player_car.new_game:
+            while player_car.audio_list:
+                print(player_car.audio_list)
+                player_car.audio_list.pop().stop(destroy=True)
             player_car.ent.position = Vec3(0, 0, 0)
             player_car.new_game = False
             player_car.score = 0
@@ -159,11 +152,11 @@ def update():
             for car in cars:
                 car.brake(False)
         if (held_keys['a'] and held_keys['d']):
-            print('straight ahead!')
+            #print('straight ahead!')
             player_car.steering = None
         elif not (held_keys['a'] or held_keys['d']):
             player_car.steering = 0
-            print('magic!')
+            #print('magic!')
         elif held_keys['d']:
             for car in cars:
                 car.d()
@@ -171,10 +164,18 @@ def update():
             for car in cars:
                 car.a()
 
-
-        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints]) > (10 / 80):
-            print("big crash", crash_speed)
-            Audio('assets/sfx/short_crash')
+        if crash_speed := player_car.move([*ignore_list, *CheckPoint.checkpoints]):
+            if player_car.hp < 1:
+                print("end crash")
+                if crash_speed < (10 / 80):
+                    player_car.audio_list.append(Audio('assets/sfx/slow_crash_end'))
+                else:
+                    player_car.audio_list.append(Audio('assets/sfx/fast_crash_end'))
+                player_car.audio_list[-1].play(start=9)
+            else:
+                if crash_speed > (10 / 80):
+                    print("big crash", crash_speed)
+                    Audio('assets/sfx/short_crash')
 
         player_car.rotate()
         if not (held_keys['w'] or held_keys['s]']):
