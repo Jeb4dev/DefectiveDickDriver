@@ -58,7 +58,7 @@ light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=pl
 siren_light = Lighting(player, player.position+Vec3(1, 7, 0), color.black, rotation=player.down)
 CheckPoint.init_light(light)
 
-city = Entity(model='assets/models/chicago', color=COLOR_RUST, position =(0, -5, 0), collider='mesh', reload=True)
+city = Entity(model='assets/models/city800', color=COLOR_RUST, position =(0, .1, 0), collider='mesh', reload=True)
 
 car = Entity(model='assets/models/80scop', 
         texture='assets/models/cars', 
