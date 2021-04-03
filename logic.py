@@ -270,7 +270,8 @@ def input(key):
 
 Sky(texture='night_sky_red_blur')
 # EditorCamera()
-app.run()
+if __name__ = '__main__':
+    app.run()
 
 # basic_lighting_shader   -- no colored light
 # colored_lights_shader   -- just white
