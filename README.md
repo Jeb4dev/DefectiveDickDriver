@@ -23,8 +23,8 @@ This is an AAA RPG VR game and Not recommended for beginners.
     </em>  
   </tr>
   <tr>
-    <td>RIGHT</td>
-    <td>"D"</td>
+    <td>BACK</td>
+    <td>"S"</td>
     <td>BRAKE</td>
     <td>"SPACE"</td>
   </tr>
@@ -35,8 +35,8 @@ This is an AAA RPG VR game and Not recommended for beginners.
     <td>"Esc"</td>
   </tr>
   <tr>
-    <td>BACK</td>
-    <td>"S"</td>
+    <td>RIGHT</td>
+    <td>"D"</td>
     <td>QUIT</td>
     <td>"SHIFT + Q"</td>
   </tr>
