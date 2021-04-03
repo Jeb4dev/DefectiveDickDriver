@@ -41,7 +41,7 @@ This is an AAA RPG VR game and Not recommended for beginners.
 <p>
 </p>
 
-to install clone repo, install ursina and dependenciesi(https://github.com/pokepetter/ursina), run logic.py(I know, it'll get it into main...).
+to install clone repo, install ursina and dependenciesi(https://github.com/pokepetter/ursina), run logic.py(no time to refactor...).
 
 <strong>ENJOY!!!!! 😎😎😎</strong></p>
 </body>
