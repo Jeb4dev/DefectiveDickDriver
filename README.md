@@ -5,8 +5,6 @@
 <body>
 <h1><strong><em class="detail">Defective: </em><em class=" name">Dick </em><em class = " something ">Driver</em>🕵👮🕵️‍♀️</h1></strong>
 
-<h2><p>Pyg's team repository</h2>
-
 Welcome to Defective: Dick Driver, a realistic Police Simulator.
 
 <em class = "something ">just kidding </em>this game was devolped for pyweek 31 and was made to match the theme which was <mark> "cops"</mark>.</br>
