@@ -8,4 +8,4 @@ assets/sfx/slow_crash_end.ogg  -  https://freesound.org/people/mnbbrws6.-+/sound
 assets/textures/dirt.jpg  -  https://www.deviantart.com/hhh316/art/Seamless-Cracked-Dirt-Texture-347828451
 assets/textures/night_sky_red_blur.png  -  https://unsplash.com/photos/YAnOTaxbuaM
 
-# more here  "Old chicago" (https://skfb.ly/6VxWI) by Acronhym is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+# a few buildings taken from "Old Chicago"to create the city800 model.  The buildings received much work after loading, but credit must be given, as even the thought of building a city was daunting, and without this groundwork we woulda stuck with 'Obstacle()' randomly across a small square.   "Old chicago" (https://skfb.ly/6VxWI) by Acronhym is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

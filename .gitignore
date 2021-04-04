@@ -3,4 +3,6 @@ __pycache__
 *.swo
 *.pyc
 scores.json
-
+/build
+/dist
+*.spec
