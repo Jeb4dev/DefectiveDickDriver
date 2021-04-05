@@ -25,7 +25,7 @@ if sys.version_info[:2] < MIN_VER:
 app = Ursina()
 window.show_ursina_splash = True
 window.icon = "assets/icon/icon.ico"
-window.fullscreen = True
+window.fullscreen = False
 window.title = "Defective: Dick Driver"
 window.icon = 'assets/icon/icon'
 
