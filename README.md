@@ -1,17 +1,12 @@
-# pyweek_31
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-</head>
-<body>
-<h1><strong><em class="detail">Defective: </em><em class=" name">Dick </em><em class = " something ">Driver</em>🕵👮🕵️‍♀️</h1></strong>
+# Pyweek 31 Entry by PYG's<br> Defective: Dick Driver🕵👮🕵️‍♀
 
 Welcome to Defective: Dick Driver, a realistic Police Simulator.
 
-<em class = "something ">just kidding </em>this game was devolped for pyweek 31 and was made to match the theme which was <mark> "cops"</mark>.</br>
+Just kidding, this game was developed for pyweek 31 and was made to match the theme which was <mark> "cops"</mark>.
 
-<img src="https://cdn.discordapp.com/attachments/822978615137796117/828050403522117642/unknown.png" alt="Italian Trulli">
+![Screenshot of the game](https://cdn.discordapp.com/attachments/822978615137796117/828050403522117642/unknown.png)
 
-<h3>Controls: </h3>
+### Controls:
 <table style="width:100%">
     
   <tr>
@@ -42,24 +37,21 @@ Welcome to Defective: Dick Driver, a realistic Police Simulator.
   </tr>
 </table>
 
-<p>
-<p>
-<p>
-</p>
+### Installation:
 
-<h3>Installation:</h3>
-Clone repo and run run_game.py
+#### Dependencies:
+- Python 3.7+
+- [Ursina](https://github.com/pokepetter/ursina)
 
-Dependencies:
-	Python 3.7+
-	ursina and dependenciesi(https://github.com/pokepetter/ursina)
+#### Running source code:
+1. Clone repository
+2. Install requirements `pip install requirements.txt`
+3. Run `run_game.py`
 
-you can set the video options when running the game
-```python3 run_game.py 1080 1```
+You can set the video options when running the game
+`python3 run_game.py 1080 1`
 Screen height in pixels(all options are 16:9)
 1 for fullscreen, 0 for windowed.
 
 
-<strong>ENJOY! 💎🙌🚀😎</strong></p>
-</body>
-</html>
+## **ENJOY!** 💎🙌🚀😎
