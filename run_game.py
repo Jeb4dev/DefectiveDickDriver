@@ -8,12 +8,11 @@ from constants import COLOR_RUST, COLOR_RUST_2X
 from menu import Menu
 from story import new_story
 
-
 from sys import argv
 
 import sys
 
-# The major, minor version numbers your require
+# The major, minor version numbers required
 MIN_VER = (3, 7)
 
 if sys.version_info[:2] < MIN_VER:
@@ -21,13 +20,11 @@ if sys.version_info[:2] < MIN_VER:
         "This game requires Python {}.{}.".format(*MIN_VER)
     )
 
-
 app = Ursina()
-window.show_ursina_splash = True
-window.icon = "assets/icon/icon.ico"
+window.show_ursina_splash = False
 window.fullscreen = False
 window.title = "Defective: Dick Driver"
-window.icon = 'assets/icon/icon'
+window.icon = 'assets/icon/icon.ico'
 
 if len(argv) > 1:
     try:
@@ -38,10 +35,8 @@ if len(argv) > 1:
         if len(argv) > 2:
             window.fullscreen = int(argv[2])
 
-    except exception as e:
-        print(
-            f'correct usage is ``logic.py height fullscreen`` height should be in pixels, 1 for fullscreen, 0 for windowed')
-
+    except Exception as e:
+        print(f'correct usage is ``logic.py height fullscreen`` height should be in pixels, 1 for fullscreen, 0 for windowed')
 
 window.vsync = True
 
@@ -56,24 +51,23 @@ player.cursor.enabled = False
 walls = make_walls(450)
 floor = make_floor(9, 60)
 
-
-lower_floor = Entity(model='cube', color=COLOR_RUST,  position=(0, -2, 0),
+lower_floor = Entity(model='cube', color=COLOR_RUST, position=(0, -2, 0),
                      scale=(10000, 1, 10000),
                      rotation=(0, 0, 0)
                      )
 
 siren_light = Lighting(player, player.position + Vec3(1, 7, 0), color.black, rotation=player.down)
-CheckPoint.init_light(Entity('cube', color=color.rgba(255,5,5,128), scale=(25,25,25)))
+CheckPoint.init_light(Entity('cube', color=color.rgba(255, 5, 5, 128), scale=(25, 25, 25)))
 
-city = Entity(model='assets/models/city800', color=COLOR_RUST, position =(0, .1, 0), collider='mesh', reload=True)
+city = Entity(model='assets/models/city800', color=COLOR_RUST, position=(0, .1, 0), collider='mesh', reload=True)
 
-car = Entity(model='assets/models/80scop', 
-        texture='assets/models/cars', 
-        position = (0, 0, 4), 
-        scale=1,
-        collider='box',
-        name='player_car'
-        )
+car = Entity(model='assets/models/80scop',
+             texture='assets/models/cars',
+             position=(0, 0, 4),
+             scale=1,
+             collider='box',
+             name='player_car'
+             )
 CheckPoint.init_car(car)
 Obstacle.init_car(car)
 
@@ -89,13 +83,16 @@ speed_text = Text(text=f"", position=(0, -.4), color=color.white66)
 pos_text = Text(text=f"", position=(.3, .5), color=color.black)
 score_text = Text(text=f"", position=(-.8, -.35), color=COLOR_RUST_2X)
 story_text = Text(text=f"", position=(-.3, .2), color=COLOR_RUST_2X)
-health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40), animation_duration=0)
-siren_bar_1 = health_bar.HealthBar(bar_color=color.rgb(40, 40, 70), roundness=.1, value=100, position=(-.8, -.4375), animation_duration=0)
+health_bar_1 = health_bar.HealthBar(bar_color=COLOR_RUST_2X, roundness=.1, value=100, position=(-.8, -.40),
+                                    animation_duration=0)
+siren_bar_1 = health_bar.HealthBar(bar_color=color.rgb(40, 40, 70), roundness=.1, value=100, position=(-.8, -.4375),
+                                   animation_duration=0)
 
 ignore_list = [player, car]
 
 inMenu = False
-mouse.visible = False
+mouse.visible = True
+mouse.locked = False
 
 # Audio
 music = Audio('assets/music/backaround_music', pitch=1, loop=True, autoplay=True, volume=.1)
@@ -150,7 +147,6 @@ def update():
 
         # HUD
         speed_text.text = f"{round(abs(player_car.speed) * 80, 1)} km/h"
-        # pos_text.text = f"Pos: {round(player.position[0], 2), round(player.position[1], 2), round(player.position[2], 2)}"
         score_text.text = f"SCORE {round(player_car.score)}"
         if player_car.story:
             if time.time() < player_car.story_time:
@@ -250,12 +246,9 @@ def dis_able_menu():
         Obstacle.obstacles[i].enabled = not Obstacle.obstacles[i].enabled
     arrow.enabled = not arrow.enabled
     lower_floor.enabled = not lower_floor.enabled
-    # menu_light.visible = not menu_light.visible
     CheckPoint.checkpoints[0].enabled = not CheckPoint.checkpoints[0].enabled
 
     player.enabled = not player.enabled
-    mouse.visible = not mouse.visible
-    mouse.locked = not mouse.locked
     player_car.ent.visible = not player_car.ent.visible
     pos_text.enabled = not pos_text.enabled
     speed_text.enabled = not speed_text.enabled
@@ -267,7 +260,6 @@ def dis_able_menu():
 
 
 def input(key):
-
     # toggle pause menu
     if key == 'escape':
         player_car.paused = not player_car.paused
@@ -294,17 +286,6 @@ def input(key):
 
 
 Sky(texture='night_sky_red_blur')
-# EditorCamera()
+
 if __name__ == '__main__':
     app.run()
-
-# basic_lighting_shader   -- no colored light
-# colored_lights_shader   -- just white
-# fading_shadows_shader   -- doesnt exist
-# fresnel_shader          -- doesnt exist
-# lit_with_shadows_shader -- apply color existing white
-# matcap_shader           -- mirror finish
-# normals_shader          -- rainbow
-# texture_blend_shader    -- doesnt exist
-# triplanar_shader        -- car .png colors
-# unlit_shader            -- no colored light
