@@ -4,7 +4,7 @@ Welcome to Defective: Dick Driver, a realistic Police Simulator.
 
 Just kidding, this game was developed for pyweek 31 and was made to match the theme which was <mark> "cops"</mark>.
 
-![Screenshot of the game](https://cdn.discordapp.com/attachments/822978615137796117/828050403522117642/unknown.png)
+![image](https://user-images.githubusercontent.com/76889226/187096806-86e5ec66-1736-42a8-a9f7-383198a8fd1f.png)
 
 ### Controls:
 <table style="width:100%">
