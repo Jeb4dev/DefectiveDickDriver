@@ -46,7 +46,7 @@ scene.fog_density = (10, 60)
 player = FirstPersonController(gravity=0)
 camera.position = Vec3(0, 1, -20)
 camera.rotation = Vec3(15, 0, 0)
-player.cursor.enabled = False
+player.cursor.visible = False
 
 walls = make_walls(450)
 floor = make_floor(9, 60)
