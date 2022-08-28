@@ -82,25 +82,6 @@ class Menu:
                       position=(0, -0.50), on_click=delete_scores,
                       tooltip=Tooltip('Clear all High Scored, cannot be undone.')))
 
-    # def show_options_menu(self):
-    #     self.clear_menu()
-    #     main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-    #     self.e(main_menu)
-    #     self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
-    #                   position=(2, 2, 2)))
-    #
-    #     self.e(Text(parent=main_menu, origin=(0, -10), text="Options"))
-    #
-    #     self.e(Button(parent=main_menu, text='Mouse & Keys', color=color.black10, scale=(0.5, 0.08),
-    #                   position=(0, 0.1), on_click=self.show_keyboard_menu,
-    #                   tooltip=Tooltip('Mouse sensitivity & keybindings')))
-    #     self.e(Button(parent=main_menu, text='Graphics', color=color.black10, scale=(0.5, 0.08),
-    #                   position=(0, 0), on_click=self.show_graphic_options_menu, tooltip=Tooltip('Graphic settings')))
-    #     self.e(Button(parent=main_menu, text='Other', color=color.black10, scale=(0.5, 0.08),
-    #                   position=(0, -0.1), on_click=self.show_other_options_menu, tooltip=Tooltip('Other settings')))
-    #     self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
-    #                   position=(0, -0.2), on_click=self.show_main_menu, tooltip=Tooltip('Back to Main menu')))
-
     def show_keyboard_menu(self):
         self.clear_menu()
         main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
@@ -138,36 +119,6 @@ class Menu:
                       position=(0, -0.3), on_click=self.show_main_menu,
                       tooltip=Tooltip('Back to main menu')))
 
-    # def show_other_options_menu(self):
-    #     self.clear_menu()
-    #     main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-    #     self.e(main_menu)
-    #
-    #     def goback():
-    #         save_values()
-    #         self.show_options_menu()
-    #
-    #     def on_value_changed():
-    #         global hints
-    #         update_value("settings", "hints", "".join(on_off_switch.value))
-    #         save_values()
-    #
-    #     self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
-    #                   position=(2, 2, 2)))
-    #
-    #     self.e(Text(parent=main_menu, origin=(0, -10), text="Other Settings"))
-    #
-    #     # Hints
-    #     self.e(Text(parent=main_menu, position=(-.025, .19), scale=1, text="Tips"))
-    #     on_off_switch = ButtonGroup(('off', 'on'), parent=main_menu, min_selection=1, position=(.05, .2),
-    #                                 default=f"{self.hints}", selected_color=color.red)
-    #     self.e(on_off_switch)
-    #     on_off_switch.on_value_changed = on_value_changed
-    #
-    #     # Buttons
-    #     self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
-    #                   position=(0, -0.2), on_click=goback, tooltip=Tooltip('Back to Options menu')))
-
     def show_score_menu(self, new_hs, txt):
         camera.rotation = Vec3(0, 0, 0)
         camera.position = Vec3(0, 0, -20)
@@ -193,7 +144,6 @@ class Menu:
                       tooltip=Tooltip('Back to Main menu or just press [ESC] to replay')))
 
     def show_story_menu(self):
-
         camera.rotation = Vec3(0, 0, 0)
         camera.position = Vec3(0, 0, -20)
 
@@ -228,32 +178,5 @@ class Menu:
                       position=(0, -0.40), on_click=self.player_car.pause,
                       tooltip=Tooltip('Back to Main menu or just press [ESC] to replay')))
 
-    # def show_graphic_options_menu(self):
-    #     self.clear_menu()
-    #     main_menu = Entity(scale=Vec2(12, 12), billboard=True, position=self.player.position)
-    #     self.e(main_menu)
-    #
-    #     self.e(Entity(parent=main_menu, model="plane", color=color.gray, scale=10, rotation=(90, 90, 90),
-    #                   position=(2, 2, 2)))
-    #
-    #     self.e(Text(parent=main_menu, origin=(0, -10), text="Graphic Settings"))
-    #
-    #     # Buttons
-    #     self.e(Button(parent=main_menu, text='Back!', color=color.black10, scale=(0.5, 0.08),
-    #                   position=(0, -0.2), on_click=self.show_options_menu, tooltip=Tooltip('Back to Options menu')))
-
     def _pass(self):
         pass
-
-
-if __name__ == '__main__':
-    app = Ursina()
-
-    screen = None  # for global statement
-    menu = Menu()
-    menu.show_main_menu()
-
-    window.exit_button.visible = True
-    window.fps_counter.visible = True
-
-    app.run()
